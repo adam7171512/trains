@@ -1,11 +1,10 @@
-package pl.edu.pja.s28687.Misc;
+package pl.edu.pja.s28687.misc;
 
-import pl.edu.pja.s28687.Logistics.Coordinates;
+import pl.edu.pja.s28687.logistics.Coordinates;
 import pl.edu.pja.s28687.TrainStation;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PLCoordReader {
@@ -13,18 +12,20 @@ public class PLCoordReader {
     BufferedReader bufferedReader;
 
     public PLCoordReader() {
-        file = new File("/Users/krzyszfot/IdeaProjects/GUI1/src/main/java/pl/edu/pja/s28687/Misc/coords.txt");
+        file = new File("src/main/java/pl/edu/pja/s28687/misc/coords.txt");
     }
 
     public List<TrainStation> prepareTrainStations () {
         List<TrainStation> trainStations = new ArrayList<>();
-        file = new File("/Users/krzyszfot/IdeaProjects/GUI1/src/main/java/pl/edu/pja/s28687/Misc/coords.txt");
+        file = new File("src/main/java/pl/edu/pja/s28687/misc/coords.txt");
         try {
             bufferedReader = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         String st;
+        double latDist = 73.07;
+        double longDist = 119.19;
 
         while (true){
             try {
@@ -33,8 +34,6 @@ public class PLCoordReader {
                 throw new RuntimeException(e);
             }
             String[] r = st.trim().split("\\s+|\\)|\\(");
-            double latDist = 73.07;
-            double longDist = 119.19;
             String name = "";
             String latitude;
             String longitude;
