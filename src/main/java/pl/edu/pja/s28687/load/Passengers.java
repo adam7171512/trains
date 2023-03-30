@@ -1,7 +1,9 @@
-package pl.edu.pja.s28687.Load;
+package pl.edu.pja.s28687.load;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Passengers extends Load<IPassengers> {
 
@@ -11,7 +13,7 @@ public class Passengers extends Load<IPassengers> {
     }
 
     @Override
-    public void setFlags() {
-        flags.add(Flags.PASSENGERS);
+    public Set<Flags> flags() {
+        return Set.of(Flags.PASSENGERS);
     }
 }

@@ -1,14 +1,16 @@
 package pl.edu.pja.s28687;
 
-import pl.edu.pja.s28687.Cars.IPowered;
-import pl.edu.pja.s28687.Cars.PassengerCar;
-import pl.edu.pja.s28687.Cars.RailroadCar;
-import pl.edu.pja.s28687.Gui.TrainSetRepresentation;
-import pl.edu.pja.s28687.Logistics.Coordinates;
-import pl.edu.pja.s28687.Logistics.LocoBase;
-import pl.edu.pja.s28687.Logistics.RailroadLink;
-import pl.edu.pja.s28687.Misc.RailroadHazard;
-import pl.edu.pja.s28687.Misc.TrainStatus;
+import pl.edu.pja.s28687.cars.IPowered;
+import pl.edu.pja.s28687.cars.LoadableRailroadCar;
+import pl.edu.pja.s28687.cars.PassengerCar;
+import pl.edu.pja.s28687.cars.RailroadCar;
+import pl.edu.pja.s28687.gui.TrainSetRepresentation;
+import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.logistics.Coordinates;
+import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.logistics.RailroadLink;
+import pl.edu.pja.s28687.misc.RailroadHazard;
+import pl.edu.pja.s28687.misc.TrainStatus;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,6 +33,7 @@ public class Locomotive {
     private BigDecimal currentSpeed = BigDecimal.valueOf(0);
     private List<RailroadLink> road = new ArrayList<>();
     private List<RailroadCar> cars = new ArrayList<>();
+    private List<LoadableRailroadCar<? extends IDeliverable>> loadableRailroadCars = new ArrayList<>();
     private BigDecimal currentTripDistanceCovered = BigDecimal.valueOf(0);
     private BigDecimal currentSegmentDistance = BigDecimal.valueOf(0);
     private BigDecimal currentSegmentDistanceCovered = BigDecimal.valueOf(0);
@@ -51,13 +54,17 @@ public class Locomotive {
         this.conductor = conductor;
     }
 
-    public Locomotive(String name, int maxCars, BigDecimal maxFreight, int maxPoweredCars, BigDecimal defaultSpeed, LocoBase locoBase) {
+    public BigDecimal getDefaultSpeed(){
+        return defaultSpeed;
+    }
+
+    public Locomotive(String name, int id,  int maxCars, BigDecimal maxFreight, int maxPoweredCars, BigDecimal defaultSpeed) {
         this.name = name;
+        this.id = id;
         this.maxCars = maxCars;
         this.maxFreight = maxFreight;
         this.maxPoweredCars = maxPoweredCars;
         this.defaultSpeed = defaultSpeed;
-        this.id = locoBase.assignLocId(this);
         this.coordinates = new Coordinates(0, 0);
         this.status = TrainStatus.WAITING;
     }
@@ -81,6 +88,9 @@ public class Locomotive {
         else {
             cars.add(car);
             car.attach();
+            if (car instanceof LoadableRailroadCar){
+                loadableRailroadCars.add((LoadableRailroadCar<? extends IDeliverable>) car);
+            }
         }
     }
 
@@ -127,6 +137,7 @@ public class Locomotive {
     public void updateCurrentTripDistanceCovered(BigDecimal distance){
         currentTripDistanceCovered = currentTripDistanceCovered.add(distance);
     }
+
 
     //TODO: refactor
     public int getCurrentSegmentProgress(){
@@ -391,6 +402,10 @@ public class Locomotive {
 
     public Coordinates getCoordinates() {
         return coordinates;
+    }
+
+    public List<LoadableRailroadCar<? extends IDeliverable>> getLoadableCars() {
+        return loadableRailroadCars;
     }
 }
 

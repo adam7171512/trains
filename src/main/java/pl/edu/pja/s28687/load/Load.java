@@ -1,4 +1,4 @@
-package pl.edu.pja.s28687.Load;
+package pl.edu.pja.s28687.load;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,27 +13,19 @@ public abstract class Load<T extends IDeliverable>{
     private String name;
     private int id;
     private boolean loaded;
-    protected Set<Flags> flags;
 
     public Load(double weight){
         this.weight = BigDecimal.valueOf(weight);
-        flags = new HashSet<>();
-        setFlags();
-
     }
 
     public Load(int quantity, double weight){
         this.quantity = BigDecimal.valueOf(quantity);
         this.weight = BigDecimal.valueOf(weight).setScale(2, RoundingMode.CEILING);
         this.loaded = false;
-        setFlags();
     }
 
 
-    public Set<Flags> flags(){
-        return flags;
-    }
-
+    public abstract Set<Flags> flags();
 
     public int getId() {
         return id;
@@ -51,7 +43,7 @@ public abstract class Load<T extends IDeliverable>{
         return this.name;
     }
     public BigDecimal getQuantity(){
-        return this.quantity;
+        return Objects.requireNonNullElse(this.quantity, BigDecimal.ONE);
     }
 
     public boolean isLoaded(){
@@ -65,17 +57,20 @@ public abstract class Load<T extends IDeliverable>{
         return this.weight;
     }
 
-    public abstract void setFlags();
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Load<?> load)) return false;
-        return id == load.id && loaded == load.loaded && Objects.equals(quantity, load.quantity) && weight.equals(load.weight) && Objects.equals(name, load.name) && flags.equals(load.flags);
+        return id == load.id
+                && loaded == load.loaded
+                && Objects.equals(quantity, load.quantity)
+                && weight.equals(load.weight)
+                && Objects.equals(name, load.name)
+                && flags().equals(load.flags());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(quantity, weight, name, id, flags);
+        return Objects.hash(quantity, weight, name, id, flags());
     }
 }

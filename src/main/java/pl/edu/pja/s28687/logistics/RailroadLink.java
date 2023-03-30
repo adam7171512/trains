@@ -1,10 +1,11 @@
-package pl.edu.pja.s28687.Logistics;
+package pl.edu.pja.s28687.logistics;
 
 import pl.edu.pja.s28687.TrainStation;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -67,7 +68,7 @@ public class RailroadLink {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof RailroadLink that)) return false;
-        return station1.equals(that.station1) && station2.equals(that.station2);
+        return Set.of(station1, station2).equals(Set.of(that.station1, that.station2));
     }
 
     @Override

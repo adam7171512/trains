@@ -1,7 +1,7 @@
-package pl.edu.pja.s28687.Gui;
+package pl.edu.pja.s28687.gui;
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Logistics.LocoBase;
-import pl.edu.pja.s28687.Logistics.RailroadLink;
+import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.logistics.RailroadLink;
 import pl.edu.pja.s28687.TrainStation;
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Canvas extends Thread {
     private JFrame jFrame;
-    private Map map;
+    private LocoMap locoMap;
     private LocoBase locoBase;
     public Canvas(LocoBase locoBase){
         this.locoBase = locoBase;
@@ -23,10 +23,10 @@ public class Canvas extends Thread {
         jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         jFrame.setVisible(true);
         jFrame.setResizable(true);
-        map = new Map(locoBase);
-        jFrame.add(map);
-        jFrame.getContentPane().add(map);
-        jFrame.getContentPane().setComponentZOrder(map, 0);
+        locoMap = new LocoMap(locoBase);
+        jFrame.add(locoMap);
+        jFrame.getContentPane().add(locoMap);
+        jFrame.getContentPane().setComponentZOrder(locoMap, 0);
 //        Thread t = new Thread(map);
 //        t.start();
 //        this.setLayout(null);
@@ -67,7 +67,7 @@ public class Canvas extends Thread {
         LocoBase locoBase = LocoBase.getInstance();
         List<RailroadLink> links = locoBase.getRailroadConnections().stream().toList();
         for(RailroadLink link: links){
-            map.addRails(link);
+            locoMap.addRails(link);
         }
 
 
@@ -75,15 +75,19 @@ public class Canvas extends Thread {
         for (Locomotive loc : locomotiveList){
             TrainSetRepresentation trainSetRepresentation = new TrainSetRepresentation(loc);
             loc.setVisualRepresentation(trainSetRepresentation);
-            map.addTrain(trainSetRepresentation);
-            map.addTrainLabel(loc);
+            locoMap.addTrain(trainSetRepresentation);
+            locoMap.addTrainLabel(loc);
 
         }
 
         for (TrainStation ts : locoBase.getTrainStations()){
-            map.addTrainStation(ts);
+            locoMap.addTrainStation(ts);
         }
 
         }
+
+    public LocoMap getLocoMap() {
+        return locoMap;
     }
+}
 

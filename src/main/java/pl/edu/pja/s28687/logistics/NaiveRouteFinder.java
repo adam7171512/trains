@@ -1,11 +1,18 @@
-package pl.edu.pja.s28687.Logistics;
+package pl.edu.pja.s28687.logistics;
 import pl.edu.pja.s28687.TrainStation;
 
 import java.util.*;
 
-public class NaiveRouteFinder {
+public class NaiveRouteFinder implements IRouteFinder{
 
-    public static Optional<List<RailroadLink>> findRoute(TrainStation source, TrainStation destination, LocoBase locoBase){
+    private LocoBase locoBase;
+
+    public NaiveRouteFinder(LocoBase locoBase){
+        this.locoBase = locoBase;
+    }
+
+
+    public Optional<List<RailroadLink>> findRoute(TrainStation source, TrainStation destination){
 
 
 
@@ -13,13 +20,8 @@ public class NaiveRouteFinder {
         int max = Integer.MAX_VALUE;
 
         for (RailroadLink rL : source.getTrainDirectConnectionList()){
-            PriorityQueue<SegmentNode> queue = new PriorityQueue<>(new Comparator<SegmentNode>() {
-                @Override
-                public int compare(SegmentNode o1, SegmentNode o2) {
-                    return locoBase.calcDistance(o1.getTarget(), destination)
-                            .compareTo(locoBase.calcDistance(o2.getTarget(), destination));
-                }
-            });
+            PriorityQueue<SegmentNode> queue = new PriorityQueue<>((o1, o2) -> locoBase.calcDistance(o1.getTarget(), destination)
+                    .compareTo(locoBase.calcDistance(o2.getTarget(), destination)));
             Set<SegmentNode> visited = new HashSet<>();
             List<SegmentNode> path = new ArrayList<>();
             SegmentNode l = makeSegmentNode(source, rL);
@@ -40,7 +42,7 @@ public class NaiveRouteFinder {
                 .toList());
     }
 
-    private static void findSegmentPath(TrainStation source,
+    private void findSegmentPath(TrainStation source,
                                         TrainStation destination,
                                         SegmentNode currentNode,
                                         Set<SegmentNode> visited,
@@ -76,7 +78,7 @@ public class NaiveRouteFinder {
         }
     }
 
-    private static SegmentNode makeSegmentNode(TrainStation source, RailroadLink rL){
+    private SegmentNode makeSegmentNode(TrainStation source, RailroadLink rL){
         TrainStation t1 = rL.getStation1();
         TrainStation t2 = rL.getStation2();
         TrainStation s;
@@ -93,7 +95,7 @@ public class NaiveRouteFinder {
         return new SegmentNode(rL, s, d);
     }
 
-    private static class SegmentNode {
+    private class SegmentNode {
         private RailroadLink link;
         private TrainStation source;
         private TrainStation target;
@@ -148,5 +150,4 @@ public class NaiveRouteFinder {
             return Objects.hash(link, source, target);
         }
     }
-
 }

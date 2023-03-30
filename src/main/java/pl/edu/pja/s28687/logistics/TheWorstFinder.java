@@ -1,7 +1,6 @@
-package pl.edu.pja.s28687.Logistics;
+package pl.edu.pja.s28687.logistics;
 import pl.edu.pja.s28687.TrainStation;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 public class TheWorstFinder {

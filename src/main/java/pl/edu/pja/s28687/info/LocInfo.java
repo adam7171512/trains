@@ -1,7 +1,7 @@
-package pl.edu.pja.s28687.Info;
+package pl.edu.pja.s28687.info;
 
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Misc.TrainStatus;
+import pl.edu.pja.s28687.misc.TrainStatus;
 
 public class LocInfo {
 

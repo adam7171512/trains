@@ -1,14 +1,14 @@
-package pl.edu.pja.s28687.Factories;
+package pl.edu.pja.s28687.factories;
 
-import pl.edu.pja.s28687.Cars.ILoadCarrier;
-import pl.edu.pja.s28687.Cars.LoadableRailroadCar;
-import pl.edu.pja.s28687.Cars.RailroadCar;
-import pl.edu.pja.s28687.Load.IDeliverable;
-import pl.edu.pja.s28687.Load.Load;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.TrainSet;
+import pl.edu.pja.s28687.cars.LoadableRailroadCar;
+import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.load.Load;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class LoadAssignmentCenter {
     public static void assignLoads(LocoBase locoBase) {
@@ -22,6 +22,21 @@ public class LoadAssignmentCenter {
                 loads.get(0).setLoaded();
             }
         }
+    }
+
+    public static void assignLoadsToTrainSets(LocoBase locoBase){
+       List<Load<? extends IDeliverable>> loads = locoBase.getLoadList();
+       List<TrainSet> trainSets = locoBase.getTrainSets();
+         for (Load<? extends IDeliverable> load : loads){
+              if (! load.isLoaded()) {
+                  Optional<TrainSet> tS =
+                          trainSets
+                                  .stream()
+                                  .filter(trainSet -> trainSet.load(load)
+                                          .isPresent())
+                                  .findFirst();
+              }
+         }
     }
 }
 

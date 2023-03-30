@@ -1,13 +1,10 @@
-package pl.edu.pja.s28687.ConsoleInterface.FreightManagementMenus.RailroadCars;
+package pl.edu.pja.s28687.consoleInterface.freightManagementMenus.RailroadCars;
 
-import pl.edu.pja.s28687.Cars.LoadableRailroadCar;
-import pl.edu.pja.s28687.Cars.PassengerCar;
-import pl.edu.pja.s28687.Cars.RailroadCar;
-import pl.edu.pja.s28687.Load.IPassengers;
-import pl.edu.pja.s28687.Load.Load;
-import pl.edu.pja.s28687.Load.IDeliverable;
-import pl.edu.pja.s28687.Load.Passengers;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.cars.LoadableRailroadCar;
+import pl.edu.pja.s28687.load.Load;
+import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.load.Passengers;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,7 @@
-package pl.edu.pja.s28687.Load;
+package pl.edu.pja.s28687.load;
 
-import pl.edu.pja.s28687.Load.Flags;
-import pl.edu.pja.s28687.Load.Load;
-import pl.edu.pja.s28687.Load.IExplosive;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Explosives extends Load<IExplosive> {
     public Explosives(double weight) {
@@ -10,7 +9,7 @@ public class Explosives extends Load<IExplosive> {
     }
 
     @Override
-    public void setFlags() {
-        flags.add(Flags.EXPLOSIVE);
+    public Set<Flags> flags() {
+        return Set.of(Flags.EXPLOSIVE);
     }
 }

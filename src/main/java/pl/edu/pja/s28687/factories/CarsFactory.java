@@ -1,30 +1,49 @@
-package pl.edu.pja.s28687.Factories;
+package pl.edu.pja.s28687.factories;
 
-import pl.edu.pja.s28687.Cars.*;
-import pl.edu.pja.s28687.Load.*;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.cars.*;
+import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 
+import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Random;
 
 public class CarsFactory {
+    private LocoBase locoBase;
 
-    public static void makeRandomCars(int quantity, LocoBase locoBase){
-        Random random = new Random();
-        for(int i = 0; i < quantity; i++){
-            int r = random.nextInt(13);
-            RailroadCar car = switch (r) {
-                case 1, 14 -> new HeavyFreightCar(locoBase);
-                case 2, 9, 10, 11, 12 -> new PassengerCar(locoBase);
-                case 3 -> new LiquidsCar(locoBase);
-                case 4 -> new MailAndLuggageCar(locoBase);
-                case 5 -> new GaseousCar(locoBase);
-                case 6 -> new RefrigeratedCar(locoBase);
-                case 7 -> new ToxicCar(locoBase);
-                case 8 -> new LiquidToxicCar(locoBase);
-                default -> new BasicFreightCar(locoBase);
-            };
-            locoBase.registerCar(car);
+    public CarsFactory(LocoBase locoBase){
+        this.locoBase = locoBase;
+    }
+
+    public RailroadCar createCar(CarType carType){
+        CarBuilder carBuilder = new CarBuilder(locoBase);
+        return carBuilder
+                .setFlag(carType)
+                .build();
+    }
+
+    public RailroadCar createRandomCar(){
+        CarBuilder carBuilder = new CarBuilder(locoBase);
+        return carBuilder
+                .setRandomProperties()
+                .build();
+    }
+
+    public List<RailroadCar> createRandomCars(int quantity){
+        List<RailroadCar> cars = new ArrayList<>();
+        for (int i = 0; i < quantity ; i++){
+            cars.add(createRandomCar());
         }
+        return cars;
+    }
+
+    public List<RailroadCar> createCars(CarType carType, int quantity){
+        List<RailroadCar> cars = new ArrayList<>();
+        for (int i = 0; i < quantity ; i++){
+            cars.add(createCar(carType));
+        }
+        return cars;
     }
 }

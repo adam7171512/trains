@@ -1,17 +1,16 @@
 package pl.edu.pja.s28687;
 
-import pl.edu.pja.s28687.Logistics.Coordinates;
-import pl.edu.pja.s28687.Logistics.RailroadLink;
+import pl.edu.pja.s28687.logistics.Coordinates;
+import pl.edu.pja.s28687.logistics.RailroadLink;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class TrainStation implements Comparable<TrainStation>{
     private Coordinates coordinates;
     private String name;
 
     private List<RailroadLink> railroadLinkList = new ArrayList<>();
+    private Set<TrainStation> neighbors = new HashSet<>();
     public TrainStation(String name, Coordinates coordinates){
         this.name = name;
         this.coordinates = coordinates;
@@ -21,10 +20,19 @@ public class TrainStation implements Comparable<TrainStation>{
         return coordinates;
     }
 
+    public void addNeighbor(TrainStation neighbor){
+        neighbors.add(neighbor);
+    }
+
+    public Set<TrainStation> getNeighbors(){
+        return neighbors;
+    }
+
 
 
     public void addTrainDirectConnection(RailroadLink connection){
         railroadLinkList.add(connection);
+        neighbors.add(getConnectionDest(connection));
     }
 
 
@@ -42,7 +50,10 @@ public class TrainStation implements Comparable<TrainStation>{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TrainStation that)) return false;
-        return coordinates.equals(that.coordinates) && name.equals(that.name);
+        return
+                coordinates.equals(that.coordinates)
+                        &&
+                name.equals(that.name);
     }
 
     @Override

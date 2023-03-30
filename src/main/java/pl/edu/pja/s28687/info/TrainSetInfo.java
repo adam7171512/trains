@@ -1,7 +1,7 @@
-package pl.edu.pja.s28687.Info;
-import pl.edu.pja.s28687.Cars.RailroadCar;
+package pl.edu.pja.s28687.info;
+import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.ArrayList;
 import java.util.Collections;

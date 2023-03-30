@@ -1,19 +1,20 @@
-package pl.edu.pja.s28687.Cars;
+package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.Load.Load;
-import pl.edu.pja.s28687.Load.IDeliverable;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.load.Flags;
+import pl.edu.pja.s28687.load.Load;
+import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public abstract class LoadableRailroadCar<T extends IDeliverable> extends RailroadCar implements ILoadCarrier<T>{
 
     List<Load<? super T>> loads;
-    public LoadableRailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, LocoBase locoBase){
-        super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, locoBase);
+    Set<Flags> allowedFlags;
+    public LoadableRailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id){
+        super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, id);
         loads = new ArrayList<>();
     }
 
@@ -61,9 +62,25 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
                 compareTo(grossWeight()) <= 0;
     }
 
+    public Optional<Set<Flags>> validateFlags(Load<?> load){
+        Set<Flags> loadFlags = new HashSet<>(load.flags());
+        Set<Flags> carFlags = getAllowedLoadFlags();
+        loadFlags.removeAll(carFlags);
+        return loadFlags.isEmpty() ? Optional.empty() : Optional.of(loadFlags);
+    }
+
+    public Set<Flags> getAllowedLoadFlags(){
+        return allowedFlags != null ? allowedFlags : allowedLoadFlags();
+    }
+
+    public void setAllowedFlags(Set<Flags> flags){
+        allowedFlags = flags;
+    }
+    public abstract Set<Flags> allowedLoadFlags();
+
     public List<Load<? super T>> getLoads(){
         return loads;
     }
 
-    public abstract String validateLoad(Load<?> load);
+    public abstract String validateLoad(Load<? super T> load);
 }

@@ -1,11 +1,16 @@
-package pl.edu.pja.s28687.ConsoleInterface;
+package pl.edu.pja.s28687.consoleInterface;
 
-import pl.edu.pja.s28687.ConsoleInterface.ObjectCreationMenus.*;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.consoleInterface.objectCreationMenus.*;
+import pl.edu.pja.s28687.factories.*;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.Scanner;
 
 public class ObjectCreationMenu {
+
+
+
+
     private static final String menuChoices =
             """
                 ______________________________
@@ -20,7 +25,30 @@ public class ObjectCreationMenu {
                 6.Automated bulk creation
                 0 Back
                 _______________________________""";
-    public static void menu(LocoBase locoBase){
+
+
+    private BulkCreationMenu bulkCreationMenu;
+    private LocomotiveCreationMenu locomotiveCreationMenu;
+
+    public ObjectCreationMenu(LocomotiveFactory locomotiveFactory
+            , CarsFactory carsFactory
+            , LoadFactory loadFactory
+            , RailroadsFactory railroadsFactory
+            , TrainStationFactory trainStationFactory
+            , LocoBase locoBase) {
+        bulkCreationMenu = new BulkCreationMenu(
+                locoBase
+                , carsFactory
+                , loadFactory
+                , railroadsFactory
+                , trainStationFactory
+                , locomotiveFactory
+        );
+        locomotiveCreationMenu = new LocomotiveCreationMenu(
+                locomotiveFactory
+        );
+    }
+    public void menu(LocoBase locoBase){
         Scanner scan = new Scanner(System.in);
         int selection = 99;
 
@@ -31,14 +59,14 @@ public class ObjectCreationMenu {
         }
     }
 
-    public static void goTo(int selection, LocoBase locoBase){
+    public void goTo(int selection, LocoBase locoBase){
         switch (selection) {
             case 1 -> TrainStationCreationMenu.createTrainStation(locoBase);
-            case 2 -> LocomotiveCreationMenu.createLocomotive(locoBase);
+            case 2 -> locomotiveCreationMenu.createLocomotive(locoBase);
             case 3 -> RailroadCarCreationMenu.createCar(locoBase);
             case 4 -> LoadCreationMenu.menu(locoBase);
             case 5 -> TrainConnectionCreationMenu.createConnection(locoBase);
-            case 6 -> BulkCreationMenu.menu(locoBase);
+            case 6 -> bulkCreationMenu.menu(locoBase);
             default -> System.out.println("default");
         }
     }

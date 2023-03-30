@@ -1,13 +1,19 @@
-package pl.edu.pja.s28687.Logistics;
+package pl.edu.pja.s28687.logistics;
 
 import pl.edu.pja.s28687.TrainStation;
 
 import java.util.*;
 
-public class BadRouteFinder {
+public class BadRouteFinder implements IRouteFinder {
+
+    private LocoBase locoBase;
+
+    public BadRouteFinder(LocoBase locoBase){
+        this.locoBase = locoBase;
+    }
 
 
-    public static Optional<List<RailroadLink>> findRoute(TrainStation source, TrainStation destination){
+    public Optional<List<RailroadLink>> findRoute(TrainStation source, TrainStation destination){
         HashSet<TrainStation> trainStationHashSet = new HashSet<>();
         List<RailroadLink> tt = new ArrayList<>();
         return Optional.of(find2(source, destination, tt, trainStationHashSet));

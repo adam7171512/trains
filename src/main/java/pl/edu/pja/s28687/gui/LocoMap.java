@@ -1,9 +1,9 @@
-package pl.edu.pja.s28687.Gui;
+package pl.edu.pja.s28687.gui;
 
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Logistics.Coordinates;
-import pl.edu.pja.s28687.Logistics.LocoBase;
-import pl.edu.pja.s28687.Logistics.RailroadLink;
+import pl.edu.pja.s28687.logistics.Coordinates;
+import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.logistics.RailroadLink;
 import pl.edu.pja.s28687.TrainStation;
 
 import javax.swing.*;
@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Map extends JPanel implements MouseListener, Runnable {
+public class LocoMap extends JPanel implements MouseListener, Runnable {
+    private LocoMap locoMap;
     private TrainLabelTable trainLabelTable;
     private List<TrainSetLabel> trainLabels;
     private List<TrainSetRepresentation> trains;
@@ -25,8 +26,10 @@ public class Map extends JPanel implements MouseListener, Runnable {
     private List<Point2D> stations;
     private LocoBase locoBase;
     private List<TrainStationLabel> trainStationLabels;
+    private Point2D stationMarked;
 
-    public Map(LocoBase locoBase){
+    public LocoMap(LocoBase locoBase){
+        this.locoMap = this;
         this.locoBase = locoBase;
         initialize();
     }
@@ -90,21 +93,29 @@ public class Map extends JPanel implements MouseListener, Runnable {
     }
 
     @Override
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;;
+        Graphics2D g2 = (Graphics2D) g;
+        ;
         g2.setColor(Color.BLACK);
         g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{3}, 0));
-        for(int i = 0; i < rails.size(); i++){
+        for (int i = 0; i < rails.size(); i++) {
             g2.draw(rails.get(i));
         }
         g2.setColor(Color.BLUE);
-        for (Point2D point : stations){
+        for (Point2D point : stations) {
             Ellipse2D circle = new Ellipse2D.Double(point.getX() - 2, point.getY() - 2, 4, 4);
             g2.fill(circle);
             g2.draw(circle);
-            }
         }
+
+        if (stationMarked != null) {
+            g2.setColor(Color.DARK_GRAY);
+            Ellipse2D circle = new Ellipse2D.Double(stationMarked.getX() - 2, stationMarked.getY() - 2, 20, 20);
+            g2.fill(circle);
+            g2.draw(circle);
+        }
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -182,6 +193,10 @@ public class Map extends JPanel implements MouseListener, Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void lightUpStation(TrainStation station) {
+        stationMarked = new Point2D.Double(station.getCoordinates().getX(), station.getCoordinates().getY());
     }
 }
 

@@ -1,4 +1,7 @@
-package pl.edu.pja.s28687.Load;
+package pl.edu.pja.s28687.load;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class RefrigeratedLoad extends Load<IRefrigerated> {
     public RefrigeratedLoad(double weight) {
@@ -6,7 +9,8 @@ public class RefrigeratedLoad extends Load<IRefrigerated> {
     }
 
     @Override
-    public void setFlags() {
-
+    public Set<Flags> flags() {
+        return Set.of(Flags.REFRIGERATED);
     }
+
 }

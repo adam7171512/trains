@@ -1,13 +1,13 @@
-package pl.edu.pja.s28687.Info;
+package pl.edu.pja.s28687.info;
 
-import pl.edu.pja.s28687.Cars.PassengerCar;
-import pl.edu.pja.s28687.Cars.RailroadCar;
+import pl.edu.pja.s28687.cars.PassengerCar;
+import pl.edu.pja.s28687.cars.RailroadCar;
 
 public class CarInfo {
     public static String getBasicInfo(RailroadCar car){
         StringBuilder stringBuilder = new StringBuilder().
                 append("Car ID : ").append(car.getId()).
-                append(" | Freight type : ").append(car.getAllowable()).
+                append(" | Car type : ").append(car.getCarType()).
                 append(" | Payload : ").
                 append(car.getCurrentWeight()).
                 append(" out of ").

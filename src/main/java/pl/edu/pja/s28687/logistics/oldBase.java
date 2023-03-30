@@ -1,8 +1,8 @@
-package pl.edu.pja.s28687.Logistics;
+package pl.edu.pja.s28687.logistics;
 
 
-import pl.edu.pja.s28687.Cars.*;
-import pl.edu.pja.s28687.Load.*;
+import pl.edu.pja.s28687.cars.*;
+import pl.edu.pja.s28687.load.*;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.TrainStation;
 
@@ -122,21 +122,21 @@ public class oldBase {
                 filter(car -> !car.isAttached()).
                 filter(car ->
                         Collections.disjoint(load.flags(),
-                                car.forbiddenLoadFlags())).
+                                car.allowedLoadFlags())).
                 toList();
     }
 
 
 
-    public static List<Load<?>>findSuitableLoads(LoadableRailroadCar<?> car) {
+    public static List<Load<? extends IDeliverable>>findSuitableLoads(LoadableRailroadCar<? extends IDeliverable> car) {
 
         return loadList.
                     stream().
                     filter(load -> !load.isLoaded()).
                     filter(load ->
                             Collections.disjoint(load.flags(),
-                                    car.forbiddenLoadFlags())).
-                    filter(load -> car.validateLoad(load).isEmpty()).
+                                    car.allowedLoadFlags())).
+                    filter(load -> car.validateLoad(((Load<IDeliverable>) load)).isEmpty()).
                     toList();
         }
 

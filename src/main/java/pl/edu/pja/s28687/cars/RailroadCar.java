@@ -1,7 +1,6 @@
-package pl.edu.pja.s28687.Cars;
+package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.Load.Flags;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.load.Flags;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,18 +19,18 @@ public abstract class RailroadCar {
     private int numberOfSeats;
     private int id;
     protected Set<Flags> forbidden;
-    protected Set<Flags> allowable;
+    protected Set<Flags> allowedLoadFlags;
     private String name;
     private boolean attached = false;
 
-    public RailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, LocoBase locoBase) {
+    public RailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id) {
         this.shipper = shipper;
         this.securityInfo = securityInfo;
         this.netWeight = netWeight;
         this.currentWeight = netWeight;
         this.grossWeight = grossWeight;
         this.numberOfSeats = numberOfSeats;
-        this.id = locoBase.registerCar(this);
+        this.id = id;
         currentWeight = currentWeight.setScale(2, RoundingMode.CEILING);
         grossWeight = grossWeight.setScale(2, RoundingMode.CEILING);
         netWeight = netWeight.setScale(2, RoundingMode.CEILING);
@@ -64,9 +63,6 @@ public abstract class RailroadCar {
         return currentWeight;
     }
 
-    public Set<Flags> forbiddenLoadFlags(){
-        return forbidden;
-    }
 
     public int getId() {
         return id;
@@ -74,10 +70,6 @@ public abstract class RailroadCar {
 
     public String getName(){
         return name;
-    }
-
-    public Set<Flags> getAllowable() {
-        return allowable;
     }
 
     public void attach(){
@@ -96,9 +88,9 @@ public abstract class RailroadCar {
         return grossWeight;
     }
 
-    protected void setAllowableFlags(){
-        allowable = Arrays.stream(Flags.values()).filter(f -> ! forbidden.contains(f)).collect(Collectors.toSet());
-    }
+    public abstract CarType getCarType();
+
+
 
     //    public void load(T load){
 //        if (validateLoad(load)) this.load.add(load);

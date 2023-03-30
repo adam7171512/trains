@@ -1,8 +1,8 @@
-package pl.edu.pja.s28687.ConsoleInterface;
+package pl.edu.pja.s28687.consoleInterface;
 
-import pl.edu.pja.s28687.Info.LocInfo;
+import pl.edu.pja.s28687.info.LocInfo;
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.ArrayList;
 import java.util.List;

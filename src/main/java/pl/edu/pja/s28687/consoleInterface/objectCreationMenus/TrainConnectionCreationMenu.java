@@ -1,8 +1,8 @@
-package pl.edu.pja.s28687.ConsoleInterface.ObjectCreationMenus;
+package pl.edu.pja.s28687.consoleInterface.objectCreationMenus;
 
 
-import pl.edu.pja.s28687.Logistics.LocoBase;
-import pl.edu.pja.s28687.Logistics.RailroadLink;
+import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.logistics.RailroadLink;
 import pl.edu.pja.s28687.TrainStation;
 
 import java.util.Scanner;

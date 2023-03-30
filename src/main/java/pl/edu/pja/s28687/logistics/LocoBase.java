@@ -1,8 +1,9 @@
-package pl.edu.pja.s28687.Logistics;
+package pl.edu.pja.s28687.logistics;
 
 
-import pl.edu.pja.s28687.Cars.*;
-import pl.edu.pja.s28687.Load.*;
+import pl.edu.pja.s28687.TrainSet;
+import pl.edu.pja.s28687.cars.*;
+import pl.edu.pja.s28687.load.*;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.TrainStation;
 
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class LocoBase {
+    private int trainSetCount = 0;
     private int locCount = 0;
     private  int carCount = 0;
     private int loadCount = 0;
@@ -17,6 +19,7 @@ public class LocoBase {
     private final Map<Integer, RailroadCar> railroadCars;
     private final Set<TrainStation> trainStations;
     private final Set<RailroadLink> railroadConnections;
+    private final Map<Integer, TrainSet> trainSets;
     private final  Map<Integer, LoadableRailroadCar<? extends IDeliverable>> loadCarriers;
     private final Map<Integer, Load<? extends IDeliverable>> loads;
 
@@ -26,8 +29,14 @@ public class LocoBase {
         trainStations = new HashSet<>();
         railroadConnections = new HashSet<>();
         loadCarriers = new HashMap<>();
+        trainSets = new HashMap<>();
         loads = new HashMap<>();
     }
+
+    public List<TrainSet> getTrainSets() {
+        return trainSets.values().stream().toList();
+    }
+
 
     private static class SingletonHelper{
         private static final LocoBase INSTANCE = new LocoBase();
@@ -37,24 +46,50 @@ public class LocoBase {
         return SingletonHelper.INSTANCE;
     }
 
-    public int assignLocId(Locomotive locomotive) {
-        return registerLoc(locomotive);
-    }
+//    public int assignLocId(Locomotive locomotive) {
+//        return registerLoc(locomotive);
+//    }
 
     public List<Locomotive> getLocomotiveList() {
         return locomotives.values().stream().toList();
     }
 
-    public int registerCar(RailroadCar railroadCar){
-        railroadCars.put(++carCount, railroadCar);
+    public int getIdForTrainSet(){
+        return ++trainSetCount;
+    }
 
+    public void registerTrainSet(TrainSet trainSet){
+        int id = trainSet.getId();
+        if (trainSets.containsKey(id)) {
+            throw new IllegalArgumentException("Train set with id " + id + " already exists");
+        }
+        trainSets.put(id, trainSet);
+    }
+
+    public void registerCar(RailroadCar railroadCar){
+        int id = railroadCar.getId();
+
+        if(railroadCars.containsKey(id)){
+            throw new IllegalArgumentException(
+                    "LocBase : Railroad Car with id "
+                            + id
+                            + " already exists !");
+        }
+        railroadCars.put(id, railroadCar);
         if (railroadCar instanceof LoadableRailroadCar<?>) {
-            loadCarriers.put(carCount, (LoadableRailroadCar<?>) railroadCar);
+            loadCarriers.put(id, (LoadableRailroadCar<?>) railroadCar);
             System.out.println("Load carrier registered !");
         }
-        System.out.println("LocBase : Railroad Car has been registered. Total number of cars registered : " + carCount);
-        return carCount;
+        System.out.println("LocBase :" +
+                " Railroad Car has been registered." +
+                " Total number of cars registered : " + carCount);
     }
+
+    public int getIdForCar() {
+        return ++carCount;
+    }
+
+
 
     public void unRegisterCar(int id){
         railroadCars.remove(id);
@@ -65,15 +100,33 @@ public class LocoBase {
         return railroadCars.values().stream().toList();
     }
 
-    public  int registerLoc(Locomotive locomotive){
-        locomotives.put(++locCount, locomotive);
-        System.out.println("LocBase : Locomotive has been registered. Total number of locomotives registered : " + locomotives.size());
-        return locCount;
+//    public  int registerLoc(Locomotive locomotive){
+//        locomotives.put(++locCount, locomotive);
+//        System.out.println("LocBase : Locomotive has been registered. Total number of locomotives registered : " + locomotives.size());
+//        return locCount;
+//    }
+
+    public int getIdForLocomotive(){
+        return ++locCount;
+    }
+
+    public void registerLocomotive(Locomotive locomotive){
+        int id = locomotive.getId();
+        if (locomotives.containsKey(id)) {
+            throw new IllegalArgumentException
+                    ("Locomotive with id " + id + " already exists");
+        }
+        locomotives.put(locomotive.getId(), locomotive);
     }
 
     public void unregisterLoc(int id){
         locomotives.remove(id);
     }
+
+    public void unregisterLoc(Locomotive locomotive){
+        locomotives.remove(locomotive.getId());
+    }
+
     public  Optional<Locomotive> findLoc(int id){
         return Optional.ofNullable(locomotives.get(id));
     }
@@ -106,10 +159,23 @@ public class LocoBase {
         return trainStations.stream().filter(n -> n.getName().equals(name)).findFirst();
     }
 
-    public void registerLoad(Load<? extends IDeliverable> load){
-        loads.put(++loadCount, load);
-        load.setId(loadCount);
-        System.out.println("LocBase : Load has been registered. Total number of loads registered : " + loads.size());
+    public int getIdForLoad(){
+        return ++loadCount;
+    }
+
+    public void registerLoad(Load<? extends IDeliverable> load) {
+        int id = load.getId();
+        if (loads.containsKey(id)) {
+            throw new IllegalArgumentException
+                    ("Load with id " + id + " already exists");
+        }
+        loads.put(load.getId(), load);
+        String s = new StringBuilder()
+                .append("LocBase : Load has been registered.")
+                .append("Flags : ").append(load.flags())
+                .append(" Total number of loads registered : ")
+                .append(loads.size()).toString();
+        System.out.println(s);
     }
 
     public Load<? extends IDeliverable> getLoad(int id){
@@ -131,23 +197,29 @@ public class LocoBase {
                 .filter(car -> !car.isAttached())
                 .filter(car ->
                         Collections.disjoint(load.flags(),
-                                car.forbiddenLoadFlags()))
+                                car.allowedLoadFlags()))
                 .toList();
     }
 
 
 
-    public List<Load<? extends IDeliverable>>findSuitableLoads(LoadableRailroadCar<?> car) {
+    public List<Load<? extends IDeliverable>>findSuitableLoads(LoadableRailroadCar<? extends IDeliverable> car) {
 
         return loads
                 .values()
                 .stream()
                 .filter(load -> !load.isLoaded())
-                .filter(load ->
-                        Collections.disjoint(load.flags(),
-                                car.forbiddenLoadFlags()))
-                .filter(load -> car.validateLoad(load).isEmpty())
+                .filter(load -> car.validateLoad((Load<IDeliverable>)load).isEmpty())
                 .toList();
+    }
+
+    public RailroadLink getLink(TrainStation station1, TrainStation station2){
+        return railroadConnections
+                .stream()
+                .filter(connection -> connection.getStation1().equals(station1) || connection.getStation2().equals(station1))
+                .filter(connection -> connection.getStation2().equals(station2) || connection.getStation1().equals(station2))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No connection between " + station1 + " and " + station2));
     }
 
 

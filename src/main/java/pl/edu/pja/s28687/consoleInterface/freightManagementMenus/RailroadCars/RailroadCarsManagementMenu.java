@@ -1,11 +1,9 @@
-package pl.edu.pja.s28687.ConsoleInterface.FreightManagementMenus.RailroadCars;
+package pl.edu.pja.s28687.consoleInterface.freightManagementMenus.RailroadCars;
 
-import pl.edu.pja.s28687.Cars.LoadableRailroadCar;
-import pl.edu.pja.s28687.Cars.PassengerCar;
-import pl.edu.pja.s28687.Cars.RailroadCar;
-import pl.edu.pja.s28687.ConsoleInterface.FreightManagementMenus.Locomotives.LocManagementAvailableCars;
-import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.cars.LoadableRailroadCar;
+import pl.edu.pja.s28687.cars.PassengerCar;
+import pl.edu.pja.s28687.cars.RailroadCar;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +39,7 @@ public class RailroadCarsManagementMenu {
             String carDescr =
                     (i+1) + " ID: " + rC.getId() + " " +
                             rC.getName() + " " +
-                            "\nAllowed freight types :" + rC.getAllowable() +
+                            "\nCar type types :" + rC.getCarType() +
                             "\nWeight limit used  : " + rC.getCurrentWeight() + "/" + rC.grossWeight() + "tonnes";
 
 

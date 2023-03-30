@@ -1,10 +1,8 @@
-package pl.edu.pja.s28687.Gui;
+package pl.edu.pja.s28687.gui;
 
-import pl.edu.pja.s28687.Gui.Canvas;
 import pl.edu.pja.s28687.TrainStation;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -22,12 +20,12 @@ public class TrainStationLabel extends  JLabel implements MouseListener {
         setBackground(new Color(206, 206, 206, 125));
         this.setOpaque(false);
         this.setFont(new Font("Arial", Font.BOLD, 10));
-//        this.setText(ts.toString());
+        this.setText(ts.toString());
         setBounds(x - 2,
                 y - 2,
                 5,
                 5);
-//        setVisible(false);
+//        setVisible(true);
         setToolTipText(ts.toString());
     }
 

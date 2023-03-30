@@ -1,4 +1,7 @@
-package pl.edu.pja.s28687.Load;
+package pl.edu.pja.s28687.load;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Luggage extends Load<ILuggage> {
     public Luggage(double weight) {
@@ -6,8 +9,9 @@ public class Luggage extends Load<ILuggage> {
     }
 
     @Override
-    public void setFlags() {
-        flags.add(Flags.LUGGAGE);
+    public Set<Flags> flags() {
+        return Set.of(Flags.LUGGAGE);
     }
+
 
 }

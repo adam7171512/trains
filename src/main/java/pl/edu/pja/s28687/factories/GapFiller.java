@@ -1,9 +1,8 @@
-package pl.edu.pja.s28687.Factories;
+package pl.edu.pja.s28687.factories;
 
-import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Logistics.LocoBase;
-import pl.edu.pja.s28687.Logistics.RailroadLink;
-import pl.edu.pja.s28687.Logistics.RouteFinder;
+import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.logistics.RailroadLink;
+import pl.edu.pja.s28687.logistics.RouteFinder;
 import pl.edu.pja.s28687.TrainStation;
 
 import java.util.List;

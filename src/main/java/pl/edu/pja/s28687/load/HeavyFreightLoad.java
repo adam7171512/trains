@@ -1,4 +1,6 @@
-package pl.edu.pja.s28687.Load;
+package pl.edu.pja.s28687.load;
+
+import java.util.Set;
 
 public class HeavyFreightLoad extends Load<IHeavyFreight> {
     public HeavyFreightLoad(double weight) {
@@ -6,8 +8,8 @@ public class HeavyFreightLoad extends Load<IHeavyFreight> {
     }
 
     @Override
-    public void setFlags() {
-        flags.add(Flags.HEAVY_FREIGHT);
+    public Set<Flags> flags() {
+        return Set.of(Flags.HEAVY_FREIGHT);
     }
 
 

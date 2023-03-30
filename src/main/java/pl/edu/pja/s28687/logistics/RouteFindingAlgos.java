@@ -1,8 +1,9 @@
-package pl.edu.pja.s28687.Logistics;
+package pl.edu.pja.s28687.logistics;
 
 public enum RouteFindingAlgos {
     WORST,
     BAD,
     NORMAL,
-    NAIVE
+    NAIVE,
+    BEST;
 }

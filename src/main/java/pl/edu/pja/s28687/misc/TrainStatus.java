@@ -1,4 +1,4 @@
-package pl.edu.pja.s28687.Misc;
+package pl.edu.pja.s28687.misc;
 
 public enum TrainStatus {
     WAITING,

@@ -1,45 +1,74 @@
-package pl.edu.pja.s28687.Misc;
+package pl.edu.pja.s28687.misc;
 
-import pl.edu.pja.s28687.Factories.*;
-import pl.edu.pja.s28687.Gui.Canvas;
-import pl.edu.pja.s28687.Info.Logger;
-import pl.edu.pja.s28687.Logistics.LocoBase;
-import pl.edu.pja.s28687.Logistics.RouteFindingAlgos;
+import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.factories.*;
+import pl.edu.pja.s28687.gui.Canvas;
+import pl.edu.pja.s28687.gui.LocoMap;
+import pl.edu.pja.s28687.info.Logger;
+import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.logistics.RouteFindingAlgos;
 
 import java.io.IOException;
 
 public class DemoPreparator {
-    public static void demoStandard(LocoBase locoBase){
-        TrainStationFactory.makeRandomTrainStationsSquaredNet(100, locoBase);
-        LocomotiveFactory.makeRandomLocomotives(20, RouteFindingAlgos.NAIVE, locoBase);
-        CarsFactory.makeRandomCars(200, locoBase);
-        LoadFactory.makeRandomLoads(800, locoBase);
+
+    private LocoBase locoBase;
+    private Canvas canvas;
+    private Logger log;
+    private LocomotiveFactory locomotiveFactory;
+    private CarsFactory carsFactory;
+    private LoadFactory loadFactory;
+    private RailroadsFactory railroadsFactory;
+    private TrainStationFactory trainStationFactory;
+    private RouteFindingAlgos routeFindingAlgos;
+    private TrainSetFactory trainSetFactory;
+    private DispatchingCenter dispatchingCenter;
+
+
+    public DemoPreparator(){
+        this.locoBase = LocoBase.getInstance();
+        this.carsFactory = new CarsFactory(locoBase);
+        this.locomotiveFactory = new LocomotiveFactory(locoBase);
+        this.loadFactory = new LoadFactory(locoBase);
+        this.railroadsFactory = new RailroadsFactory(locoBase);
+        this.trainStationFactory = new TrainStationFactory(locoBase);
+        this.trainSetFactory = new TrainSetFactory(locoBase);
+        this.dispatchingCenter = new DispatchingCenter(locoBase);
+
+
+    }
+    public void demoStandard(LocoBase locoBase){
+        trainStationFactory.createRandomTrainStations(40, new RectangularNetPlacementStrategy(), 800, 800);
+        locomotiveFactory.makeRandomLocomotives(1);
+        carsFactory.createRandomCars(2);
+        loadFactory.createRandomLoads(2);
         LoadAssignmentCenter.assignLoads(locoBase);
         CarAssignmentCenter.assignCars(locoBase);
-
-
-        RailroadsFactory.makeRandomRailroadsConnectionsOldAlgo(3, locoBase);
+        railroadsFactory.createOrderedConnectionsBetweenStations(3);
         Canvas canvas= new Canvas(locoBase);
         canvas.start();
+
+        //temporary for testing
+        LocoMap locoMap = canvas.getLocoMap();
+        locoBase.getLocomotiveList().forEach(locomotive -> locomotive.getConductor().setLocoMap(locoMap));
+
+
+
         Logger log= new Logger(locoBase);
         log.start();
     }
 
-    public static void demoHard(LocoBase locoBase) {
-        try {
-            TrainStationFactory.makeTrainStationsOfPolishTowns(locoBase);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        LocomotiveFactory.makeRandomLocomotives(50, locoBase);
-        CarsFactory.makeRandomCars(200, locoBase);
-        LoadFactory.makeRandomLoads(2000, locoBase);
+    public void demoHard(LocoBase locoBase) {
+        trainStationFactory.createTrainStationsPolishCoords();
+        trainSetFactory.createRandomTrainSets(10);
+        carsFactory.createRandomCars(2);
+        loadFactory.createRandomLoads(2);
         LoadAssignmentCenter.assignLoads(locoBase);
         CarAssignmentCenter.assignCars(locoBase);
-        RailroadsFactory.makeRandomRailroadsConnections(4, locoBase);
+        railroadsFactory.createOrderedConnectionsBetweenStations(3);
+        dispatchingCenter.dispatchAllTrainSets();
         Canvas canvas= new Canvas(locoBase);
         canvas.start();
-        Logger log= new Logger(locoBase);
-        log.start();
+
     }
 }

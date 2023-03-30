@@ -1,20 +1,10 @@
-package pl.edu.pja.s28687.Gui;
+package pl.edu.pja.s28687.gui;
 
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Logistics.Coordinates;
-import pl.edu.pja.s28687.Logistics.LocoBase;
-import pl.edu.pja.s28687.Logistics.RailroadLink;
-import pl.edu.pja.s28687.TrainStation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class TrainLabelTable extends JPanel {

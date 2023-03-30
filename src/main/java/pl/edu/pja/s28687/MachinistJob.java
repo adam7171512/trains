@@ -1,8 +1,7 @@
 package pl.edu.pja.s28687;
 
-import pl.edu.pja.s28687.Logistics.Coordinates;
-import pl.edu.pja.s28687.Misc.RailroadHazard;
-import pl.edu.pja.s28687.Misc.TrainStatus;
+import pl.edu.pja.s28687.logistics.Coordinates;
+import pl.edu.pja.s28687.misc.TrainStatus;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -21,11 +20,14 @@ public class MachinistJob extends Thread{
         BigDecimal distanceTravelled = BigDecimal.valueOf(0);
         BigDecimal distanceLeft = distanceToTravel.subtract(distanceTravelled);
         locomotive.updateSegmentDistanceCovered(distanceTravelled);
-        locomotive.setDefaultSpeed();
+
+//        locomotive.setDefaultSpeed();
         locomotive.setStatus(TrainStatus.RUNNING);
+
+        speedUpLocomotive();
         while (distanceTravelled.compareTo(distanceToTravel) < 0) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 throw new RuntimeException("MachinistJob interrupted");
             }
@@ -41,6 +43,12 @@ public class MachinistJob extends Thread{
             BigDecimal currentSegmentprogress = distanceTravelled.divide(distanceToTravel, RoundingMode.FLOOR);
             locomotive.setCurrentSegmentProgress(currentSegmentprogress);
             setLocCoordinates(currentSegmentprogress);
+
+            if (currentSegmentprogress.compareTo(BigDecimal.valueOf(0.7)) > 0){
+                slowDownLocomotive();
+            }
+            else speedUpLocomotive();
+//            speedUpLocomotive();
             randomlyChangeLocomotiveSpeed();
         }
         locomotive.setStatus(TrainStatus.WAITING);
@@ -72,5 +80,24 @@ public class MachinistJob extends Thread{
                 sourceY.add(destY.subtract(sourceY).multiply(currentSegmentProgress))
         );
         locomotive.setCoordinates(current);
+    }
+
+    public void speedUpLocomotive(){
+        if (locomotive.getCurrentSpeed().compareTo(locomotive.getDefaultSpeed()) < 0){
+                BigDecimal currentSpeed = locomotive.getCurrentSpeed();
+                BigDecimal defaultSpeed = locomotive.getDefaultSpeed();
+                currentSpeed = currentSpeed.add(defaultSpeed.multiply(BigDecimal.valueOf(0.01)));
+                locomotive.setCurrentSpeed(currentSpeed);
+            }
+    }
+
+    public void slowDownLocomotive(){
+        if (locomotive.getCurrentSpeed().compareTo(locomotive.getDefaultSpeed().multiply(BigDecimal.valueOf(0.2))) > 0) {
+            BigDecimal currentSpeed = locomotive.getCurrentSpeed();
+            BigDecimal defaultSpeed = locomotive.getDefaultSpeed();
+            currentSpeed = currentSpeed.subtract(currentSpeed.multiply(BigDecimal.valueOf(0.04)));
+            currentSpeed = currentSpeed.max(BigDecimal.valueOf(0));
+            locomotive.setCurrentSpeed(currentSpeed);
+        }
     }
 }

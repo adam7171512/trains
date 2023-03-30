@@ -1,20 +1,27 @@
-package pl.edu.pja.s28687.ConsoleInterface.ObjectCreationMenus;
+package pl.edu.pja.s28687.consoleInterface.objectCreationMenus;
 
 
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Logistics.Coordinates;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.factories.LocomotiveFactory;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class LocomotiveCreationMenu {
 
-    public static void createLocomotive(LocoBase locoBase){
+    private LocoBase locoBase;
+    private LocomotiveFactory locomotiveFactory;
+
+    public LocomotiveCreationMenu(LocomotiveFactory locomotiveFactory) {
+        this.locomotiveFactory = locomotiveFactory;
+    }
+
+    public void createLocomotive(LocoBase locoBase){
         make(locoBase);
     }
 
-    private static void make(LocoBase locoBase){
+    private void make(LocoBase locoBase){
         Scanner scan = new Scanner(System.in);
         System.out.println("Please enter Locomotive name");
         String name = scan.next();
@@ -26,6 +33,7 @@ public class LocomotiveCreationMenu {
         int maxPoweredCars = scan.nextInt();
         System.out.println("Please enter locomotive speed in km/h");
         BigDecimal speed = BigDecimal.valueOf(scan.nextDouble());
-        Locomotive locomotive = new Locomotive(name, maxCars, freight, maxPoweredCars, speed, LocoBase.getInstance());
+        Locomotive locomotive = locomotiveFactory
+                .makeLocomotive(name, maxCars, maxPoweredCars, freight, speed);
     }
 }

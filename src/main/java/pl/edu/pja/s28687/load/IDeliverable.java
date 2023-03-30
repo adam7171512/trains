@@ -1,4 +1,4 @@
-package pl.edu.pja.s28687.Load;
+package pl.edu.pja.s28687.load;
 
 import java.math.BigDecimal;
 import java.util.Set;

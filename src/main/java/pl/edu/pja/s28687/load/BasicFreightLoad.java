@@ -1,4 +1,7 @@
-package pl.edu.pja.s28687.Load;
+package pl.edu.pja.s28687.load;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class BasicFreightLoad extends Load<IBasicFreight> {
     public BasicFreightLoad(double weight) {
@@ -6,7 +9,8 @@ public class BasicFreightLoad extends Load<IBasicFreight> {
     }
 
     @Override
-    public void setFlags() {
-        flags.add(Flags.BASIC_FREIGHT);
+    public Set<Flags> flags() {
+        return Set.of(Flags.BASIC_FREIGHT);
     }
+
 }

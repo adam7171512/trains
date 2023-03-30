@@ -1,7 +1,8 @@
 package pl.edu.pja.s28687;
 
-import pl.edu.pja.s28687.Logistics.*;
-import pl.edu.pja.s28687.Misc.TrainStatus;
+import pl.edu.pja.s28687.gui.LocoMap;
+import pl.edu.pja.s28687.logistics.*;
+import pl.edu.pja.s28687.misc.TrainStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,12 +11,16 @@ import java.util.Random;
 
 
 public class Conductor extends Thread {
-    private RouteFindingAlgos logisticSkill;
+    private IRouteFinder routeFinder;
+    private RouteFindingAlgos logisticSkill = RouteFindingAlgos.BEST;
     private Locomotive locomotive;
     private List<RailroadLink> route;
     private final LocoBase locoBase;
+    //temporary for testing
+    private Optional<LocoMap> locoMap = Optional.empty();
 
     public Conductor(Locomotive locomotive, LocoBase locoBase){
+        this.routeFinder = new NaiveRouteFinder(locoBase);
         this.locoBase = locoBase;
         this.locomotive = locomotive;
     }
@@ -37,6 +42,10 @@ public class Conductor extends Thread {
         this.route = route;
     }
 
+    public void setLocoMap(LocoMap locoMap){
+        this.locoMap = Optional.of(locoMap);
+    }
+
     public List<RailroadLink> findRoute() throws InterruptedException {
         if (this.route != null && locomotive.getLastTrainStation() != locomotive.getDestStation()){
             locomotive.setRoad(this.route);
@@ -44,12 +53,14 @@ public class Conductor extends Thread {
         }
         TrainStation sourceStation = locomotive.getSourceStation();
         TrainStation destStation = locomotive.getDestStation();
-        Optional<List<RailroadLink>> route = switch (logisticSkill) {
-            case BAD -> BadRouteFinder.findRoute(sourceStation, destStation);
-            case WORST -> TheWorstFinder.findRoute(sourceStation, destStation, locoBase);
-            case NORMAL -> RouteFinder.findRoute(sourceStation, destStation);
-            default -> NaiveRouteFinder.findRoute(sourceStation, destStation, locoBase);
-        };
+        Optional<List<RailroadLink>> route = routeFinder.findRoute(sourceStation, destStation);
+//                switch (logisticSkill) {
+//            case BAD -> BadRouteFinder.findRoute(sourceStation, destStation);
+//            case WORST -> TheWorstFinder.findRoute(sourceStation, destStation, locoBase);
+//            case NORMAL -> RouteFinder.findRoute(sourceStation, destStation);
+//            default -> RouteFinderRefactor.findRoute(sourceStation, destStation, locoBase, locoMap);
+//            default -> NaiveRouteFinder.findRoute(sourceStation, destStation, locoBase);
+//        };
         while (route.isEmpty()) {
             locomotive.setStatus(TrainStatus.UNABLE_TO_FIND_ROUTE);
             String s = "Train " + this.locomotive.getLocName() +
@@ -59,7 +70,8 @@ public class Conductor extends Thread {
                     " I will wait..";
             System.out.println(s);
             Thread.sleep(5000);
-            route = NaiveRouteFinder.findRoute(sourceStation, locomotive.getDestStation(), locoBase);
+//            route = NaiveRouteFinder.findRoute(sourceStation, locomotive.getDestStation(), locoBase);
+            route = routeFinder.findRoute(sourceStation, destStation);
         }
         return route.get();
     }
@@ -112,6 +124,7 @@ public class Conductor extends Thread {
         TrainStation temp = locomotive.getSourceStation();
         locomotive.setSourceStation(locomotive.getDestStation());
         locomotive.setDestStation(temp);
+        System.out.println(locomotive.getSourceStation() + " " + locomotive.getDestStation());
     }
 
     public void announceDeparture(TrainStation source, TrainStation destination){
@@ -127,5 +140,11 @@ public class Conductor extends Thread {
         TrainStation newDestination = locoBase.getTrainStations().stream().toList().get(i);
         locomotive.setDestStation(newDestination);
 
+    }
+
+    @Override
+    public String toString() {
+        return "Conductor " +
+                "routeFinder=" + routeFinder;
     }
 }

@@ -1,4 +1,4 @@
-package pl.edu.pja.s28687.Load;
+package pl.edu.pja.s28687.load;
 
 public enum Flags {
     PASSENGERS,
@@ -9,5 +9,5 @@ public enum Flags {
     GASEOUS,
     REFRIGERATED,
     EXPLOSIVE,
-    LUGGAGE;
+    LUGGAGE,
 }

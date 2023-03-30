@@ -1,9 +1,7 @@
-package pl.edu.pja.s28687.Cars;
+package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.Load.IBasicFreight;
-import pl.edu.pja.s28687.Load.IDeliverable;
-import pl.edu.pja.s28687.Load.Load;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.math.BigDecimal;
 
@@ -14,8 +12,8 @@ public abstract class BasicFreightCarABC<T extends IDeliverable> extends Freight
     static final BigDecimal grossWeight = BigDecimal.valueOf(446.7);
     static final int numberOfSeats = 4;
 
-    public BasicFreightCarABC(LocoBase locoBase) {
-        super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, locoBase);
+    public BasicFreightCarABC(int id) {
+        super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, id);
     }
 
 

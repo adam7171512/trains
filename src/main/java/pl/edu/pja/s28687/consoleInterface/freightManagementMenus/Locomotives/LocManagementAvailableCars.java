@@ -1,9 +1,9 @@
-package pl.edu.pja.s28687.ConsoleInterface.FreightManagementMenus.Locomotives;
+package pl.edu.pja.s28687.consoleInterface.freightManagementMenus.Locomotives;
 
-import pl.edu.pja.s28687.Cars.LoadableRailroadCar;
-import pl.edu.pja.s28687.Cars.RailroadCar;
+import pl.edu.pja.s28687.cars.LoadableRailroadCar;
+import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,13 +52,18 @@ public class LocManagementAvailableCars {
         List<String> carsDescr = new ArrayList<>();
         for (int i = 0; i < suitableCars.size(); i++ ){
             RailroadCar rC = suitableCars.get(i);
-            String carDescr =
+            String singleDescr =
                     (i+1) + " ID: " + rC.getId() + " " +
                             rC.getName() + " " +
-                            "\nFreight used  : " + rC.getCurrentWeight() + "/" + rC.grossWeight() + "tonnes" +
-                            "\nAllowed freight types :" + rC.getAllowable() +
-                            "\n_  _   _   _   _   _  _  _  _  _";
-            carsDescr.add(carDescr);
+                            rC.getCarType();
+
+            if (rC instanceof LoadableRailroadCar<?>){
+                singleDescr +="\n Freight used : " + rC.getCurrentWeight() + "/" + rC.grossWeight() + "tonnes"
+                    + "\nAllowed freight types :" + ((LoadableRailroadCar<?>) rC).getAllowedLoadFlags();
+            }
+            singleDescr += "\n_  _   _   _   _   _  _  _  _  _";
+            carsDescr.add(singleDescr);
+
         }
         return carsDescr;
     }

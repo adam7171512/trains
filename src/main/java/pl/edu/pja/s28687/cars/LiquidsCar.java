@@ -1,15 +1,22 @@
-package pl.edu.pja.s28687.Cars;
-import pl.edu.pja.s28687.Load.*;
-import pl.edu.pja.s28687.Logistics.LocoBase;
-import pl.edu.pja.s28687.TrainStation;
+package pl.edu.pja.s28687.cars;
+import pl.edu.pja.s28687.load.*;
+import pl.edu.pja.s28687.logistics.LocoBase;
+
+import java.util.Set;
 
 
 public class LiquidsCar extends BasicFreightCarABC<ILiquid> {
-    public LiquidsCar(LocoBase locoBase) {
-        super(locoBase);
-        setName("lol");
-        forbidden.remove(Flags.LIQUID);
-        forbidden.remove(Flags.TOXIC);
-        setAllowableFlags();
+    public LiquidsCar(int id) {
+        super(id);
+    }
+
+    @Override
+    public Set<Flags> allowedLoadFlags() {
+        return Set.of(Flags.LIQUID);
+    }
+
+    @Override
+    public CarType getCarType() {
+        return CarType.LIQUID;
     }
 }

@@ -1,13 +1,11 @@
-package pl.edu.pja.s28687.Info;
+package pl.edu.pja.s28687.info;
 
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Logger extends Thread{

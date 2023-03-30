@@ -1,12 +1,34 @@
-package pl.edu.pja.s28687.ConsoleInterface;
+package pl.edu.pja.s28687.consoleInterface;
 
-import pl.edu.pja.s28687.ConsoleInterface.ObjectCreationMenus.*;
-import pl.edu.pja.s28687.Factories.*;
-import pl.edu.pja.s28687.Logistics.LocoBase;
+import pl.edu.pja.s28687.factories.*;
+import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.Scanner;
 
 public class BulkCreationMenu {
+
+    private LocoBase locoBase;
+    private CarsFactory carsFactory;
+    private LoadFactory loadFactory;
+    private RailroadsFactory railroadsFactory;
+    private TrainStationFactory trainStationFactory;
+    private LocomotiveFactory locomotiveFactory;
+
+
+    public BulkCreationMenu(LocoBase locoBase,
+                            CarsFactory carsFactory,
+                            LoadFactory loadFactory,
+                            RailroadsFactory railroadsFactory,
+                            TrainStationFactory trainStationFactory,
+                            LocomotiveFactory locomotiveFactory){
+        this.locoBase = locoBase;
+        this.carsFactory = carsFactory;
+        this.loadFactory = loadFactory;
+        this.railroadsFactory = railroadsFactory;
+        this.trainStationFactory = trainStationFactory;
+        this.locomotiveFactory = locomotiveFactory;
+        menu(locoBase);
+    }
     private static final String menuChoices =
             """
                 ______________________________
@@ -20,7 +42,7 @@ public class BulkCreationMenu {
                 5 Railroad connections
                 0 Back
                 _______________________________""";
-    public static void menu(LocoBase locoBase){
+    public void menu(LocoBase locoBase){
         Scanner scan = new Scanner(System.in);
         int selection = 99;
 
@@ -30,17 +52,20 @@ public class BulkCreationMenu {
             System.out.println("How many objects would you like to make?" +
                     "If you selected Railroads, its connections per station!");
             int n = scan.nextInt();
-            goTo(selection, n, locoBase);
+            goTo(selection, n);
         }
     }
 
-    public static void goTo(int selection, int number, LocoBase locoBase){
+    public void goTo(int selection, int number){
         switch (selection) {
-            case 1 -> TrainStationFactory.makeRandomTrainStations(number, locoBase);
-            case 2 -> LocomotiveFactory.makeRandomLocomotives(number, locoBase);
-            case 3 -> CarsFactory.makeRandomCars(number, locoBase);
-            case 4 -> LoadFactory.makeRandomLoads(number, locoBase);
-            case 5 -> RailroadsFactory.makeRandomRailroadsConnections(number, locoBase);
+            case 1 -> {
+                trainStationFactory.createRandomTrainStations(
+                        number, new RandomPlacementStrategy(), 750, 750);
+            }
+            case 2 -> locomotiveFactory.makeRandomLocomotives(number);
+            case 3 -> carsFactory.createRandomCars(number);
+            case 4 -> loadFactory.createRandomLoads(number);
+            case 5 -> railroadsFactory.createOrderedConnectionsBetweenStations(number);
             default -> System.out.println("default");
         }
     }

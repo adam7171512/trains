@@ -1,7 +1,7 @@
-package pl.edu.pja.s28687.Gui;
+package pl.edu.pja.s28687.gui;
 
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Logistics.Coordinates;
+import pl.edu.pja.s28687.logistics.Coordinates;
 
 import java.awt.Point;
 import javax.swing.*;

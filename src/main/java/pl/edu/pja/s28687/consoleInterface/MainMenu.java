@@ -1,9 +1,10 @@
-package pl.edu.pja.s28687.ConsoleInterface;
+package pl.edu.pja.s28687.consoleInterface;
 
-import pl.edu.pja.s28687.ConsoleInterface.FreightManagementMenus.FreightManagementMenu;
-import pl.edu.pja.s28687.Gui.Canvas;
-import pl.edu.pja.s28687.Logistics.LocoBase;
-import pl.edu.pja.s28687.Misc.DemoPreparator;
+import pl.edu.pja.s28687.consoleInterface.freightManagementMenus.FreightManagementMenu;
+import pl.edu.pja.s28687.factories.*;
+import pl.edu.pja.s28687.gui.Canvas;
+import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.misc.DemoPreparator;
 
 import java.util.Scanner;
 
@@ -22,7 +23,25 @@ public class MainMenu {
                 6.DEMO - COMPLEX
                 _____________________\s
                 """;
-    public static void menu(LocoBase locoBase){
+
+    private ObjectCreationMenu objectCreationMenu;
+    private LocoBase locoBase;
+    private DemoPreparator demoPreparator;
+    public MainMenu(){
+
+        this.locoBase = LocoBase.getInstance();
+        this.demoPreparator = new DemoPreparator();
+        this.objectCreationMenu = new ObjectCreationMenu(
+                new LocomotiveFactory(locoBase)
+                , new CarsFactory(locoBase)
+                , new LoadFactory(locoBase)
+                , new RailroadsFactory(locoBase)
+                , new TrainStationFactory(locoBase)
+                , locoBase
+        );
+    }
+
+    public void menu(LocoBase locoBase){
         Scanner scan = new Scanner(System.in);
         int selection = 99;
 
@@ -33,15 +52,17 @@ public class MainMenu {
         }
     }
 
-    private static void goTo(int selection, LocoBase locoBase) {
+
+
+    private void goTo(int selection, LocoBase locoBase) {
 
         switch (selection) {
-            case 1 -> ObjectCreationMenu.menu(locoBase);
+            case 1 -> objectCreationMenu.menu(locoBase);
             case 5 -> {
-                DemoPreparator.demoStandard(locoBase);
+                demoPreparator.demoStandard(locoBase);
             }
             case 6 -> {
-                DemoPreparator.demoHard(locoBase);
+                demoPreparator.demoHard(locoBase);
             }
             case 4 -> {
                 InfoMenu.menu(locoBase);

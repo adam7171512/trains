@@ -1,6 +1,4 @@
-package pl.edu.pja.s28687.Cars;
-
-import java.math.BigDecimal;
+package pl.edu.pja.s28687.cars;
 
 public interface IPowered {
 }

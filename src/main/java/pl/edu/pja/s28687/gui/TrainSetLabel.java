@@ -1,9 +1,7 @@
-package pl.edu.pja.s28687.Gui;
+package pl.edu.pja.s28687.gui;
 
-import pl.edu.pja.s28687.Info.LocInfo;
-import pl.edu.pja.s28687.Info.TrainSetInfo;
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.Logistics.*;
+import pl.edu.pja.s28687.logistics.*;
 import javax.swing.*;
 import java.awt.*;
 import java.math.BigDecimal;

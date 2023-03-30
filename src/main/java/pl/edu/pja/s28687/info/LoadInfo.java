@@ -1,8 +1,8 @@
-package pl.edu.pja.s28687.Info;
+package pl.edu.pja.s28687.info;
 
-import pl.edu.pja.s28687.Load.Load;
-import pl.edu.pja.s28687.Load.IDeliverable;
-import pl.edu.pja.s28687.Load.Passengers;
+import pl.edu.pja.s28687.load.Load;
+import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.load.Passengers;
 
 public class LoadInfo {
     public static String getBasicInfo(Load<? extends IDeliverable> load){

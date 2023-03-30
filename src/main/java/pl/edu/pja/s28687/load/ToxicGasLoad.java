@@ -1,4 +1,7 @@
-package pl.edu.pja.s28687.Load;
+package pl.edu.pja.s28687.load;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ToxicGasLoad extends Load<IGaseousToxic> {
     public ToxicGasLoad(double weight) {
@@ -6,8 +9,7 @@ public class ToxicGasLoad extends Load<IGaseousToxic> {
     }
 
     @Override
-    public void setFlags() {
-        flags.add(Flags.TOXIC);
-        flags.add(Flags.GASEOUS);
+    public Set<Flags> flags() {
+        return Set.of(Flags.GASEOUS, Flags.TOXIC);
     }
 }
