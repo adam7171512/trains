@@ -10,18 +10,17 @@ import java.util.Scanner;
 
 public class LocomotiveCreationMenu {
 
-    private LocoBase locoBase;
     private LocomotiveFactory locomotiveFactory;
 
     public LocomotiveCreationMenu(LocomotiveFactory locomotiveFactory) {
         this.locomotiveFactory = locomotiveFactory;
     }
 
-    public void createLocomotive(LocoBase locoBase){
-        make(locoBase);
+    public void createLocomotive(){
+        make();
     }
 
-    private void make(LocoBase locoBase){
+    private void make(){
         Scanner scan = new Scanner(System.in);
         System.out.println("Please enter Locomotive name");
         String name = scan.next();
@@ -33,7 +32,7 @@ public class LocomotiveCreationMenu {
         int maxPoweredCars = scan.nextInt();
         System.out.println("Please enter locomotive speed in km/h");
         BigDecimal speed = BigDecimal.valueOf(scan.nextDouble());
-        Locomotive locomotive = locomotiveFactory
+        locomotiveFactory
                 .makeLocomotive(name, maxCars, maxPoweredCars, freight, speed);
     }
 }

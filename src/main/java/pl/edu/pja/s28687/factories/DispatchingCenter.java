@@ -1,14 +1,10 @@
 package pl.edu.pja.s28687.factories;
-import pl.edu.pja.s28687.Conductor;
-import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.TrainStation;
 import pl.edu.pja.s28687.logistics.LocoBase;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
+
 
 public class DispatchingCenter{
     private LocoBase locoBase;
@@ -51,6 +47,6 @@ public class DispatchingCenter{
                 .stream()
                 .filter(station -> station != trainStation)
                 .toList()
-                .get(random.nextInt(trainStations.size()));
+                .get(random.nextInt(trainStations.size() - 1));
     }
 }

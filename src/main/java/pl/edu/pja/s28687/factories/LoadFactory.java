@@ -23,6 +23,22 @@ public class LoadFactory {
                 .build();
     }
 
+    public Load<? extends IDeliverable> createLoad(Set<Flags> loadType, double weight){
+        LoadBuilder loadBuilder = new LoadBuilder(locoBase);
+        return loadBuilder
+                .setWeight(weight)
+                .setFlags(loadType)
+                .build();
+    }
+
+    public Load<? extends IDeliverable> createPassengerLoad(int quantity){
+        LoadBuilder loadBuilder = new LoadBuilder(locoBase);
+        return loadBuilder
+                .setFlags(Set.of(Flags.PASSENGERS))
+                .setQuantity(quantity)
+                .build();
+    }
+
     public Load<? extends IDeliverable> createRandomLoad(){
         LoadBuilder loadBuilder = new LoadBuilder(locoBase);
         return loadBuilder

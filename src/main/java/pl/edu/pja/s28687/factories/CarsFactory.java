@@ -1,5 +1,6 @@
 package pl.edu.pja.s28687.factories;
 
+import pl.edu.pja.s28687.LocomotivePurpose;
 import pl.edu.pja.s28687.cars.*;
 import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.logistics.LocoBase;

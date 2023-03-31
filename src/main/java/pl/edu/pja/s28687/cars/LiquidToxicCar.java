@@ -1,5 +1,6 @@
 package pl.edu.pja.s28687.cars;
 
+import pl.edu.pja.s28687.ILoadValidator;
 import pl.edu.pja.s28687.load.*;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
@@ -8,8 +9,8 @@ import java.util.Set;
 
 public class LiquidToxicCar extends HeavyFreightCarABC<ILiquidToxic>{
 
-    public LiquidToxicCar(int id) {
-        super(id);
+    public LiquidToxicCar(int id, ILoadValidator validator) {
+        super(id, validator);
     }
 
     @Override

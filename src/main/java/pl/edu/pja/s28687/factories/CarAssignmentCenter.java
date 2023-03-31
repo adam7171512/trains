@@ -1,17 +1,14 @@
 package pl.edu.pja.s28687.factories;
-
 import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.cars.CarType;
 import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.logistics.LocoBase;
-
 import java.util.List;
 
 public class CarAssignmentCenter {
     public static void assignCars(LocoBase locoBase){
         List<Locomotive> locs = locoBase.getLocomotiveList();
-        int k = 0;
         for (Locomotive loc : locs){
             while (! locoBase.findSuitableCars(loc).isEmpty()) {
                     List<RailroadCar> cars = locoBase.findSuitableCars(loc);

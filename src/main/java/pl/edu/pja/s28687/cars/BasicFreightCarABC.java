@@ -1,5 +1,7 @@
 package pl.edu.pja.s28687.cars;
 
+import pl.edu.pja.s28687.IFreightValidator;
+import pl.edu.pja.s28687.ILoadValidator;
 import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
@@ -12,8 +14,8 @@ public abstract class BasicFreightCarABC<T extends IDeliverable> extends Freight
     static final BigDecimal grossWeight = BigDecimal.valueOf(446.7);
     static final int numberOfSeats = 4;
 
-    public BasicFreightCarABC(int id) {
-        super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, id);
+    public BasicFreightCarABC(int id, ILoadValidator validator) {
+        super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, id, validator);
     }
 
 

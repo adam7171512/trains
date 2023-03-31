@@ -1,9 +1,9 @@
 package pl.edu.pja.s28687.cars;
 
+import pl.edu.pja.s28687.ILoadValidator;
 import pl.edu.pja.s28687.load.Flags;
 import pl.edu.pja.s28687.load.Load;
 import pl.edu.pja.s28687.load.IDeliverable;
-import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,9 +13,14 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
 
     List<Load<? super T>> loads;
     Set<Flags> allowedFlags;
-    public LoadableRailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id){
+    private BigDecimal currentWeight;
+
+    protected ILoadValidator validator;
+    public LoadableRailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id, ILoadValidator validator) {
         super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, id);
         loads = new ArrayList<>();
+        currentWeight = this.netWeight();
+        this.validator = validator;
     }
 
     @Override
@@ -32,13 +37,16 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage() + message);
         }
+
         load.setLoaded();
+        currentWeight = currentWeight.add(load.getWeight());
     }
 
     public void deLoad(Load<? super T> load){
 //        loads.remove(loads.stream().filter(l -> l.equals(load)).findFirst().or);
         loads.remove(load);
         load.setDeloaded();
+        currentWeight = currentWeight.subtract(load.getWeight());
     }
 
 
@@ -82,5 +90,10 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
         return loads;
     }
 
-    public abstract String validateLoad(Load<? super T> load);
+    public abstract String validateLoad(Load<?> load);
+
+    public boolean newValidate(Load<?> load){
+        return validator.validate(load, this);
+    }
+
 }

@@ -1,14 +1,13 @@
 package pl.edu.pja.s28687.factories;
 
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.TrainStation;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocoBuilder {
+public class LocomotiveBuilder {
 
     public static final List<String> prefixes = new ArrayList<>(List.of(
             "Small",
@@ -51,41 +50,39 @@ public class LocoBuilder {
     private BigDecimal maxPayload;
     private int regularCars;
     private int poweredCars;
-    private int id;
     private LocoBase locoBase;
 
-    public LocoBuilder(LocoBase locobase){
+    public LocomotiveBuilder(LocoBase locobase){
         this.locoBase = locobase;
     }
 
-    public LocoBuilder setName(String name){
+    public LocomotiveBuilder setName(String name){
         this.name = name;
         return this;
     }
 
-    public LocoBuilder setDefaultSpeed(BigDecimal defaultSpeed){
+    public LocomotiveBuilder setDefaultSpeed(BigDecimal defaultSpeed){
         this.defaultSpeed = defaultSpeed;
         return this;
         }
 
-    public LocoBuilder setMaxPayload(BigDecimal maxPayload){
+    public LocomotiveBuilder setMaxPayload(BigDecimal maxPayload){
         this.maxPayload = maxPayload;
         return this;
         }
 
-    public LocoBuilder setRegularCars(int regularCars){
-            return this;
+    public LocomotiveBuilder setRegularCars(int regularCars){
+        this.regularCars = regularCars;
+        return this;
         }
 
-    public LocoBuilder setPoweredCars(int poweredCars){
-            return this;
+    public LocomotiveBuilder setPoweredCars(int poweredCars){
+        this.poweredCars = poweredCars;
+        return this;
         }
 
-        public LocoBuilder setId(int id){
-            return this;
-        }
 
-   public LocoBuilder setRandomProperties(){
+   public LocomotiveBuilder setRandomProperties(){
         this.name = prefixes.get((int)(
                 Math.random() * prefixes.size()))
                 + " "
@@ -100,8 +97,7 @@ public class LocoBuilder {
 
 
     public Locomotive build(){
-        int id = LocoBase.getInstance().getIdForLocomotive();
-        this.id = id;
+        int id = locoBase.getIdForLocomotive();
         if (name == null) name = "Loc " + id;
         if (defaultSpeed == null) defaultSpeed = BigDecimal.valueOf(100);
         if (maxPayload == null) maxPayload = BigDecimal.valueOf(10000);

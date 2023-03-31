@@ -1,15 +1,15 @@
 package pl.edu.pja.s28687.cars;
 
+import pl.edu.pja.s28687.ILoadValidator;
 import pl.edu.pja.s28687.load.*;
-import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.Set;
 
 
 public class ExplosivesCar extends HeavyFreightCarABC<IExplosive> {
 
-    public ExplosivesCar(int id) {
-        super(id);
+    public ExplosivesCar(int id, ILoadValidator validator) {
+        super(id, validator);
     }
 
 
@@ -22,4 +22,5 @@ public class ExplosivesCar extends HeavyFreightCarABC<IExplosive> {
     public CarType getCarType() {
         return CarType.EXPLOSIVE;
     }
+
 }

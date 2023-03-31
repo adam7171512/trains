@@ -3,19 +3,22 @@ package pl.edu.pja.s28687.consoleInterface.objectCreationMenus;
 
 import pl.edu.pja.s28687.cars.*;
 import pl.edu.pja.s28687.factories.CarBuilder;
+import pl.edu.pja.s28687.factories.CarsFactory;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.Scanner;
 
 public class RailroadCarCreationMenu {
+    private CarsFactory carsFactory;
 
-    public static RailroadCar createCar(LocoBase locoBase){
-        RailroadCar car = make(locoBase);
-        return car;
+
+    public RailroadCarCreationMenu(CarsFactory carsFactory){
+        this.carsFactory = carsFactory;
     }
 
-    private static RailroadCar make(LocoBase locoBase){
-        RailroadCar car;
+
+    public void createCar(){
+
         Scanner scan = new Scanner(System.in);
         String typeSelection = """
                 _____________________________
@@ -30,7 +33,7 @@ public class RailroadCarCreationMenu {
                 _____________________________""";
         System.out.println(typeSelection);
         int typeSelect = scan.nextInt();
-        CarBuilder carBuilder = new CarBuilder(locoBase);
+
         CarType carType = switch (typeSelect){
             case 1 -> CarType.PASSENGERS;
             case 2 -> CarType.LUGGAGE;
@@ -40,10 +43,11 @@ public class RailroadCarCreationMenu {
             case 7 -> CarType.POST_OFFICE;
             default -> CarType.BASIC_FREIGHT;
         };
-        return carBuilder.setFlag(carType).build();
+        carsFactory.createCar(carType);
+
     }
 
-    private static CarType makeSpecialFreightCar(){
+    private CarType makeSpecialFreightCar(){
         String menu = ("""
                 Please select type of the freight:\s
                 1 Liquid\s

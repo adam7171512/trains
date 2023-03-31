@@ -1,11 +1,8 @@
 package pl.edu.pja.s28687.factories;
 
-import pl.edu.pja.s28687.Conductor;
 import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.LocomotivePurpose;
 import pl.edu.pja.s28687.logistics.LocoBase;
-import pl.edu.pja.s28687.logistics.RailroadLink;
-import pl.edu.pja.s28687.logistics.RouteFindingAlgos;
-import pl.edu.pja.s28687.TrainStation;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -28,7 +25,7 @@ public class LocomotiveFactory {
                                       BigDecimal speed){
 
 
-        return new LocoBuilder(locoBase).setName(name)
+        return new LocomotiveBuilder(locoBase).setName(name)
                 .setRegularCars(regularCars)
                 .setPoweredCars(poweredCars)
                 .setMaxPayload(maxPayload)
@@ -37,7 +34,7 @@ public class LocomotiveFactory {
     }
 
     public Locomotive makeRandomLocomotive(){
-        return new LocoBuilder(locoBase)
+        return new LocomotiveBuilder(locoBase)
                 .setRandomProperties()
                 .build();
     }
@@ -46,6 +43,42 @@ public class LocomotiveFactory {
         List<Locomotive> locomotives = new ArrayList<>();
         for (int i = 0; i < quantity; i++){
             locomotives.add(makeRandomLocomotive());
+        }
+        return locomotives;
+    }
+
+    public Locomotive createLocomotiveForPassengerTrain(){
+        return new LocomotiveBuilder(locoBase).setDefaultSpeed(BigDecimal.valueOf(120))
+                .setMaxPayload(BigDecimal.valueOf(3000))
+                .setRegularCars(20)
+                .setPoweredCars(20)
+                        .build();
+    }
+
+    public Locomotive createLocomotiveForBasicFreightTrain(){
+        return new LocomotiveBuilder(locoBase).setDefaultSpeed(BigDecimal.valueOf(100))
+                .setMaxPayload(BigDecimal.valueOf(6000))
+                .setRegularCars(20)
+                .setPoweredCars(3)
+                .build();
+    }
+
+    public Locomotive createLocomotiveForHeavyFreightTrain(){
+        return new LocomotiveBuilder(locoBase).setDefaultSpeed(BigDecimal.valueOf(70))
+                .setMaxPayload(BigDecimal.valueOf(12000))
+                .setRegularCars(20)
+                .setPoweredCars(3)
+                .build();
+    }
+
+    public List<Locomotive> createLocomotivesOfType(int quantity, LocomotivePurpose type){
+        List<Locomotive> locomotives = new ArrayList<>();
+        for (int i = 0; i < quantity; i++){
+            locomotives.add(switch (type){
+                case PASSENGER -> createLocomotiveForPassengerTrain();
+                case BASIC_FREIGHT -> createLocomotiveForBasicFreightTrain();
+                case HEAVY_FREIGHT -> createLocomotiveForHeavyFreightTrain();
+            });
         }
         return locomotives;
     }

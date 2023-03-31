@@ -3,6 +3,7 @@ package pl.edu.pja.s28687.factories;
 import pl.edu.pja.s28687.Conductor;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.TrainSet;
+import pl.edu.pja.s28687.logistics.IRouteFinder;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.RouteFindingAlgos;
 
@@ -10,7 +11,7 @@ public class TrainSetBuilder {
     private Conductor conductor;
     private LocoBase locoBase;
     private Locomotive locomotive;
-    private RouteFindingAlgos algorithm;
+    private IRouteFinder algorithm;
     public TrainSetBuilder(LocoBase locoBase){
         this.locoBase = locoBase;
     }
@@ -21,7 +22,7 @@ public class TrainSetBuilder {
         return this;
     }
 
-    public TrainSetBuilder setAlgorithm(RouteFindingAlgos algorithm){
+    public TrainSetBuilder setAlgorithm(IRouteFinder algorithm){
         this.algorithm = algorithm;
         return this;
     }
@@ -42,7 +43,7 @@ public class TrainSetBuilder {
             conductor = new Conductor(locomotive, locoBase);
         }
         if (algorithm != null){
-            conductor.setLogisticSkill(algorithm);
+            conductor.setRouteFindingAlgorithm(algorithm);
         }
 
         int id = locoBase.getIdForTrainSet();

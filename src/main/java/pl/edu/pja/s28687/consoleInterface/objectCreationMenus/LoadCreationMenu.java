@@ -2,6 +2,7 @@ package pl.edu.pja.s28687.consoleInterface.objectCreationMenus;
 
 
 import pl.edu.pja.s28687.factories.LoadBuilder;
+import pl.edu.pja.s28687.factories.LoadFactory;
 import pl.edu.pja.s28687.load.Explosives;
 import pl.edu.pja.s28687.load.*;
 import pl.edu.pja.s28687.logistics.LocoBase;
@@ -13,7 +14,15 @@ import java.util.Set;
 
 public class LoadCreationMenu {
 
-    private static final String menuChoices =
+    private LoadFactory loadFactory;
+
+
+    public LoadCreationMenu(LoadFactory loadFactory) {
+        this.loadFactory = loadFactory;
+    }
+
+
+    private final String menuChoices =
             """
                 ______________________________
                 Load creation menu
@@ -25,20 +34,19 @@ public class LoadCreationMenu {
                 4 Heavy Freight\s
                 5 Special Freight""";
 
-    public static void menu(LocoBase locoBase){
+    public void menu(){
         Scanner scan = new Scanner(System.in);
         int selection = 99;
 
         while (selection != 0){
             System.out.println(menuChoices);
             selection = scan.nextInt();
-            createLoad(selection, locoBase);
+            createLoad(selection);
         }
     }
 
-    public static void createLoad(int selection, LocoBase locoBase){
+    public void createLoad(int selection){
         Scanner scan = new Scanner(System.in);
-        LoadBuilder loadBuilder = new LoadBuilder(locoBase);
         Set<Flags> flags = switch (selection){
             case 1 -> Set.of(Flags.PASSENGERS);
             case 2 -> Set.of(Flags.LUGGAGE);
@@ -47,24 +55,22 @@ public class LoadCreationMenu {
             default -> Set.of(Flags.BASIC_FREIGHT);
         };
 
-        loadBuilder.setFlags(flags);
-
         if (flags.contains(Flags.PASSENGERS)){
             System.out.println("Please enter number of passengers");
             int passengers = scan.nextInt();
-            loadBuilder.setQuantity(passengers);
+            loadFactory.createPassengerLoad(passengers);
         }
         else {
             System.out.println("Please enter load weight");
             double weight = scan.nextDouble();
-            loadBuilder.setWeight(weight);
+            loadFactory.createLoad(flags, weight);
         }
 
-        loadBuilder.build();
+
     }
 
 
-    private static Set<Flags> makeSpecialFreight(){
+    private Set<Flags> makeSpecialFreight(){
         String menu = ("""
                 Please select type of the freight\s
                 or multiple types split with space:\s

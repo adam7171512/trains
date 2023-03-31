@@ -4,10 +4,7 @@ import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.RailroadLink;
 import pl.edu.pja.s28687.TrainStation;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -29,6 +26,15 @@ public class RailroadsFactory {
         station1.addNeighbor(station2);
         station2.addNeighbor(station1);
         return railroadLink;
+    }
+
+    public RailroadLink createRailroadLink(String station1Name, String station2Name) throws IllegalArgumentException {
+        Optional<TrainStation> station1 = locoBase.findTrainStation(station1Name);
+        Optional<TrainStation> station2 = locoBase.findTrainStation(station2Name);
+        if (station1.isEmpty() || station2.isEmpty() || station1.get().equals(station2.get())) {
+            throw new IllegalArgumentException("One of the stations does not exist");
+        }
+        return createRailroadLink(station1.get(), station2.get());
     }
 
     public RailroadLink createRandomRailroadLink() {

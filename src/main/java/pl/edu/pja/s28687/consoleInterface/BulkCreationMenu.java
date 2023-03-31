@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class BulkCreationMenu {
 
-    private LocoBase locoBase;
     private CarsFactory carsFactory;
     private LoadFactory loadFactory;
     private RailroadsFactory railroadsFactory;
@@ -15,19 +14,16 @@ public class BulkCreationMenu {
     private LocomotiveFactory locomotiveFactory;
 
 
-    public BulkCreationMenu(LocoBase locoBase,
-                            CarsFactory carsFactory,
+    public BulkCreationMenu(CarsFactory carsFactory,
                             LoadFactory loadFactory,
                             RailroadsFactory railroadsFactory,
                             TrainStationFactory trainStationFactory,
                             LocomotiveFactory locomotiveFactory){
-        this.locoBase = locoBase;
         this.carsFactory = carsFactory;
         this.loadFactory = loadFactory;
         this.railroadsFactory = railroadsFactory;
         this.trainStationFactory = trainStationFactory;
         this.locomotiveFactory = locomotiveFactory;
-        menu(locoBase);
     }
     private static final String menuChoices =
             """
@@ -42,7 +38,7 @@ public class BulkCreationMenu {
                 5 Railroad connections
                 0 Back
                 _______________________________""";
-    public void menu(LocoBase locoBase){
+    public void menu(){
         Scanner scan = new Scanner(System.in);
         int selection = 99;
 

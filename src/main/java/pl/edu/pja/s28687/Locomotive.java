@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Random;
 
 public class Locomotive {
-    private Conductor conductor;
     private final int id;
     private final String name;
     private final int maxCars;
@@ -45,14 +44,6 @@ public class Locomotive {
     private TrainStation currentSegmentDestination;
     private BigDecimal currentSegmentProgress;
     private TrainSetRepresentation visualRepresentation;
-
-    public Conductor getConductor() {
-        return conductor;
-    }
-
-    public void setConductor(Conductor conductor) {
-        this.conductor = conductor;
-    }
 
     public BigDecimal getDefaultSpeed(){
         return defaultSpeed;
@@ -141,28 +132,6 @@ public class Locomotive {
 
     //TODO: refactor
     public int getCurrentSegmentProgress(){
-//        int x1, x2, y1, y2;
-//        int progress = 0;
-//        if (currentSegment != null) {
-//
-//            x1 = (int) lastTrainStation.getCoordinates().getX();
-//            x2 = (int) currentSegmentDestination.getCoordinates().getX();
-//            y1 = (int) lastTrainStation.getCoordinates().getY();
-//            y2 = (int) currentSegmentDestination.getCoordinates().getY();
-//
-//
-//
-//            progress =  currentSegmentDistance.intValue() == 0 ?
-//                    0
-//                    :
-//                    currentSegmentDistanceCovered.
-//                            divide(currentSegmentDistance, RoundingMode.FLOOR)
-//                            .multiply(BigDecimal.valueOf(100))
-//                            .intValue();
-////            if (currentTrainStation == destination) progress = 100;
-//            x = (int) (x1 + (x2 - x1) * 0.01 * progress);
-//            y = (int) (y1 + (y2 - y1) * 0.01 * progress);
-//        }
         if (currentSegmentProgress == null) return 0;
         return currentSegmentProgress.intValue();
     }
@@ -349,9 +318,6 @@ public class Locomotive {
 
     }
 
-    public void updateCords(){
-
-    }
 
     public int passengersOnBoard(){
         return cars.

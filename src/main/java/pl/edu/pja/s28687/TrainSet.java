@@ -3,7 +3,9 @@ package pl.edu.pja.s28687;
 import pl.edu.pja.s28687.cars.LoadableRailroadCar;
 import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.load.LiquidLoad;
 import pl.edu.pja.s28687.load.Load;
+import pl.edu.pja.s28687.logistics.IRouteFinder;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.RouteFindingAlgos;
 
@@ -15,12 +17,15 @@ public class TrainSet {
     private Locomotive locomotive;
     private Conductor conductor;
     private LocoBase locoBase;
+    private IFreightValidator freightValidator;
 
     public TrainSet(Locomotive locomotive, Conductor conductor, LocoBase locoBase, int id){
         this.locomotive = locomotive;
         this.conductor = conductor;
         this.locoBase = locoBase;
         this.id = id;
+        this.freightValidator = new FreightValidator();
+        freightValidator.validate(new LiquidLoad(2), getLoadableCars().get(0));
     }
 
     public void start(){
@@ -35,8 +40,8 @@ public class TrainSet {
         return locomotive;
     }
 
-    public void setAlgorithm(RouteFindingAlgos algorithm){
-        conductor.setLogisticSkill(algorithm);
+    public void setAlgorithm(IRouteFinder algorithm){
+        conductor.setRouteFindingAlgorithm(algorithm);
     }
 
     public void setDestStation(TrainStation destStation){

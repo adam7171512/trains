@@ -1,6 +1,7 @@
 package pl.edu.pja.s28687;
 
-import pl.edu.pja.s28687.cars.CarType;
+import pl.edu.pja.s28687.cars.*;
+import pl.edu.pja.s28687.consoleInterface.MainMenu;
 import pl.edu.pja.s28687.factories.*;
 import pl.edu.pja.s28687.load.*;
 import pl.edu.pja.s28687.logistics.*;
@@ -10,26 +11,12 @@ import java.math.BigDecimal;
 public class Main {
     public static void main(String[] args) {
 
+    RailroadCar car = new CarsFactory(new LocoBase()).createCar(CarType.PASSENGERS);
+    PassengerValidator validator = new PassengerValidator();
+    LoadableRailroadCar<?> lc = new PassengerCar(1, validator);
+    PassengerCar pc = new PassengerCar(1, validator);
+    Mail mailLoad = new Mail(1);
 
-
-
-//        new MainMenu().menu(LocoBase.getInstance());
-
-        LocoBase locoBase = LocoBase.getInstance();
-
-        TrainSet trainSet = new TrainSetBuilder(locoBase).
-                setLocomotive(new LocoBuilder(locoBase).
-                        setMaxPayload(BigDecimal.valueOf(30000))
-                        .build())
-                .build();
-        new CarsFactory(locoBase).createRandomCars(200);
-        new LoadFactory(locoBase).createRandomLoads(200000);
-
-        CarAssignmentCenter.assignCarsToTrainSet(locoBase, trainSet, CarType.HEAVY_FREIGHT, 100);
-        LoadAssignmentCenter.assignLoadsToTrainSets(locoBase);
-
-
-        System.out.println(trainSet);
 
 
 

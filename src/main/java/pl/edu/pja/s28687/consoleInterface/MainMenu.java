@@ -37,7 +37,6 @@ public class MainMenu {
                 , new LoadFactory(locoBase)
                 , new RailroadsFactory(locoBase)
                 , new TrainStationFactory(locoBase)
-                , locoBase
         );
     }
 
@@ -57,7 +56,7 @@ public class MainMenu {
     private void goTo(int selection, LocoBase locoBase) {
 
         switch (selection) {
-            case 1 -> objectCreationMenu.menu(locoBase);
+            case 1 -> objectCreationMenu.menu();
             case 5 -> {
                 demoPreparator.demoStandard(locoBase);
             }

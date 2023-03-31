@@ -11,7 +11,7 @@ public class ObjectCreationMenu {
 
 
 
-    private static final String menuChoices =
+    private final String menuChoices =
             """
                 ______________________________
                 Object creation menu
@@ -30,15 +30,30 @@ public class ObjectCreationMenu {
     private BulkCreationMenu bulkCreationMenu;
     private LocomotiveCreationMenu locomotiveCreationMenu;
 
+    private CarsFactory carsFactory;
+    private LoadFactory loadFactory;
+    private RailroadsFactory railroadsFactory;
+    private TrainStationFactory trainStationFactory;
+    private LocomotiveFactory locomotiveFactory;
+    private RailroadCarCreationMenu railroadCarCreationMenu;
+    private LoadCreationMenu loadCreationMenu;
+    private TrainStationCreationMenu trainStationCreationMenu;
+    private TrainConnectionCreationMenu trainConnectionCreationMenu;
+
+
     public ObjectCreationMenu(LocomotiveFactory locomotiveFactory
             , CarsFactory carsFactory
             , LoadFactory loadFactory
             , RailroadsFactory railroadsFactory
-            , TrainStationFactory trainStationFactory
-            , LocoBase locoBase) {
+            , TrainStationFactory trainStationFactory) {
+        this.locomotiveFactory = locomotiveFactory;
+        this.carsFactory = carsFactory;
+        this.loadFactory = loadFactory;
+        this.railroadsFactory = railroadsFactory;
+        this.trainStationFactory = trainStationFactory;
+
         bulkCreationMenu = new BulkCreationMenu(
-                locoBase
-                , carsFactory
+                carsFactory
                 , loadFactory
                 , railroadsFactory
                 , trainStationFactory
@@ -47,26 +62,43 @@ public class ObjectCreationMenu {
         locomotiveCreationMenu = new LocomotiveCreationMenu(
                 locomotiveFactory
         );
+
+        railroadCarCreationMenu = new RailroadCarCreationMenu(
+                carsFactory
+        );
+
+        loadCreationMenu = new LoadCreationMenu(
+                loadFactory
+        );
+
+        trainStationCreationMenu = new TrainStationCreationMenu(
+                trainStationFactory
+        );
+
+        trainConnectionCreationMenu = new TrainConnectionCreationMenu(
+                railroadsFactory
+        );
+
     }
-    public void menu(LocoBase locoBase){
+    public void menu(){
         Scanner scan = new Scanner(System.in);
         int selection = 99;
 
         while (selection != 0){
             System.out.println(menuChoices);
             selection = scan.nextInt();
-            goTo(selection, locoBase);
+            goTo(selection);
         }
     }
 
-    public void goTo(int selection, LocoBase locoBase){
+    public void goTo(int selection){
         switch (selection) {
-            case 1 -> TrainStationCreationMenu.createTrainStation(locoBase);
-            case 2 -> locomotiveCreationMenu.createLocomotive(locoBase);
-            case 3 -> RailroadCarCreationMenu.createCar(locoBase);
-            case 4 -> LoadCreationMenu.menu(locoBase);
-            case 5 -> TrainConnectionCreationMenu.createConnection(locoBase);
-            case 6 -> bulkCreationMenu.menu(locoBase);
+            case 1 -> trainStationCreationMenu.createTrainStation();
+            case 2 -> locomotiveCreationMenu.createLocomotive();
+            case 3 -> railroadCarCreationMenu.createCar();
+            case 4 -> loadCreationMenu.menu();
+            case 5 -> trainConnectionCreationMenu.createConnection();
+            case 6 -> bulkCreationMenu.menu();
             default -> System.out.println("default");
         }
     }
