@@ -1,15 +1,13 @@
 package pl.edu.pja.s28687.factories;
 
-import pl.edu.pja.s28687.LocomotivePurpose;
 import pl.edu.pja.s28687.cars.*;
-import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.load.Flags;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
 
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Set;
 
 public class CarsFactory {
     private LocoBase locoBase;
@@ -18,10 +16,18 @@ public class CarsFactory {
         this.locoBase = locoBase;
     }
 
-    public RailroadCar createCar(CarType carType){
+    public RailroadCar createCarOfType(CarType carType){
         CarBuilder carBuilder = new CarBuilder(locoBase);
         return carBuilder
                 .setFlag(carType)
+                .build();
+    }
+
+    public RailroadCar createMultiplePurposeSpecialCarForLoadTypes(Set<Flags> loadTypes){
+        CarBuilder carBuilder = new CarBuilder(locoBase);
+        return carBuilder
+                .setFlag(CarType.NON_STANDARD)
+                .setLoadTypes(loadTypes)
                 .build();
     }
 
@@ -32,6 +38,23 @@ public class CarsFactory {
                 .build();
     }
 
+    public RailroadCar createRandomNonPoweredCar(){
+        CarBuilder carBuilder = new CarBuilder(locoBase);
+        List<CarType> nonPoweredCarTypes = new ArrayList<>(List.of(CarType.values()));
+        nonPoweredCarTypes.remove(CarType.NON_STANDARD);
+        nonPoweredCarTypes.remove(CarType.PASSENGERS);
+        nonPoweredCarTypes.remove(CarType.RESTAURANT);
+        nonPoweredCarTypes.remove(CarType.POST_OFFICE);
+        nonPoweredCarTypes.remove(CarType.REFRIGERATED);
+        CarType randomCarType = nonPoweredCarTypes.get((int) (Math.random() * nonPoweredCarTypes.size()));
+        return carBuilder
+                .setRandomProperties()
+                .setFlag(randomCarType)
+                .build();
+    }
+
+
+
     public List<RailroadCar> createRandomCars(int quantity){
         List<RailroadCar> cars = new ArrayList<>();
         for (int i = 0; i < quantity ; i++){
@@ -40,10 +63,10 @@ public class CarsFactory {
         return cars;
     }
 
-    public List<RailroadCar> createCars(CarType carType, int quantity){
+    public List<RailroadCar> createCarsOfType(CarType carType, int quantity){
         List<RailroadCar> cars = new ArrayList<>();
         for (int i = 0; i < quantity ; i++){
-            cars.add(createCar(carType));
+            cars.add(createCarOfType(carType));
         }
         return cars;
     }

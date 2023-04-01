@@ -22,6 +22,8 @@ public class CarInfo {
                     .append(((PassengerCar) car)
                             .getNumberOfSeats());
         }
+
+
         return stringBuilder.toString();
     }
 }

@@ -18,7 +18,7 @@ public class MainMenu {
                 1 Object creation\s
                 2 Freight management\s
                 3 Route management \s
-                4 Info\s
+                4 TrainSet Info\s
                 5 DEMO - SIMPLE\s
                 6.DEMO - COMPLEX
                 _____________________\s
@@ -27,10 +27,10 @@ public class MainMenu {
     private ObjectCreationMenu objectCreationMenu;
     private LocoBase locoBase;
     private DemoPreparator demoPreparator;
-    public MainMenu(){
+    public MainMenu(LocoBase locoBase){
 
-        this.locoBase = LocoBase.getInstance();
-        this.demoPreparator = new DemoPreparator();
+        this.locoBase = locoBase;
+        this.demoPreparator = new DemoPreparator(locoBase);
         this.objectCreationMenu = new ObjectCreationMenu(
                 new LocomotiveFactory(locoBase)
                 , new CarsFactory(locoBase)
@@ -40,28 +40,28 @@ public class MainMenu {
         );
     }
 
-    public void menu(LocoBase locoBase){
+    public void menu(){
         Scanner scan = new Scanner(System.in);
         int selection = 99;
 
         while (selection != 0){
             System.out.println(menuChoices);
             selection = scan.nextInt();
-            goTo(selection, locoBase);
+            goTo(selection);
         }
     }
 
 
 
-    private void goTo(int selection, LocoBase locoBase) {
+    private void goTo(int selection) {
 
         switch (selection) {
             case 1 -> objectCreationMenu.menu();
             case 5 -> {
-                demoPreparator.demoStandard(locoBase);
+                demoPreparator.demoStandard();
             }
             case 6 -> {
-                demoPreparator.demoHard(locoBase);
+                demoPreparator.demoHard();
             }
             case 4 -> {
                 InfoMenu.menu(locoBase);

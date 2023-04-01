@@ -1,16 +1,14 @@
 package pl.edu.pja.s28687;
 
-import pl.edu.pja.s28687.cars.IPowered;
-import pl.edu.pja.s28687.cars.LoadableRailroadCar;
-import pl.edu.pja.s28687.cars.PassengerCar;
-import pl.edu.pja.s28687.cars.RailroadCar;
+import pl.edu.pja.s28687.cars.*;
 import pl.edu.pja.s28687.gui.TrainSetRepresentation;
 import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.logistics.Coordinates;
-import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.RailroadLink;
 import pl.edu.pja.s28687.misc.RailroadHazard;
 import pl.edu.pja.s28687.misc.TrainStatus;
+import pl.edu.pja.s28687.validators.ILocomotiveCarValidator;
+import pl.edu.pja.s28687.validators.ILocomotiveLoadValidator;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Locomotive {
+public class Locomotive implements ILocomotive {
     private final int id;
     private final String name;
     private final int maxCars;
@@ -32,7 +30,7 @@ public class Locomotive {
     private BigDecimal currentSpeed = BigDecimal.valueOf(0);
     private List<RailroadLink> road = new ArrayList<>();
     private List<RailroadCar> cars = new ArrayList<>();
-    private List<LoadableRailroadCar<? extends IDeliverable>> loadableRailroadCars = new ArrayList<>();
+    private List<ILoadCarrier<? extends IDeliverable>> loadCarriers = new ArrayList<>();
     private BigDecimal currentTripDistanceCovered = BigDecimal.valueOf(0);
     private BigDecimal currentSegmentDistance = BigDecimal.valueOf(0);
     private BigDecimal currentSegmentDistanceCovered = BigDecimal.valueOf(0);
@@ -44,12 +42,21 @@ public class Locomotive {
     private TrainStation currentSegmentDestination;
     private BigDecimal currentSegmentProgress;
     private TrainSetRepresentation visualRepresentation;
+    private ILocomotiveCarValidator carValidator;
+    private ILocomotiveLoadValidator loadValidator;
 
     public BigDecimal getDefaultSpeed(){
         return defaultSpeed;
     }
 
-    public Locomotive(String name, int id,  int maxCars, BigDecimal maxFreight, int maxPoweredCars, BigDecimal defaultSpeed) {
+    public Locomotive(String name,
+                      int id,
+                      int maxCars,
+                      BigDecimal maxFreight,
+                      int maxPoweredCars,
+                      BigDecimal defaultSpeed,
+                      ILocomotiveCarValidator carValidator,
+                      ILocomotiveLoadValidator loadValidator) {
         this.name = name;
         this.id = id;
         this.maxCars = maxCars;
@@ -58,6 +65,8 @@ public class Locomotive {
         this.defaultSpeed = defaultSpeed;
         this.coordinates = new Coordinates(0, 0);
         this.status = TrainStatus.WAITING;
+        this.carValidator = carValidator;
+        this.loadValidator = loadValidator;
     }
 
     public void setHomeTrainStation(TrainStation homeTrainStation) {
@@ -72,45 +81,26 @@ public class Locomotive {
         this.destTrainStation = destTrainStation;
     }
 
-
+    public List<ILoadCarrier<? extends IDeliverable>> getLoadCarriers() {
+        return loadCarriers;
+    }
 
     public void attach(RailroadCar car){
-        if(! validateCar(car)) System.out.println("Cant attach this car");
+        if(! validateCar(car)) System.out.println("Can't attach this car");
         else {
             cars.add(car);
-            car.attach();
-            if (car instanceof LoadableRailroadCar){
-                loadableRailroadCars.add((LoadableRailroadCar<? extends IDeliverable>) car);
+            car.setAttachedTo(this);
+            if (car instanceof ILoadCarrier<?>){
+                loadCarriers.add((LoadableRailroadCar<? extends IDeliverable>) car);
             }
         }
     }
 
     public boolean validateCar(RailroadCar car){
-//        if (! validateMaxCars()) throw new RuntimeException("Too many cars !");
-//        if (! validateElectric()) throw new RuntimeException("Too many electric cars!");
-//        if (! validateFreightLimit(car)) throw new RuntimeException("Too heavy!");
-        return (validateCarLimit() && validatePoweredCarLimit() && validateFreightLimit(car));
+        return carValidator.validate(car, this);
     }
 
-    private boolean validatePoweredCarLimit(){
-        int currentElectricCars = (int) cars.stream().filter(rCar -> rCar instanceof IPowered).count();
-        return currentElectricCars < maxPoweredCars;
-    }
 
-    private boolean validateCarLimit(){
-        int currentCars = cars.size();
-        return currentCars < maxCars;
-    }
-
-    private boolean validateFreightLimit(RailroadCar car){
-        BigDecimal totalFreightWeight = cars.
-                stream().
-                map(RailroadCar::getCurrentWeight).
-                reduce(BigDecimal::add).
-                orElse(BigDecimal.valueOf(0));
-        BigDecimal newWeight = totalFreightWeight.add(car.getCurrentWeight());
-        return newWeight.compareTo(maxFreight) <= 0;
-    }
 
     public void setRoad(List<RailroadLink> road){
         this.road = road;
@@ -119,7 +109,6 @@ public class Locomotive {
     public List<RailroadCar> getCars(){
         return cars;
     }
-
 
     public void setCurrentTripDistanceCovered(BigDecimal distance){
         currentTripDistanceCovered = distance;
@@ -279,28 +268,33 @@ public class Locomotive {
         return cars.size();
     }
 
-    public int poweredCarsOccupied(){
-        return (int) cars.stream().filter(car -> car instanceof IPowered).count();
+    public int getPoweredCarsNumber(){
+        return (int) cars.stream().filter(RailroadCar::isPowered).count();
     }
 
-    public int getMaxCars() {
+    public int getCarLimit() {
         return maxCars;
     }
 
-    public int getMaxPoweredCars() {
+    public int getPoweredCarLimit() {
         return maxPoweredCars;
     }
 
-    public BigDecimal getMaxFreight(){
-        return maxFreight;
+    public BigDecimal getMaxPayload(){
+        return maxFreight.setScale(2, RoundingMode.CEILING);
     }
 
-    public BigDecimal getCurrentFreight(){
+    public BigDecimal getCurrentPayload(){
         return cars.
                 stream().
                 map(RailroadCar::getCurrentWeight).
                 reduce(BigDecimal::add).
-                orElse(BigDecimal.valueOf(0));
+                orElse(BigDecimal.valueOf(0)).setScale(2, RoundingMode.CEILING);
+    }
+
+    @Override
+    public BigDecimal getAvailablePayload() {
+        return maxFreight.subtract(getCurrentPayload()).setScale(2, RoundingMode.CEILING);
     }
 
     public RailroadLink getCurrentSegment(){
@@ -370,8 +364,8 @@ public class Locomotive {
         return coordinates;
     }
 
-    public List<LoadableRailroadCar<? extends IDeliverable>> getLoadableCars() {
-        return loadableRailroadCars;
+    public List<ILoadCarrier<? extends IDeliverable>> getLoadableCars() {
+        return loadCarriers;
     }
 }
 

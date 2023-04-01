@@ -1,31 +1,31 @@
 package pl.edu.pja.s28687;
 
+import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.cars.LoadableRailroadCar;
 import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.load.IDeliverable;
-import pl.edu.pja.s28687.load.LiquidLoad;
 import pl.edu.pja.s28687.load.Load;
 import pl.edu.pja.s28687.logistics.IRouteFinder;
 import pl.edu.pja.s28687.logistics.LocoBase;
-import pl.edu.pja.s28687.logistics.RouteFindingAlgos;
+import pl.edu.pja.s28687.validators.ILocomotiveLoadValidator;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 public class TrainSet {
     private int id;
     private Locomotive locomotive;
     private Conductor conductor;
     private LocoBase locoBase;
-    private IFreightValidator freightValidator;
+    private ILocomotiveLoadValidator loadValidator;
 
-    public TrainSet(Locomotive locomotive, Conductor conductor, LocoBase locoBase, int id){
+    public TrainSet(Locomotive locomotive, Conductor conductor, LocoBase locoBase, int id, ILocomotiveLoadValidator loadValidator)  {
         this.locomotive = locomotive;
         this.conductor = conductor;
         this.locoBase = locoBase;
         this.id = id;
-        this.freightValidator = new FreightValidator();
-        freightValidator.validate(new LiquidLoad(2), getLoadableCars().get(0));
+        this.loadValidator = loadValidator;
+
     }
 
     public void start(){
@@ -65,53 +65,40 @@ public class TrainSet {
         return locomotive.getCars();
     }
 
-    public List<LoadableRailroadCar<? extends IDeliverable>> getLoadableCars(){
+    public List<ILoadCarrier<? extends IDeliverable>> getLoadCarriers(){
         return locomotive.getLoadableCars();
     }
 
-    public Optional<LoadableRailroadCar<? extends IDeliverable>> load(Load<? extends IDeliverable> load){
-
-        List<LoadableRailroadCar<?>> loadableCars = findCarsForLoad(load);
-        LoadableRailroadCar<? extends IDeliverable> carToLoad;
-
-        Optional<LoadableRailroadCar<? extends IDeliverable>> carToLoadOpt = Optional.empty();
-
-        if (!loadableCars.isEmpty()) {
-            carToLoad = loadableCars.get(0);
-            carToLoad.load((Load<IDeliverable>) load);
-            load.setLoaded();
-            carToLoadOpt = Optional.of(carToLoad);
+    public ILoadCarrier<? extends IDeliverable> load(Load<? extends IDeliverable> load){
+        if (! validateLoadWeight(load)){
+            throw new IllegalArgumentException("Load is too heavy for this train");
         }
-        return carToLoadOpt;
+
+        ILoadCarrier<? extends IDeliverable> carToLoad =
+                getCarsThatCouldLoad(load)
+                        .stream()
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException("No car could load this load"));
+        carToLoad.load((Load<IDeliverable> ) load);
+        System.out.println("Loaded " + load + " to " + carToLoad);
+        return carToLoad;
     }
 
-    public String validateLoadWeight(Load<? extends IDeliverable> load){
-        String s = "";
-        if (load.getWeight().add(locomotive.getCurrentFreight()).compareTo(locomotive.getMaxFreight()) > 0){
-            s += "Load is too heavy and can't be loaded because locomotive's max freight would be exceeded"
-                    + "\nCurrent freight: " + locomotive.getCurrentFreight()
-                    + "\nMax freight: " + locomotive.getMaxFreight()
-                    + "\nLoad weight: " + load.getWeight()
-                    + "\nToo heavy by : "
-                    + load.getWeight()
-                    .add(locomotive.getCurrentFreight())
-                    .subtract(locomotive.getMaxFreight());
-        }
-        return s;
+    public boolean validateLoadWeight(Load<? extends IDeliverable> load){
+        return loadValidator.validateWeight(load, this.locomotive);
     }
 
-    public List<LoadableRailroadCar<? extends IDeliverable>> findCarsForLoad(Load<? extends IDeliverable> load){
+    public boolean validateLoad(Load<? extends IDeliverable> load){
+        return loadValidator.validate(load, this.locomotive);
+    }
 
-        if (! validateLoadWeight(load).isEmpty()){
+    public List<ILoadCarrier<? extends IDeliverable>> getCarsThatCouldLoad(Load<? extends IDeliverable> load){
+        if (!validateLoadWeight(load)){
             return List.of();
         }
-        else {
-            return getLoadableCars().stream()
-                    .filter(car -> car
-                            .validateLoad
-                                    ((Load<IDeliverable>) (load)).isEmpty()).toList();
+        return loadValidator.getCarsThatCouldLoad(load, this.locomotive);
         }
-    }
+
 
     @Override
     public String toString() {
@@ -136,5 +123,13 @@ public class TrainSet {
         }
         stringBuilder.append("\nloadsNumber = ").append(loadsNumber);
         return stringBuilder.toString();
+    }
+
+    public BigDecimal getMaxPayload() {
+        return locomotive.getMaxPayload();
+    }
+
+    public BigDecimal getCurrentPayload() {
+        return locomotive.getCurrentPayload();
     }
 }

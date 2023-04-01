@@ -20,4 +20,9 @@ public class PostOfficeCar extends RailroadCar implements IPowered{
     public CarType getCarType() {
         return CarType.POST_OFFICE;
     }
+
+    @Override
+    public boolean isPowered() {
+        return true;
+    }
 }

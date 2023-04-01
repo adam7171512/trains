@@ -64,7 +64,6 @@ public class Canvas extends Thread {
 
 
     public  void visualise() throws InterruptedException {
-        LocoBase locoBase = LocoBase.getInstance();
         List<RailroadLink> links = locoBase.getRailroadConnections().stream().toList();
         for(RailroadLink link: links){
             locoMap.addRails(link);

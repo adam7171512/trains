@@ -74,12 +74,16 @@ public class LocomotiveFactory {
     public List<Locomotive> createLocomotivesOfType(int quantity, LocomotivePurpose type){
         List<Locomotive> locomotives = new ArrayList<>();
         for (int i = 0; i < quantity; i++){
-            locomotives.add(switch (type){
-                case PASSENGER -> createLocomotiveForPassengerTrain();
-                case BASIC_FREIGHT -> createLocomotiveForBasicFreightTrain();
-                case HEAVY_FREIGHT -> createLocomotiveForHeavyFreightTrain();
-            });
-        }
+            locomotives.add(createLocomotiveOfType(type));
+            }
         return locomotives;
+    }
+
+    public Locomotive createLocomotiveOfType(LocomotivePurpose type){
+        return switch (type){
+            case PASSENGER -> createLocomotiveForPassengerTrain();
+            case BASIC_FREIGHT -> createLocomotiveForBasicFreightTrain();
+            case HEAVY_FREIGHT -> createLocomotiveForHeavyFreightTrain();
+        };
     }
 }

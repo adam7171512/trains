@@ -1,39 +1,36 @@
 package pl.edu.pja.s28687;
 
-import pl.edu.pja.s28687.cars.*;
-import pl.edu.pja.s28687.consoleInterface.MainMenu;
-import pl.edu.pja.s28687.factories.*;
+import pl.edu.pja.s28687.cars.LiquidLoadCar;
+import pl.edu.pja.s28687.cars.LiquidToxicLoadCar;
+import pl.edu.pja.s28687.consoleInterface.MainMenu2;
 import pl.edu.pja.s28687.load.*;
-import pl.edu.pja.s28687.logistics.*;
-
-import java.math.BigDecimal;
+import pl.edu.pja.s28687.validators.CarFreightValidator;
 
 public class Main {
     public static void main(String[] args) {
 
-    RailroadCar car = new CarsFactory(new LocoBase()).createCar(CarType.PASSENGERS);
-    PassengerValidator validator = new PassengerValidator();
-    LoadableRailroadCar<?> lc = new PassengerCar(1, validator);
-    PassengerCar pc = new PassengerCar(1, validator);
-    Mail mailLoad = new Mail(1);
+//    LocoBase locoBase = new LocoBase();
+//    RailroadCar car = new CarsFactory(locoBase).createRandomCar();
+//
+//    Locomotive loco = new LocomotiveFactory(locoBase).makeRandomLocomotive();
+//
+//    TrainSet trainset = new TrainSetFactory(locoBase, new LocomotiveFactory(locoBase), new CarsFactory(locoBase))
+//            .createTrainSetOfType(LocomotivePurpose.PASSENGER);
+//
+//    System.out.println(TrainSetInfo.getTrainSetInfo(trainset));
+        LiquidLoad liquidLoad = new LiquidLoad(2, 2);
+        LiquidToxicLoad liquidToxicLoad = new LiquidToxicLoad(2);
+        LiquidToxicLoadCar liquidToxicLoadCar = new LiquidToxicLoadCar(2, new CarFreightValidator());
 
 
+        LiquidLoadCar liquidLoadCar = new LiquidLoadCar(2, new CarFreightValidator());
+        liquidLoadCar.load(liquidLoad);
+        BasicFreightLoad freight = new BasicFreightLoad(2);
+//        liquidLoadCar.load(freight);
+//
+//        liquidToxicLoadCar.load(liquidToxicLoad);
+//        liquidToxicLoadCar.load(liquidLoad);
+    new MainMenu2().menuAction();
 
-
-
-//        HeavyFreightCar  car = new HeavyFreightCar(1);
-//        ToxicLoad toxicLoad = new ToxicLoad(1);
-//        HeavyFreightLoad heavyFreightLoad = new HeavyFreightLoad(1);
-//        car.load(toxicLoad);
-//        car.load(heavyFreightLoad);
-
-//        LoadBuilder lb = new LoadBuilder(10, 200, LocoBase.getInstance());
-//        lb.addFlag(Flags.LIQUID);
-//        lb.build();
-//        lb.build();
-//        LoadBuilder lb2 = new LoadBuilder(20, LocoBase.getInstance());
-//        lb2.addFlag(Flags.LUGGAGE);
-//        lb2.addFlag(Flags.PASSENGERS);
-//        lb2.build();
     }
 }

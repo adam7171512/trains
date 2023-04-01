@@ -37,6 +37,10 @@ public class LocoBase {
         return trainSets.values().stream().toList();
     }
 
+    public Optional<TrainSet> findTrainSet(int selection) {
+        return Optional.ofNullable(trainSets.get(selection));
+    }
+
 
     private static class SingletonHelper{
         private static final LocoBase INSTANCE = new LocoBase();
@@ -131,7 +135,11 @@ public class LocoBase {
         return Optional.ofNullable(locomotives.get(id));
     }
 
-    public  Optional<LoadableRailroadCar<?>> findCar(int id){
+    public  Optional<RailroadCar> findCar(int id){
+        return Optional.ofNullable(railroadCars.get(id));
+    }
+
+    public  Optional<LoadableRailroadCar<? extends IDeliverable>> findLoadCarrier(int id){
         return Optional.ofNullable(loadCarriers.get(id));
     }
 
@@ -190,7 +198,7 @@ public class LocoBase {
         return loads.values().stream().toList();
     }
 
-    public List<LoadableRailroadCar<?>> findSuitableCars(Load<?> load){
+    public List<LoadableRailroadCar<? extends IDeliverable>> findSuitableCars(Load<? extends IDeliverable> load){
         return loadCarriers
                 .values()
                 .stream()
@@ -203,13 +211,13 @@ public class LocoBase {
 
 
 
-    public List<Load<? extends IDeliverable>>findSuitableLoads(LoadableRailroadCar<? extends IDeliverable> car) {
+    public List<Load<? extends IDeliverable>>findSuitableLoads(ILoadCarrier<? extends IDeliverable> car) {
 
         return loads
                 .values()
                 .stream()
                 .filter(load -> !load.isLoaded())
-                .filter(load -> car.validateLoad((Load<IDeliverable>)load).isEmpty())
+                .filter(car::validateLoad)
                 .toList();
     }
 

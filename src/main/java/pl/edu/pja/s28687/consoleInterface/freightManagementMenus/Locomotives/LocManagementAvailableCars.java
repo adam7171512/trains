@@ -33,7 +33,7 @@ public class LocManagementAvailableCars {
             printSuitableCars(locomotive, locoBase);
             selection = scan.nextInt();
             if (selection != 0) {
-                Optional<LoadableRailroadCar<?>> car = locoBase.findCar(selection);
+                Optional<RailroadCar> car = locoBase.findCar(selection);
                 car.ifPresent(locomotive::attach);
             }
 
@@ -54,11 +54,10 @@ public class LocManagementAvailableCars {
             RailroadCar rC = suitableCars.get(i);
             String singleDescr =
                     (i+1) + " ID: " + rC.getId() + " " +
-                            rC.getName() + " " +
                             rC.getCarType();
 
             if (rC instanceof LoadableRailroadCar<?>){
-                singleDescr +="\n Freight used : " + rC.getCurrentWeight() + "/" + rC.grossWeight() + "tonnes"
+                singleDescr +="\n Freight used : " + rC.getCurrentWeight() + "/" + rC.getMaxWeight() + "tonnes"
                     + "\nAllowed freight types :" + ((LoadableRailroadCar<?>) rC).getAllowedLoadFlags();
             }
             singleDescr += "\n_  _   _   _   _   _  _  _  _  _";

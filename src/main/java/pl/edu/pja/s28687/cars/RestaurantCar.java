@@ -20,4 +20,9 @@ public class RestaurantCar extends RailroadCar implements IPowered{
     public CarType getCarType() {
         return CarType.RESTAURANT;
     }
+
+    @Override
+    public boolean isPowered() {
+        return true;
+    }
 }

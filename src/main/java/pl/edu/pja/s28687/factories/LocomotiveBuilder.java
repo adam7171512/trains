@@ -1,7 +1,11 @@
 package pl.edu.pja.s28687.factories;
 
+import pl.edu.pja.s28687.validators.ILocomotiveCarValidator;
 import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.validators.ILocomotiveLoadValidator;
+import pl.edu.pja.s28687.validators.LocomotiveCarValidator;
 import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.validators.LocomotiveLoadValidator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -51,6 +55,8 @@ public class LocomotiveBuilder {
     private int regularCars;
     private int poweredCars;
     private LocoBase locoBase;
+    private ILocomotiveCarValidator carValidator;
+    private ILocomotiveLoadValidator loadValidator;
 
     public LocomotiveBuilder(LocoBase locobase){
         this.locoBase = locobase;
@@ -81,6 +87,16 @@ public class LocomotiveBuilder {
         return this;
         }
 
+    public LocomotiveBuilder setCarValidator(ILocomotiveCarValidator validator){
+        this.carValidator = validator;
+        return this;
+    }
+
+    public LocomotiveBuilder setLoadValidator(ILocomotiveLoadValidator validator){
+        this.loadValidator = validator;
+        return this;
+    }
+
 
    public LocomotiveBuilder setRandomProperties(){
         this.name = prefixes.get((int)(
@@ -103,8 +119,11 @@ public class LocomotiveBuilder {
         if (maxPayload == null) maxPayload = BigDecimal.valueOf(10000);
         if (regularCars == 0) regularCars = 20;
         if (poweredCars == 0) poweredCars = 10;
+        if (carValidator == null) carValidator = new LocomotiveCarValidator();
+        if (loadValidator == null) loadValidator = new LocomotiveLoadValidator();
 
-        Locomotive locomotive = new Locomotive(name, id, regularCars, maxPayload, poweredCars,  defaultSpeed);
+        Locomotive locomotive = new Locomotive(
+                name, id, regularCars, maxPayload, poweredCars,  defaultSpeed, carValidator, loadValidator);
         locoBase.registerLocomotive(locomotive);
         return locomotive;
         }

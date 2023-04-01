@@ -1,4 +1,5 @@
 package pl.edu.pja.s28687.info;
+import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.logistics.LocoBase;
@@ -10,22 +11,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TrainSetInfo {
-    public static String getTrainSetInfo(Locomotive locomotive){
+    public static String getTrainSetInfo(TrainSet trainSet){
+
+        Locomotive locomotive = trainSet.getLocomotive();
 
         StringBuilder loco = new StringBuilder()
+                .append("\nTrainSet ID : ").append(trainSet.getId())
                 .append("\nLocomotive ID : ").append(locomotive.getId())
                 .append(" | Loc name : ").append(locomotive.getLocName())
                 .append(" | Current status : ").append(locomotive.getStatus()).append("\n")
                 .append("Home station : ").append(locomotive.getHomeStation())
-                .append(" | Current payload : ").append(locomotive.getCurrentFreight())
-                .append(" | Max payload : ").append(locomotive.getMaxFreight())
+                .append(" | Current payload : ").append(locomotive.getCurrentPayload())
+                .append(" / ").append(locomotive.getMaxPayload())
                 .append(" tonnes")
                 .append("\nCars attached : ")
                 .append(" regular : ").append(locomotive.carsOccupied())
-                .append(" powered : ").append(locomotive.poweredCarsOccupied())
+                .append(" powered : ").append(locomotive.getPoweredCarsNumber())
                 .append(" | Car limits : ")
-                .append(" regular : ").append(locomotive.getMaxCars())
-                .append(" powered : ").append(locomotive.getMaxPoweredCars())
+                .append(" regular : ").append(locomotive.getCarLimit())
+                .append(" powered : ").append(locomotive.getPoweredCarLimit())
                 .append(" | Passengers carried : ").append(locomotive.passengersOnBoard())
                 .append("\nSegment info | ")
                 .append(" Current speed : ").append(locomotive.getCurrentSpeed()).append(" km/h")
@@ -37,45 +41,68 @@ public class TrainSetInfo {
                 .append(" | Destination  : ").append(locomotive.getDestStation())
                 .append(" | Trip distance  : ").append(locomotive.getCurrentTripDistance()).append(" km")
                 .append(" | Stops  : ").append(locomotive.getRoad().size())
-                .append(" | Trip progress : ").append(locomotive.getCurrentTripProgress()).append(" %")
+                .append(" | Trip progress : ").append(locomotive.getCurrentTripProgress()).append(" %");
 //                .append("\nTrip segments : ").append(locomotive.getRoad())
-                .append("\nRailroad cars attached :\n");
+
 
         List<RailroadCar> cars = locomotive.getCars();
         if (cars.size() == 0) {
-            loco.append("No cars ");
+            loco.append("\nNo cars attached");
             return loco.toString();
         }
-
-        loco.append(
+        else {
+            loco.append("\nRailroad cars attached :\n");
+            loco.append(
                     cars.
-                    stream().
-                    sorted
-                            (Comparator.comparingDouble
-                            (car -> car.getCurrentWeight().
-                            doubleValue())).
-                    map(CarInfo::getBasicInfo).collect(Collectors.joining("\n")));
-        loco.append("\n").append("_".repeat(140));
+                            stream().
+                            sorted
+                                    (Comparator.comparingDouble
+                                            (car -> car.getCurrentWeight().
+                                                    doubleValue())).
+                            map(CarInfo::getBasicInfo).collect(Collectors.joining("\n")));
+            loco.append("\n").append("_".repeat(140));
+        }
         return loco.toString();
     }
 
     public static String getAggregatedTrainSetsInfo(LocoBase locoBase){
-        List<Locomotive> locs = new ArrayList<>(locoBase.
-                getLocomotiveList().
+
+        List<TrainSet> trainSets = new ArrayList<>(locoBase.
+                getTrainSets().
                 stream().
                 sorted(Comparator.comparingDouble
-                        (loc -> loc.getCurrentTripDistance()
+                        (trainSet -> trainSet.getLocomotive().
+                                getCurrentTripDistance()
                                 .doubleValue()))
                 .toList());
-        Collections.reverse(locs);
+        Collections.reverse(trainSets);
 
         StringBuilder stringBuilder = new StringBuilder();
-        for (Locomotive locomotive : locs){
-            stringBuilder.append(getTrainSetInfo(locomotive));
+
+        for (TrainSet trainSet : trainSets){
+            stringBuilder.append(getTrainSetInfo(trainSet));
             stringBuilder.append("\n").append("_".repeat(140));
             stringBuilder.append("\n").append("_".repeat(140));
             stringBuilder.append("\n").append("_".repeat(140));
         }
+
+//
+//        List<Locomotive> locs = new ArrayList<>(locoBase.
+//                getLocomotiveList().
+//                stream().
+//                sorted(Comparator.comparingDouble
+//                        (loc -> loc.getCurrentTripDistance()
+//                                .doubleValue()))
+//                .toList());
+//        Collections.reverse(locs);
+//
+//        StringBuilder stringBuilder = new StringBuilder();
+//        for (Locomotive locomotive : locs){
+//            stringBuilder.append(getTrainSetInfo(locomotive));
+//            stringBuilder.append("\n").append("_".repeat(140));
+//            stringBuilder.append("\n").append("_".repeat(140));
+//            stringBuilder.append("\n").append("_".repeat(140));
+//        }
         return stringBuilder.toString();
     }
 

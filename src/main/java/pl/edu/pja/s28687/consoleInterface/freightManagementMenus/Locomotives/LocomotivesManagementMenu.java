@@ -39,9 +39,9 @@ public class LocomotivesManagementMenu {
                             " cruising between " + loc.getSourceStation() +
                             " and " + loc.getDestStation() +
                     "\nCars occupied:" +
-                            "\nregular " + loc.carsOccupied()+"/"+loc.getMaxCars() +
-                            "\npowered: " + loc.poweredCarsOccupied() + "/" + loc.getMaxPoweredCars() +
-                    "\nFreight used  : " + loc.getCurrentFreight() + "/" + loc.getMaxFreight() + "tonnes" +
+                            "\nregular " + loc.carsOccupied()+"/"+loc.getCarLimit() +
+                            "\npowered: " + loc.getPoweredCarsNumber() + "/" + loc.getPoweredCarLimit() +
+                    "\nFreight used  : " + loc.getCurrentPayload() + "/" + loc.getMaxPayload() + "tonnes" +
                             "\nPassengers on board:" + loc.passengersOnBoard() +
                     "\n_  _   _   _   _   _  _  _  _  _";
             locsdescriptions.add(locDescr);

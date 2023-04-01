@@ -34,22 +34,40 @@ public class RailroadCarsManagementMenu {
     public static List<String> getCarDescriptions(LocoBase locoBase){
         List<RailroadCar> cars = locoBase.getRailroadCarsList();
         List<String> carsDescr = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < cars.size(); i++ ){
             RailroadCar rC = cars.get(i);
-            String carDescr =
-                    (i+1) + " ID: " + rC.getId() + " " +
-                            rC.getName() + " " +
-                            "\nCar type types :" + rC.getCarType() +
-                            "\nWeight limit used  : " + rC.getCurrentWeight() + "/" + rC.grossWeight() + "tonnes";
+            stringBuilder.append(i + 1)
+                    .append(" ID: ")
+                    .append(rC.getId())
+                    .append("\nCar type :")
+                    .append(rC.getCarType())
+                    .append("\nWeight limit used  : ")
+                    .append(rC.getCurrentWeight())
+                    .append("/")
+                    .append(rC.getMaxWeight())
+                    .append("tonnes");
 
 
             if (cars.get(i) instanceof PassengerCar) {
-                carDescr += "\nPassenger seats taken : "
-                        + ((PassengerCar) cars.get(i)).getNumberOfPassengers()
-                        + " / " + ((PassengerCar) cars.get(i)).getNumberOfSeats();
+                stringBuilder
+                        .append("\nPassengers : ")
+                        .append(((PassengerCar) cars.get(i))
+                                .getNumberOfPassengers())
+                        .append(" / ")
+                        .append(((PassengerCar) cars.get(i))
+                                .getNumberOfSeats());
             }
-            carDescr += "\n_  _   _   _   _   _  _  _  _  _";
-            carsDescr.add(carDescr);
+
+            cars.get(i).getLocomotive()
+                    .ifPresent(locomotive -> stringBuilder
+                            .append("\nAttached to locomotive : ")
+                            .append(locomotive.getLocName())
+                            .append(" ID: ")
+                            .append(locomotive.getId())
+                    );
+            stringBuilder.append("\n_  _   _   _   _   _  _  _  _  _\n");
+            carsDescr.add(stringBuilder.toString());
         }
         return carsDescr;
     }
@@ -60,11 +78,11 @@ public class RailroadCarsManagementMenu {
         switch (actionType) {
             case 0 -> System.out.println("lol");
             case 1 -> {
-                LoadableRailroadCar<?> car = locoBase.findCar(selection).get();
+                LoadableRailroadCar<?> car = locoBase.findLoadCarrier(selection).get();
                 RailroadCarsManagementLoadedLoads.managementMenu(car, locoBase);
             }
             default -> {
-                LoadableRailroadCar<?> car = locoBase.findCar(selection).get();
+                LoadableRailroadCar<?> car = locoBase.findLoadCarrier(selection).get();
                 RailroadCarsManagementAvailableLoads.managementMenu(car, locoBase);
             }
 

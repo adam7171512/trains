@@ -43,21 +43,29 @@ public class TrainSetFactory {
 
     public List<TrainSet> createTrainSetsOfType(int count, LocomotivePurpose type, IRouteFinder algorithm){
         List<TrainSet> trainSets = new ArrayList<>();
-        List<Locomotive> locos = locomotiveFactory.createLocomotivesOfType(count, type);
         for (int i = 0; i < count; i++){
-            TrainSet trainSet = new TrainSetBuilder(locoBase)
-                    .setLocomotive(locos.get(i))
-                    .setAlgorithm(algorithm)
-                    .setLocoBase(locoBase)
-                    .build();
-            int numberOfCars = random.nextInt(trainSet.getLocomotive().getMaxCars() - 5) + 5;
-            List<RailroadCar> cars = createCarsForTrainSet(trainSet, numberOfCars, type);
-
-            for (RailroadCar car : cars)
-                trainSet.getLocomotive().attach(car);
-            trainSets.add(trainSet);
+            trainSets.add(createTrainSetOfType(type, algorithm));
         }
         return trainSets;
+    }
+
+    public TrainSet createTrainSetOfType(LocomotivePurpose type, IRouteFinder algorithm){
+        Locomotive loco = locomotiveFactory.createLocomotiveOfType(type);
+        TrainSet trainSet = new TrainSetBuilder(locoBase)
+                .setLocomotive(loco)
+                .setAlgorithm(algorithm)
+                .setLocoBase(locoBase)
+                .build();
+        int numberOfCars = random.nextInt(trainSet.getLocomotive().getCarLimit() - 5) + 5;
+        List<RailroadCar> cars = createCarsForTrainSet(trainSet, numberOfCars, type);
+
+        for (RailroadCar car : cars)
+            loco.attach(car);
+        return trainSet;
+    }
+
+    public TrainSet createTrainSetOfType(LocomotivePurpose type){
+        return createTrainSetOfType(type, new NaiveRouteFinder(locoBase));
     }
 
     public List<TrainSet> createTrainSetsOfType(int count, LocomotivePurpose type){
@@ -66,31 +74,60 @@ public class TrainSetFactory {
 
     private List<RailroadCar> createCarsForTrainSet(TrainSet trainSet, int maxCount, LocomotivePurpose type){
         List<RailroadCar> cars = new ArrayList<>();
-        int number = Math.min(maxCount, trainSet.getLocomotive().getMaxCars());
+        int number = Math.min(maxCount, trainSet.getLocomotive().getCarLimit());
         int count = 0;
 
         switch (type){
             case PASSENGER:
                 if (number > 10) {
-                    cars.addAll(carsFactory.createCars(CarType.LUGGAGE, number/10));
+                    cars.addAll(carsFactory.createCarsOfType(CarType.LUGGAGE, number/10));
                     count += number/10;
-                    cars.add(carsFactory.createCar(CarType.RESTAURANT));
+                    cars.add(carsFactory.createCarOfType(CarType.RESTAURANT));
                     count++;
                 }
                 if (number > 20){
-                    cars.add(carsFactory.createCar(CarType.POST_OFFICE));
+                    cars.add(carsFactory.createCarOfType(CarType.POST_OFFICE));
                     count++;
                 }
-                cars.addAll(carsFactory.createCars(CarType.PASSENGERS, number - count));
+                cars.addAll(carsFactory.createCarsOfType(CarType.PASSENGERS, number - count));
                 break;
             case BASIC_FREIGHT:
-                cars.addAll(carsFactory.createCars(CarType.BASIC_FREIGHT, number));
+                cars.addAll(carsFactory.createCarsOfType(CarType.BASIC_FREIGHT, number));
                 break;
             case HEAVY_FREIGHT:
-                cars.addAll(carsFactory.createCars(CarType.HEAVY_FREIGHT, number));
+                cars.addAll(carsFactory.createCarsOfType(CarType.HEAVY_FREIGHT, number));
                 break;
         }
         return cars;
         }
+
+    private List<RailroadCar> createRandomCarsForTrainSet(TrainSet trainSet, int maxCount){
+        List<RailroadCar> cars = new ArrayList<>();
+        int number = Math.min(maxCount, trainSet.getLocomotive().getCarLimit());
+        int count = 0;
+        while(trainSet.getLocomotive().getPoweredCarsNumber() < (trainSet.getLocomotive().getPoweredCarLimit()) && count < number){
+            cars.add(carsFactory.createRandomCar());
+            count++;
+        }
+        while (trainSet.getLocomotive().carsOccupied() < (trainSet.getLocomotive().getCarLimit()) && count < number){
+            cars.add(carsFactory.createRandomNonPoweredCar());
+            count++;
+        }
+        return cars;
     }
+
+    public void createRandomTrainSetWithCars() {
+        TrainSet trainSet = createRandomTrainSet();
+        List<RailroadCar> cars = createRandomCarsForTrainSet(trainSet, 99);
+        for (RailroadCar car : cars){
+            trainSet.getLocomotive().attach(car);
+        }
+    }
+
+    public void createRandomTrainSetsWithCars(int number){
+        for (int i = 0; i < number; i++){
+            createRandomTrainSetWithCars();
+        }
+    }
+}
 

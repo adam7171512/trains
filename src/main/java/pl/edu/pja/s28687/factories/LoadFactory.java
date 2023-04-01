@@ -31,6 +31,7 @@ public class LoadFactory {
                 .build();
     }
 
+
     public Load<? extends IDeliverable> createPassengerLoad(int quantity){
         LoadBuilder loadBuilder = new LoadBuilder(locoBase);
         return loadBuilder

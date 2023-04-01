@@ -12,6 +12,7 @@ public class LoadBuilder{
     private double weight;
     private int quantity;
     private LocoBase locoBase;
+    private double volume;
 
 
     public LoadBuilder(double weight, int quantity, LocoBase locoBase){
@@ -64,6 +65,11 @@ public class LoadBuilder{
         return this;
     }
 
+    public LoadBuilder setLiquidVolume(double volume){
+        this.volume = volume;
+        return this;
+    }
+
     public Load<? extends IDeliverable> build(){
         if (flags.isEmpty()) {
             flags = Set.of(Flags.BASIC_FREIGHT);
@@ -72,7 +78,7 @@ public class LoadBuilder{
             if (flags.size() == 1) {
                 load = switch (flags.iterator().next()) {
                 case HEAVY_FREIGHT -> new HeavyFreightLoad(weight);
-                case LIQUID -> new LiquidLoad(weight);
+                case LIQUID -> new LiquidLoad(weight, volume);
                 case LUGGAGE -> new Mail(weight);
                 case GASEOUS -> new GaseousLoad(weight);
                 case TOXIC -> new ToxicLoad(weight);

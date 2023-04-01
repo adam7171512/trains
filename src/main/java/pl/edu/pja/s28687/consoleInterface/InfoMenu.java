@@ -1,7 +1,9 @@
 package pl.edu.pja.s28687.consoleInterface;
 
+import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.info.LocInfo;
 import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.info.TrainSetInfo;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ public class InfoMenu {
 
     private static void printLocList(LocoBase locoBase){
         System.out.println("_______________________________");
-        for(String s: getLocDescriptions(locoBase)) System.out.println(s);
+        for(String s: getTrainSetsDescriptions(locoBase)) System.out.println(s);
         System.out.println("Enter locomotive ID to display more info or 0 to go back");
     }
 
@@ -24,38 +26,39 @@ public class InfoMenu {
         while (selection != 0){
             printLocList(locoBase);
             selection = scan.nextInt();
-            locManagementLoop(selection, locoBase);
+            trainSetInfoLoop(selection, locoBase);
             scan.nextInt();
         }
     }
 
-    public static List<String> getLocDescriptions(LocoBase locoBase){
-        List<Locomotive> locs = locoBase.getLocomotiveList();
-        List<String> locsdescriptions = new ArrayList<>();
-        for (int i = 0; i < locs.size(); i++){
-            Locomotive loc = locs.get(i);
-            String locDescr =
-                    (i+1) + " ID: " + loc.getId() + " " +
+    public static List<String> getTrainSetsDescriptions(LocoBase locoBase){
+        List<TrainSet> trainSets = locoBase.getTrainSets();
+        List<String> trainSetsDescriptions = new ArrayList<>();
+        for (int i = 0; i < trainSets.size(); i++){
+            TrainSet trainSet = trainSets.get(i);
+            Locomotive loc = trainSet.getLocomotive();
+            String trainSetDescr =
+                    (i+1) + ". TrainSet ID: " + trainSet.getId() + " " +
                             loc.getLocName() + " " +
                             " cruising between " + loc.getSourceStation() +
                             " and " + loc.getDestStation() +
                             "\nCars occupied:" +
-                            "\nregular " + loc.carsOccupied()+"/"+loc.getMaxCars() +
-                            "\npowered: " + loc.poweredCarsOccupied() + "/" + loc.getMaxPoweredCars() +
-                            "\nFreight used  : " + loc.getCurrentFreight() + "/" + loc.getMaxFreight() + "tonnes" +
+                            "\nregular " + loc.carsOccupied()+"/"+loc.getCarLimit() +
+                            "\npowered: " + loc.getPoweredCarsNumber() + "/" + loc.getPoweredCarLimit() +
+                            "\nFreight used  : " + loc.getCurrentPayload() + "/" + loc.getMaxPayload() + "tonnes" +
                             "\nPassengers on board:" + loc.passengersOnBoard() +
                             "\n_  _   _   _   _   _  _  _  _  _";
-            locsdescriptions.add(locDescr);
+            trainSetsDescriptions.add(trainSetDescr);
         }
-        return locsdescriptions;
+        return trainSetsDescriptions;
     }
 
-    public static void locManagementLoop(int selection, LocoBase locoBase){
+    public static void trainSetInfoLoop(int selection, LocoBase locoBase){
         switch (selection) {
             case 0 -> System.out.println("lol");
             default -> {
-                Locomotive loc = locoBase.findLoc(selection).get();
-                System.out.println(LocInfo.getFullInfo(loc));
+                TrainSet trainSet = locoBase.findTrainSet(selection).get();
+                System.out.println(TrainSetInfo.getTrainSetInfo(trainSet));
             }
 
         }

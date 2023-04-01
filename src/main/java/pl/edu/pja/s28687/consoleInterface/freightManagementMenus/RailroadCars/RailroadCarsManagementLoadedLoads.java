@@ -24,7 +24,7 @@ public class RailroadCarsManagementLoadedLoads{
             int selection = scan.nextInt();
             if (selection == 0) break;
             Load<? extends IDeliverable> load = locoBase.getLoad(selection);
-            car.deLoad((Load<IDeliverable>) load);
+            car.unLoad(load);
 
         }}
 

@@ -2,11 +2,10 @@ package pl.edu.pja.s28687.load;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
-public abstract class Load<T extends IDeliverable>{
+public abstract class Load<T extends IDeliverable> {
+
 
     BigDecimal quantity;
     private BigDecimal weight;

@@ -1,16 +1,16 @@
 package pl.edu.pja.s28687.cars;
 
+import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.load.Flags;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
-public abstract class RailroadCar {
+public abstract class RailroadCar implements IRailroadCar{
     private String shipper;
     private String securityInfo;
     private BigDecimal netWeight;
@@ -21,7 +21,7 @@ public abstract class RailroadCar {
     protected Set<Flags> forbidden;
     protected Set<Flags> allowedLoadFlags;
     private String name;
-    private boolean attached = false;
+    private Optional<Locomotive> locomotive = Optional.empty();
 
     public RailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id) {
         this.shipper = shipper;
@@ -51,16 +51,16 @@ public abstract class RailroadCar {
         this.name = name;
     }
 
-    public BigDecimal grossWeight(){
-        return grossWeight;
+    public BigDecimal getMaxWeight(){
+        return grossWeight.setScale(2, RoundingMode.CEILING);
     }
 
-    public BigDecimal netWeight(){
-        return netWeight;
+    public BigDecimal getNetWeight(){
+        return netWeight.setScale(2, RoundingMode.CEILING);
     }
 
     public BigDecimal getCurrentWeight() {
-        return currentWeight;
+        return currentWeight.setScale(2, RoundingMode.CEILING);
     }
 
 
@@ -72,16 +72,20 @@ public abstract class RailroadCar {
         return name;
     }
 
-    public void attach(){
-        attached = true;
+    public void setAttachedTo(Locomotive locomotive){
+        this.locomotive = Optional.of(locomotive);
     }
 
-    public void detach(){
-        attached = false;
+    public Optional<Locomotive> getLocomotive(){
+        return locomotive;
+    }
+
+    public void setDetached(){
+        this.locomotive = Optional.empty();
     }
 
     public boolean isAttached(){
-        return attached;
+        return locomotive.isPresent();
     }
 
     public BigDecimal getGrossWeight() {
@@ -89,6 +93,8 @@ public abstract class RailroadCar {
     }
 
     public abstract CarType getCarType();
+
+    public abstract boolean isPowered();
 
 
 

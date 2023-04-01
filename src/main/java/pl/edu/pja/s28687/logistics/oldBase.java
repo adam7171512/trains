@@ -136,7 +136,7 @@ public class oldBase {
                     filter(load ->
                             Collections.disjoint(load.flags(),
                                     car.allowedLoadFlags())).
-                    filter(load -> car.validateLoad(((Load<IDeliverable>) load)).isEmpty()).
+                    filter(load -> car.validateLoad(load)).
                     toList();
         }
 

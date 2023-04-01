@@ -7,15 +7,14 @@ import pl.edu.pja.s28687.load.Load;
 import java.math.BigDecimal;
 import java.util.Set;
 
-public interface ILoadCarrier<T> {
+public interface ILoadCarrier<T>  extends IRailroadCar{
 
-    void load(Load<? super T> load);
+    boolean load(Load<? super T> load);
+    boolean unLoad(Load<?> load);
 
-    String validateLoad(Load<? extends IDeliverable> load);
+    boolean validateLoad(Load<? extends IDeliverable> load);
 
     Set<Flags> allowedLoadFlags();
 
-    BigDecimal getCurrentWeight();
 
-    BigDecimal getGrossWeight();
 }

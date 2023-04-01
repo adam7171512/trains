@@ -31,7 +31,7 @@ public class AggregateInfo {
                         .count());
         BigDecimal totalPayload = locList
                 .stream()
-                .map(Locomotive::getCurrentFreight)
+                .map(Locomotive::getCurrentPayload)
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);
         BigDecimal maxSpeed = locList

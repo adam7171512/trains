@@ -37,15 +37,15 @@ public class LocInfo {
                 append("\nLocomotive ID : ").append(locomotive.getId()).
                 append(" | Loc name : ").append(locomotive.getLocName()).
                 append(" | Home station : ").append(locomotive.getHomeStation()).
-                append(" | Current payload : ").append(locomotive.getCurrentFreight()).
-                append(" | Max payload : ").append(locomotive.getMaxFreight()).
+                append(" | Current payload : ").append(locomotive.getCurrentPayload()).
+                append(" | Max payload : ").append(locomotive.getMaxPayload()).
                 append(" tonnes").
                 append("\nCars attached : ").
                 append(" regular : ").append(locomotive.carsOccupied()).
-                append(" powered : ").append(locomotive.poweredCarsOccupied()).
+                append(" powered : ").append(locomotive.getPoweredCarsNumber()).
                 append(" | Car limits | ").
-                append(" regular : ").append(locomotive.getMaxCars()).
-                append(" powered : ").append(locomotive.getMaxPoweredCars()).
+                append(" regular : ").append(locomotive.getCarLimit()).
+                append(" powered : ").append(locomotive.getPoweredCarLimit()).
                 append(" | Passengers carried : ").append(locomotive.passengersOnBoard()).
                 append("\nCurrent status : ").append(locomotive.getStatus()).append("\n");
 

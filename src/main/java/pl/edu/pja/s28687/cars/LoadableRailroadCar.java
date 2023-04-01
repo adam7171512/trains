@@ -1,6 +1,6 @@
 package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.ILoadValidator;
+import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import pl.edu.pja.s28687.load.Flags;
 import pl.edu.pja.s28687.load.Load;
 import pl.edu.pja.s28687.load.IDeliverable;
@@ -15,66 +15,46 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
     Set<Flags> allowedFlags;
     private BigDecimal currentWeight;
 
-    protected ILoadValidator validator;
-    public LoadableRailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id, ILoadValidator validator) {
+    protected ICarLoadValidator validator;
+    public LoadableRailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id, ICarLoadValidator validator) {
         super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, id);
         loads = new ArrayList<>();
-        currentWeight = this.netWeight();
+        currentWeight = this.getNetWeight();
         this.validator = validator;
     }
 
     @Override
-    public  void load(Load<? super T> load) {
-        String message = "";
-        try {
-            message = validateLoad(load);
-        } catch (ClassCastException e) {
-            System.err.println("Incompatible load type!" + e.getMessage());
+    public boolean load(Load<? super T> load) {
+        if (validateLoad(load)){
+            loads.add(load);
+            load.setLoaded();
+            currentWeight = currentWeight.add(load.getWeight());
+            return true;
         }
-        try {
-            if (message.isEmpty()) loads.add(load);
-            else throw new IllegalArgumentException("Could not load the Car!\n");
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage() + message);
-        }
-
-        load.setLoaded();
-        currentWeight = currentWeight.add(load.getWeight());
+        return false;
     }
 
-    public void deLoad(Load<? super T> load){
-//        loads.remove(loads.stream().filter(l -> l.equals(load)).findFirst().or);
-        loads.remove(load);
-        load.setDeloaded();
-        currentWeight = currentWeight.subtract(load.getWeight());
+    @Override
+    public boolean unLoad(Load<?> load){
+        boolean removed = loads.remove(load);
+        if (removed){
+            load.setDeloaded();
+            currentWeight = currentWeight.subtract(load.getWeight());
+        }
+        return removed;
     }
 
 
     public BigDecimal getCurrentWeight(){
-        return loads.stream()
-                .map(Load::getWeight)
-                .reduce(BigDecimal::add)
-                .orElse(BigDecimal.ZERO)
-                .add(netWeight())
-                .setScale(2, RoundingMode.CEILING);
+        return currentWeight;
     }
 
     public boolean validateWeight(Load<?> load){
-        return loads.
-                stream().
-                map(Load::getWeight).
-                reduce(BigDecimal::add).
-                orElse(BigDecimal.valueOf(0)).
-                add(netWeight()).
-                add(load.getWeight()).
-                compareTo(grossWeight()) <= 0;
+        return validator.validateWeight(load, this);
     }
 
-    public Optional<Set<Flags>> validateFlags(Load<?> load){
-        Set<Flags> loadFlags = new HashSet<>(load.flags());
-        Set<Flags> carFlags = getAllowedLoadFlags();
-        loadFlags.removeAll(carFlags);
-        return loadFlags.isEmpty() ? Optional.empty() : Optional.of(loadFlags);
+    public boolean validateFlags(Load<?> load){
+        return validator.validateFlags(load, this);
     }
 
     public Set<Flags> getAllowedLoadFlags(){
@@ -90,10 +70,9 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
         return loads;
     }
 
-    public abstract String validateLoad(Load<?> load);
-
-    public boolean newValidate(Load<?> load){
+    public boolean validateLoad(Load<? extends IDeliverable> load){
         return validator.validate(load, this);
     }
+
 
 }

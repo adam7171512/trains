@@ -2,9 +2,7 @@ package pl.edu.pja.s28687.consoleInterface.objectCreationMenus;
 
 
 import pl.edu.pja.s28687.cars.*;
-import pl.edu.pja.s28687.factories.CarBuilder;
 import pl.edu.pja.s28687.factories.CarsFactory;
-import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.Scanner;
 
@@ -43,7 +41,7 @@ public class RailroadCarCreationMenu {
             case 7 -> CarType.POST_OFFICE;
             default -> CarType.BASIC_FREIGHT;
         };
-        carsFactory.createCar(carType);
+        carsFactory.createCarOfType(carType);
 
     }
 

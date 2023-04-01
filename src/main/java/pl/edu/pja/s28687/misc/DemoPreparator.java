@@ -29,8 +29,8 @@ public class DemoPreparator {
     private DispatchingCenter dispatchingCenter;
 
 
-    public DemoPreparator(){
-        this.locoBase = LocoBase.getInstance();
+    public DemoPreparator(LocoBase locoBase) {
+        this.locoBase = locoBase;
         this.carsFactory = new CarsFactory(locoBase);
         this.locomotiveFactory = new LocomotiveFactory(locoBase);
         this.loadFactory = new LoadFactory(locoBase);
@@ -41,7 +41,7 @@ public class DemoPreparator {
 
 
     }
-    public void demoStandard(LocoBase locoBase){
+    public void demoStandard(){
         trainStationFactory.createRandomTrainStations(40, new RectangularNetPlacementStrategy(), 800, 800);
         trainSetFactory.createTrainSetsOfType(5, LocomotivePurpose.PASSENGER, new NaiveRouteFinder(locoBase));
         carsFactory.createRandomCars(20);
@@ -57,20 +57,20 @@ public class DemoPreparator {
         log.start();
     }
 
-    public void demoHard(LocoBase locoBase) {
+    public void demoHard() {
         trainStationFactory.createTrainStationsPolishCoords();
         trainSetFactory.createTrainSetsOfType(5, LocomotivePurpose.PASSENGER, new NaiveRouteFinder(locoBase));
         trainSetFactory.createTrainSetsOfType(5, LocomotivePurpose.BASIC_FREIGHT, new BadRouteFinder(locoBase));
-
-//        carsFactory.createRandomCars(200);
-//        loadFactory.createRandomLoads(2000);
+        trainSetFactory.createRandomTrainSets(20);
+        carsFactory.createRandomCars(2000);
+        loadFactory.createRandomLoads(20000);
         loadFactory.createRandomLoadsOfType(1000, Flags.PASSENGERS);
-        loadFactory.createRandomLoadsOfType(1000, Flags.BASIC_FREIGHT);
-//        LoadAssignmentCenter.assignLoads(locoBase);
-//        CarAssignmentCenter.assignCars(locoBase);
+        CarAssignmentCenter.assignCars(locoBase);
+
         LoadAssignmentCenter.assignLoadsToTrainSets(locoBase);
         railroadsFactory.createOrderedConnectionsBetweenStations(3);
         dispatchingCenter.dispatchAllTrainSets();
+//        LoadAssignmentCenter.assignLoadsToTrainSets(locoBase);
         Canvas canvas= new Canvas(locoBase);
         canvas.start();
 

@@ -13,4 +13,5 @@ public enum CarType {
     LIQUID_TOXIC,
     POST_OFFICE,
     RESTAURANT,
+    NON_STANDARD
 }
