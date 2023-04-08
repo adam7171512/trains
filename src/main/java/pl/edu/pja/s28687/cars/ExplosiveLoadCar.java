@@ -14,8 +14,8 @@ public class ExplosiveLoadCar extends HeavyFreightCarABC<IExplosive> {
 
 
     @Override
-    public Set<Flags> allowedLoadFlags() {
-        return Set.of(Flags.EXPLOSIVE);
+    public Set<LoadType> allowedLoadFlags() {
+        return Set.of(LoadType.EXPLOSIVE);
     }
 
     @Override

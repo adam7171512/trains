@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.cars;
 
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
-import pl.edu.pja.s28687.load.Flags;
+import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.load.ILuggage;
 
 import java.math.BigDecimal;
@@ -18,8 +18,8 @@ public class MailAndLuggageCar extends FreightCarABC<ILuggage> {
     }
 
     @Override
-    public Set<Flags> allowedLoadFlags() {
-        return Set.of(Flags.LUGGAGE);
+    public Set<LoadType> allowedLoadFlags() {
+        return Set.of(LoadType.LUGGAGE);
     }
 
     @Override

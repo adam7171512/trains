@@ -1,13 +1,12 @@
 package pl.edu.pja.s28687;
 
 import pl.edu.pja.s28687.cars.ILoadCarrier;
+import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.cars.LoadableRailroadCar;
-import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.load.IDeliverable;
-import pl.edu.pja.s28687.load.Load;
 import pl.edu.pja.s28687.logistics.IRouteFinder;
 import pl.edu.pja.s28687.logistics.LocoBase;
-import pl.edu.pja.s28687.validators.ILocomotiveLoadValidator;
+import pl.edu.pja.s28687.validators.locomotive.ILocomotiveLoadValidator;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,6 +17,7 @@ public class TrainSet {
     private Conductor conductor;
     private LocoBase locoBase;
     private ILocomotiveLoadValidator loadValidator;
+    boolean started = false;
 
     public TrainSet(Locomotive locomotive, Conductor conductor, LocoBase locoBase, int id, ILocomotiveLoadValidator loadValidator)  {
         this.locomotive = locomotive;
@@ -30,10 +30,15 @@ public class TrainSet {
 
     public void start(){
         conductor.start();
+        started = true;
     }
 
     public void stop(){
         conductor.interrupt();
+    }
+
+    public boolean hasStarted(){
+        return started;
     }
 
     public Locomotive getLocomotive() {
@@ -44,7 +49,7 @@ public class TrainSet {
         conductor.setRouteFindingAlgorithm(algorithm);
     }
 
-    public void setDestStation(TrainStation destStation){
+    public void setDestinationStation(TrainStation destStation){
         locomotive.setDestStation(destStation);
     }
 
@@ -61,7 +66,7 @@ public class TrainSet {
         return this.id;
     }
 
-    public List<RailroadCar> getCars(){
+    public List<IRailroadCar> getCars(){
         return locomotive.getCars();
     }
 
@@ -69,30 +74,30 @@ public class TrainSet {
         return locomotive.getLoadableCars();
     }
 
-    public ILoadCarrier<? extends IDeliverable> load(Load<? extends IDeliverable> load){
+    public <T extends IDeliverable> ILoadCarrier<T> load(T load){
         if (! validateLoadWeight(load)){
             throw new IllegalArgumentException("Load is too heavy for this train");
         }
 
-        ILoadCarrier<? extends IDeliverable> carToLoad =
+        ILoadCarrier<T> carToLoad =
                 getCarsThatCouldLoad(load)
                         .stream()
                         .findFirst()
                         .orElseThrow(() -> new IllegalArgumentException("No car could load this load"));
-        carToLoad.load((Load<IDeliverable> ) load);
+        carToLoad.load(load);
         System.out.println("Loaded " + load + " to " + carToLoad);
         return carToLoad;
     }
 
-    public boolean validateLoadWeight(Load<? extends IDeliverable> load){
+    public boolean validateLoadWeight(IDeliverable load){
         return loadValidator.validateWeight(load, this.locomotive);
     }
 
-    public boolean validateLoad(Load<? extends IDeliverable> load){
+    public boolean validateLoad(IDeliverable load){
         return loadValidator.validate(load, this.locomotive);
     }
 
-    public List<ILoadCarrier<? extends IDeliverable>> getCarsThatCouldLoad(Load<? extends IDeliverable> load){
+    public <T extends IDeliverable> List<ILoadCarrier<T>> getCarsThatCouldLoad(T load){
         if (!validateLoadWeight(load)){
             return List.of();
         }
@@ -115,7 +120,7 @@ public class TrainSet {
                 .append("\nloads : ");
 
         int loadsNumber = 0;
-        for (RailroadCar car : locomotive.getCars()){
+        for (IRailroadCar car : locomotive.getCars()){
             if (car instanceof LoadableRailroadCar){
                 loadsNumber += ((LoadableRailroadCar<?>) car).getLoads().size();
                 stringBuilder.append(((LoadableRailroadCar<?>) car).getLoads());

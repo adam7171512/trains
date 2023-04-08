@@ -1,9 +1,12 @@
 package pl.edu.pja.s28687.factories;
 import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.cars.CarType;
+import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.logistics.LocoBase;
+
+import java.util.Collection;
 import java.util.List;
 
 public class CarAssignmentCenter {
@@ -11,7 +14,7 @@ public class CarAssignmentCenter {
         List<Locomotive> locs = locoBase.getLocomotiveList();
         for (Locomotive loc : locs){
             while (! locoBase.findSuitableCars(loc).isEmpty()) {
-                    List<RailroadCar> cars = locoBase.findSuitableCars(loc);
+                    List<IRailroadCar> cars = locoBase.findSuitableCars(loc);
                     loc.attach(cars.get(0));
                 }
         }
@@ -22,7 +25,7 @@ public class CarAssignmentCenter {
 
         Locomotive loc = trainSet.getLocomotive();
 
-        List<RailroadCar> cars = locoBase
+        List<IRailroadCar> cars = locoBase
                 .findSuitableCars(loc)
                 .stream()
                 .filter(car -> car.getCarType() == carType)
@@ -39,7 +42,7 @@ public class CarAssignmentCenter {
         public static void assignCarsToTrainSet(LocoBase locoBase, TrainSet trainSet){
             Locomotive loc = trainSet.getLocomotive();
 
-            List<RailroadCar> cars = locoBase
+            List<IRailroadCar> cars = locoBase
                     .findSuitableCars(loc)
                     .stream()
                     .toList();
@@ -49,5 +52,16 @@ public class CarAssignmentCenter {
                 loc.attach(cars.get(i++));
             }
         }
+
+    public static void assignCarsToLocomotive(Locomotive loc, LocoBase locoBase){
+        while (true) {
+            List<IRailroadCar> cars = locoBase
+                    .findSuitableCars(loc)
+                    .stream()
+                    .toList();
+            if (cars.isEmpty()) return;
+            loc.attach(cars.get(0));
+        }
     }
+}
 

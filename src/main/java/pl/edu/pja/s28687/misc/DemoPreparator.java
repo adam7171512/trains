@@ -1,18 +1,14 @@
 package pl.edu.pja.s28687.misc;
 
 import pl.edu.pja.s28687.LocomotivePurpose;
-import pl.edu.pja.s28687.TrainStation;
 import pl.edu.pja.s28687.factories.*;
 import pl.edu.pja.s28687.gui.Canvas;
-import pl.edu.pja.s28687.gui.LocoMap;
 import pl.edu.pja.s28687.info.Logger;
-import pl.edu.pja.s28687.load.Flags;
+import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.logistics.BadRouteFinder;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.NaiveRouteFinder;
 import pl.edu.pja.s28687.logistics.RouteFindingAlgos;
-
-import java.io.IOException;
 
 public class DemoPreparator {
 
@@ -43,7 +39,7 @@ public class DemoPreparator {
     }
     public void demoStandard(){
         trainStationFactory.createRandomTrainStations(40, new RectangularNetPlacementStrategy(), 800, 800);
-        trainSetFactory.createTrainSetsOfType(5, LocomotivePurpose.PASSENGER, new NaiveRouteFinder(locoBase));
+        trainSetFactory.createTrainSetsOfType(15, LocomotivePurpose.PASSENGER, new NaiveRouteFinder(locoBase));
         carsFactory.createRandomCars(20);
         loadFactory.createRandomLoads(2000);
         LoadAssignmentCenter.assignLoads(locoBase);
@@ -60,11 +56,11 @@ public class DemoPreparator {
     public void demoHard() {
         trainStationFactory.createTrainStationsPolishCoords();
         trainSetFactory.createTrainSetsOfType(5, LocomotivePurpose.PASSENGER, new NaiveRouteFinder(locoBase));
-        trainSetFactory.createTrainSetsOfType(5, LocomotivePurpose.BASIC_FREIGHT, new BadRouteFinder(locoBase));
+        trainSetFactory.createTrainSetsOfType(5, LocomotivePurpose.BASIC_FREIGHT, new NaiveRouteFinder(locoBase));
         trainSetFactory.createRandomTrainSets(20);
         carsFactory.createRandomCars(2000);
         loadFactory.createRandomLoads(20000);
-        loadFactory.createRandomLoadsOfType(1000, Flags.PASSENGERS);
+        loadFactory.createRandomLoadsOfType(1000, LoadType.PASSENGERS);
         CarAssignmentCenter.assignCars(locoBase);
 
         LoadAssignmentCenter.assignLoadsToTrainSets(locoBase);

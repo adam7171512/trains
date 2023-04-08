@@ -15,7 +15,7 @@ import java.util.Set;
 public class CarBuilder{
 
     private CarType flag;
-    private Set<Flags> loadTypes;
+    private Set<LoadType> loadTypes;
     private final LocoBase locoBase;
     private ICarLoadValidator loadValidator;
 
@@ -45,7 +45,7 @@ public class CarBuilder{
     }
 
 
-    public CarBuilder setLoadTypes(Set<Flags> loadTypes){
+    public CarBuilder setLoadTypes(Set<LoadType> loadTypes){
         this.loadTypes = loadTypes;
         return this;
     }
@@ -75,7 +75,7 @@ public class CarBuilder{
         return this;
         }
 
-    public CarBuilder setGrossWeightForNonStandardCar(double grossWeight){
+    public CarBuilder setMaxWeightForNonStandardCar(double grossWeight){
         this.nonStdCarGrossWeight = BigDecimal.valueOf(grossWeight);
         return this;
     }
@@ -142,7 +142,7 @@ public class CarBuilder{
                         }
 
                         @Override
-                        public Set<Flags> allowedLoadFlags() {
+                        public Set<LoadType> allowedLoadFlags() {
                             return loadTypes;
                         }
                     };

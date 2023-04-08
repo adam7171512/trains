@@ -13,8 +13,8 @@ public class LiquidToxicLoadCar extends HeavyFreightCarABC<ILiquidToxic> {
     }
 
     @Override
-    public Set<Flags> allowedLoadFlags() {
-        return Set.of(Flags.LIQUID, Flags.TOXIC);
+    public Set<LoadType> allowedLoadFlags() {
+        return Set.of(LoadType.LIQUID, LoadType.TOXIC);
     }
 
     @Override

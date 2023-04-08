@@ -1,18 +1,16 @@
 package pl.edu.pja.s28687.cars;
 
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
-import pl.edu.pja.s28687.load.Flags;
-import pl.edu.pja.s28687.load.Load;
+import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.load.IDeliverable;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 
 public abstract class LoadableRailroadCar<T extends IDeliverable> extends RailroadCar implements ILoadCarrier<T>{
 
-    List<Load<? super T>> loads;
-    Set<Flags> allowedFlags;
+    List<T> loads;
+    Set<LoadType> allowedFlags;
     private BigDecimal currentWeight;
 
     protected ICarLoadValidator validator;
@@ -24,7 +22,7 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
     }
 
     @Override
-    public boolean load(Load<? super T> load) {
+    public boolean load(T load) {
         if (validateLoad(load)){
             loads.add(load);
             load.setLoaded();
@@ -35,7 +33,7 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
     }
 
     @Override
-    public boolean unLoad(Load<?> load){
+    public boolean unLoad(T load){
         boolean removed = loads.remove(load);
         if (removed){
             load.setDeloaded();
@@ -49,28 +47,28 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
         return currentWeight;
     }
 
-    public boolean validateWeight(Load<?> load){
+    public boolean validateWeight(IDeliverable load){
         return validator.validateWeight(load, this);
     }
 
-    public boolean validateFlags(Load<?> load){
+    public boolean validateFlags(IDeliverable load){
         return validator.validateFlags(load, this);
     }
 
-    public Set<Flags> getAllowedLoadFlags(){
+    public Set<LoadType> getAllowedLoadFlags(){
         return allowedFlags != null ? allowedFlags : allowedLoadFlags();
     }
 
-    public void setAllowedFlags(Set<Flags> flags){
+    public void setAllowedFlags(Set<LoadType> flags){
         allowedFlags = flags;
     }
-    public abstract Set<Flags> allowedLoadFlags();
+    public abstract Set<LoadType> allowedLoadFlags();
 
-    public List<Load<? super T>> getLoads(){
+    public List<T> getLoads(){
         return loads;
     }
-
-    public boolean validateLoad(Load<? extends IDeliverable> load){
+    @Override
+    public boolean validateLoad(IDeliverable load){
         return validator.validate(load, this);
     }
 

@@ -3,6 +3,7 @@ package pl.edu.pja.s28687.factories;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.LocomotivePurpose;
 import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.validators.locomotive.PassengerTrainCarValidator;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -18,11 +19,11 @@ public class LocomotiveFactory {
         this.locoBase = locoBase;
     }
 
-    public Locomotive makeLocomotive( String name,
-                                      int regularCars,
-                                      int poweredCars,
-                                      BigDecimal maxPayload,
-                                      BigDecimal speed){
+    public Locomotive createLocomotive(String name,
+                                       int regularCars,
+                                       int poweredCars,
+                                       BigDecimal maxPayload,
+                                       BigDecimal speed){
 
 
         return new LocomotiveBuilder(locoBase).setName(name)
@@ -33,7 +34,7 @@ public class LocomotiveFactory {
                 .build();
     }
 
-    public Locomotive makeRandomLocomotive(){
+    public Locomotive createRandomLocomotive(){
         return new LocomotiveBuilder(locoBase)
                 .setRandomProperties()
                 .build();
@@ -42,7 +43,7 @@ public class LocomotiveFactory {
     public List<Locomotive> makeRandomLocomotives(int quantity){
         List<Locomotive> locomotives = new ArrayList<>();
         for (int i = 0; i < quantity; i++){
-            locomotives.add(makeRandomLocomotive());
+            locomotives.add(createRandomLocomotive());
         }
         return locomotives;
     }
@@ -52,6 +53,7 @@ public class LocomotiveFactory {
                 .setMaxPayload(BigDecimal.valueOf(3000))
                 .setRegularCars(20)
                 .setPoweredCars(20)
+                .setCarValidator(new PassengerTrainCarValidator())
                         .build();
     }
 

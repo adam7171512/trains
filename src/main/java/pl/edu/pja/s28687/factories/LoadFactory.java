@@ -1,11 +1,9 @@
 package pl.edu.pja.s28687.factories;
-import pl.edu.pja.s28687.load.Explosives;
 import pl.edu.pja.s28687.load.*;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 public class LoadFactory {
@@ -16,14 +14,14 @@ public class LoadFactory {
         this.locoBase = locoBase;
     }
 
-    public Load<? extends IDeliverable> createLoad(Flags loadType){
+    public IDeliverable createLoad(LoadType loadType){
         LoadBuilder loadBuilder = new LoadBuilder(locoBase);
         return loadBuilder
                 .setFlags(Set.of(loadType))
                 .build();
     }
 
-    public Load<? extends IDeliverable> createLoad(Set<Flags> loadType, double weight){
+    public IDeliverable createLoad(Set<LoadType> loadType, double weight){
         LoadBuilder loadBuilder = new LoadBuilder(locoBase);
         return loadBuilder
                 .setWeight(weight)
@@ -32,22 +30,22 @@ public class LoadFactory {
     }
 
 
-    public Load<? extends IDeliverable> createPassengerLoad(int quantity){
+    public IDeliverable createPassengerLoad(int quantity){
         LoadBuilder loadBuilder = new LoadBuilder(locoBase);
         return loadBuilder
-                .setFlags(Set.of(Flags.PASSENGERS))
+                .setFlags(Set.of(LoadType.PASSENGERS))
                 .setQuantity(quantity)
                 .build();
     }
 
-    public Load<? extends IDeliverable> createRandomLoad(){
+    public IDeliverable createRandomLoad(){
         LoadBuilder loadBuilder = new LoadBuilder(locoBase);
         return loadBuilder
                 .setRandomProperties()
                 .build();
     }
 
-    public Load<? extends IDeliverable> createRandomLoadOfType(Flags loadType){
+    public IDeliverable createRandomLoadOfType(LoadType loadType){
         LoadBuilder loadBuilder = new LoadBuilder(locoBase);
         return loadBuilder
                 .setRandomProperties()
@@ -55,7 +53,7 @@ public class LoadFactory {
                 .build();
     }
 
-    public Load<? extends IDeliverable> createRandomLoadOfType(Set<Flags> loadTypes){
+    public IDeliverable createRandomLoadOfType(Set<LoadType> loadTypes){
         LoadBuilder loadBuilder = new LoadBuilder(locoBase);
         return loadBuilder
                 .setRandomProperties()
@@ -63,25 +61,25 @@ public class LoadFactory {
                 .build();
     }
 
-    public List<Load<? extends IDeliverable>> createRandomLoads(int quantity) {
-        List<Load<? extends IDeliverable>> loads = new ArrayList<>();
-        for (int i = 0; i < quantity / 3; i++) {
+    public List<IDeliverable> createRandomLoads(int quantity) {
+        List<IDeliverable> loads = new ArrayList<>();
+        for (int i = 0; i < quantity; i++) {
             loads.add(createRandomLoad());
         }
         return loads;
     }
 
-    public List<Load<? extends IDeliverable>> createRandomLoadsOfType(int quantity, Flags loadType) {
-        List<Load<? extends IDeliverable>> loads = new ArrayList<>();
-        for (int i = 0; i < quantity / 3; i++) {
+    public List<IDeliverable> createRandomLoadsOfType(int quantity, LoadType loadType) {
+        List<IDeliverable> loads = new ArrayList<>();
+        for (int i = 0; i < quantity; i++) {
             loads.add(createRandomLoadOfType(loadType));
         }
         return loads;
     }
 
-    public List<Load<? extends IDeliverable>> createRandomLoadsOfType(int quantity, Set<Flags> loadType) {
-        List<Load<? extends IDeliverable>> loads = new ArrayList<>();
-        for (int i = 0; i < quantity / 3; i++) {
+    public List<IDeliverable> createRandomLoadsOfType(int quantity, Set<LoadType> loadType) {
+        List<IDeliverable> loads = new ArrayList<>();
+        for (int i = 0; i < quantity; i++) {
             loads.add(createRandomLoadOfType(loadType));
         }
         return loads;

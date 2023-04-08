@@ -19,7 +19,7 @@ public class PassengerCar extends LoadableRailroadCar<IPassengers> implements IP
     }
 
     public int getNumberOfPassengers(){
-        return loads.stream().map(Load::getQuantity).reduce(BigDecimal::add).orElse(BigDecimal.ZERO).intValue();
+        return loads.stream().map(IPassengers::getPassengersCount).reduce(BigDecimal::add).orElse(BigDecimal.ZERO).intValue();
     }
 
     public int getNumberOfSeats() {
@@ -27,8 +27,8 @@ public class PassengerCar extends LoadableRailroadCar<IPassengers> implements IP
     }
 
     @Override
-    public Set<Flags> allowedLoadFlags() {
-        return Set.of(Flags.PASSENGERS);
+    public Set<LoadType> allowedLoadFlags() {
+        return Set.of(LoadType.PASSENGERS);
     }
 
     @Override

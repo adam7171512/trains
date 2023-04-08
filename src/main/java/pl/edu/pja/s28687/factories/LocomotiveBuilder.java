@@ -1,11 +1,11 @@
 package pl.edu.pja.s28687.factories;
 
-import pl.edu.pja.s28687.validators.ILocomotiveCarValidator;
+import pl.edu.pja.s28687.validators.locomotive.ILocomotiveCarValidator;
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.validators.ILocomotiveLoadValidator;
-import pl.edu.pja.s28687.validators.LocomotiveCarValidator;
+import pl.edu.pja.s28687.validators.locomotive.ILocomotiveLoadValidator;
+import pl.edu.pja.s28687.validators.locomotive.LocomotiveCarValidatorForCurrentCarWeight;
 import pl.edu.pja.s28687.logistics.LocoBase;
-import pl.edu.pja.s28687.validators.LocomotiveLoadValidator;
+import pl.edu.pja.s28687.validators.locomotive.LocomotiveLoadValidator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -119,7 +119,7 @@ public class LocomotiveBuilder {
         if (maxPayload == null) maxPayload = BigDecimal.valueOf(10000);
         if (regularCars == 0) regularCars = 20;
         if (poweredCars == 0) poweredCars = 10;
-        if (carValidator == null) carValidator = new LocomotiveCarValidator();
+        if (carValidator == null) carValidator = new LocomotiveCarValidatorForCurrentCarWeight();
         if (loadValidator == null) loadValidator = new LocomotiveLoadValidator();
 
         Locomotive locomotive = new Locomotive(

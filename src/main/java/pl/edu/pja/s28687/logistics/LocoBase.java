@@ -3,27 +3,33 @@ package pl.edu.pja.s28687.logistics;
 
 import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.cars.*;
+import pl.edu.pja.s28687.info.Logger;
 import pl.edu.pja.s28687.load.*;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.TrainStation;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.logging.FileHandler;
 
 public class LocoBase {
+
     private int trainSetCount = 0;
     private int locCount = 0;
     private  int carCount = 0;
     private int loadCount = 0;
     private final Map<Integer, Locomotive> locomotives;
-    private final Map<Integer, RailroadCar> railroadCars;
+    private final Map<Integer, IRailroadCar> railroadCars;
     private final Set<TrainStation> trainStations;
     private final Set<RailroadLink> railroadConnections;
     private final Map<Integer, TrainSet> trainSets;
-    private final  Map<Integer, LoadableRailroadCar<? extends IDeliverable>> loadCarriers;
-    private final Map<Integer, Load<? extends IDeliverable>> loads;
+    private final Map<Integer, ILoadCarrier<IDeliverable>> loadCarriers;
+    private final  Map<Integer, IDeliverable> loads;
+    private static final LocoLogger logger = new LocoLogger("LocoBase", "locoLogs.log");
 
-    public LocoBase(){
+
+    public LocoBase() {
         locomotives = new HashMap<>();
         railroadCars = new HashMap<>();
         trainStations = new HashSet<>();
@@ -41,18 +47,9 @@ public class LocoBase {
         return Optional.ofNullable(trainSets.get(selection));
     }
 
-
-    private static class SingletonHelper{
-        private static final LocoBase INSTANCE = new LocoBase();
+    public Optional<IDeliverable> findLoad(int selection) {
+        return Optional.ofNullable(loads.get(selection));
     }
-
-    public static LocoBase getInstance(){
-        return SingletonHelper.INSTANCE;
-    }
-
-//    public int assignLocId(Locomotive locomotive) {
-//        return registerLoc(locomotive);
-//    }
 
     public List<Locomotive> getLocomotiveList() {
         return locomotives.values().stream().toList();
@@ -70,7 +67,7 @@ public class LocoBase {
         trainSets.put(id, trainSet);
     }
 
-    public void registerCar(RailroadCar railroadCar){
+    public void registerCar(IRailroadCar railroadCar){
         int id = railroadCar.getId();
 
         if(railroadCars.containsKey(id)){
@@ -80,13 +77,11 @@ public class LocoBase {
                             + " already exists !");
         }
         railroadCars.put(id, railroadCar);
-        if (railroadCar instanceof LoadableRailroadCar<?>) {
-            loadCarriers.put(id, (LoadableRailroadCar<?>) railroadCar);
-            System.out.println("Load carrier registered !");
-        }
-        System.out.println("LocBase :" +
-                " Railroad Car has been registered." +
-                " Total number of cars registered : " + carCount);
+        if (railroadCar instanceof ILoadCarrier<? extends IDeliverable>) {
+            loadCarriers.put(id, ((ILoadCarrier<IDeliverable>) railroadCar));
+            logger.log(java.util.logging.Level.INFO, "Load carrier registered ! " + railroadCar.getClass().getName());}
+        logger.log(java.util.logging.Level.INFO,
+                "Railroad Car has been registered. Total number of cars registered : " + carCount);
     }
 
     public int getIdForCar() {
@@ -100,7 +95,7 @@ public class LocoBase {
         loadCarriers.remove(id);
     }
 
-    public  List<RailroadCar> getRailroadCarsList() {
+    public  List<IRailroadCar> getRailroadCarsList() {
         return railroadCars.values().stream().toList();
     }
 
@@ -135,17 +130,19 @@ public class LocoBase {
         return Optional.ofNullable(locomotives.get(id));
     }
 
-    public  Optional<RailroadCar> findCar(int id){
+    public  Optional<IRailroadCar> findCar(int id){
         return Optional.ofNullable(railroadCars.get(id));
     }
 
-    public  Optional<LoadableRailroadCar<? extends IDeliverable>> findLoadCarrier(int id){
+    public  Optional<ILoadCarrier<IDeliverable>> findLoadCarrier(int id){
         return Optional.ofNullable(loadCarriers.get(id));
     }
 
     public void addTrainStation(TrainStation trainStation){
         trainStations.add(trainStation);
-        System.out.println("LocBase : Train Station has been registered. Total number of train stations registered : " + trainStations.size());
+        logger.log(java.util.logging.Level.INFO,
+                "Train station registered ! Total number of train stations registered : "
+                        + trainStations.size());
 
     }
 
@@ -157,10 +154,9 @@ public class LocoBase {
     }
     public void registerRailroadConnection(RailroadLink connection){
         railroadConnections.add(connection);
-        System.out.println(
-                "LocBase : Railroad connection : \n" + connection.getStation1() + "-" + connection.getStation2()+
-                        "\nhas been registered" + "\nlength : " + connection.getDistance() + " km");
-        System.out.println("Total number of connections registered : " + railroadConnections.size());
+        logger.log(java.util.logging.Level.INFO,
+                "Railroad connection registered ! Total number of connections registered : "
+                        + railroadConnections.size());
     }
 
     public Optional<TrainStation> findTrainStation(String name){
@@ -171,7 +167,7 @@ public class LocoBase {
         return ++loadCount;
     }
 
-    public void registerLoad(Load<? extends IDeliverable> load) {
+    public void registerLoad(IDeliverable load) {
         int id = load.getId();
         if (loads.containsKey(id)) {
             throw new IllegalArgumentException
@@ -183,35 +179,47 @@ public class LocoBase {
                 .append("Flags : ").append(load.flags())
                 .append(" Total number of loads registered : ")
                 .append(loads.size()).toString();
-        System.out.println(s);
+        logger.log(java.util.logging.Level.INFO, s);
     }
 
-    public Load<? extends IDeliverable> getLoad(int id){
-        return loads.get(id);
+    public IDeliverable  getLoad(int id){
+        return  loads.get(id);
     }
 
-    public List<LoadableRailroadCar<? extends IDeliverable>> getLoadCarriers(){
-        return loadCarriers.values().stream().toList();
+    public  List<ILoadCarrier<IDeliverable>> getLoadCarriers(){
+        return loadCarriers.values().stream().map(car -> (ILoadCarrier<IDeliverable>) car).toList();
+//        return loadCarriers.values().stream().toList();
     }
 
-    public List<Load<? extends IDeliverable>> getLoadList() {
+    public List<? extends IDeliverable> getLoadList() {
         return loads.values().stream().toList();
     }
 
-    public List<LoadableRailroadCar<? extends IDeliverable>> findSuitableCars(Load<? extends IDeliverable> load){
-        return loadCarriers
-                .values()
-                .stream()
-                .filter(car -> !car.isAttached())
-                .filter(car ->
-                        Collections.disjoint(load.flags(),
-                                car.allowedLoadFlags()))
-                .toList();
+    public List<ILoadCarrier<IDeliverable>> findSuitableCars(IDeliverable load){
+        List<ILoadCarrier<IDeliverable>> suitableCars = new ArrayList<>();
+        for (ILoadCarrier<IDeliverable> car : loadCarriers.values()) {
+            if (!car.isAttached() && car.validateLoad(load)) {
+                suitableCars.add(car);
+            }
+        }
+        return suitableCars;
+
     }
 
+//        return loadCarriers
+//                .values()
+//                .stream()
+//                .filter(car -> !car.isAttached())
+//                .filter(car ->
+//                        Collections.disjoint(load.flags(),
+//                                car.allowedLoadFlags()))
+//                .toList();
 
 
-    public List<Load<? extends IDeliverable>>findSuitableLoads(ILoadCarrier<? extends IDeliverable> car) {
+
+
+
+    public List<IDeliverable>findSuitableLoads(ILoadCarrier<? extends IDeliverable> car) {
 
         return loads
                 .values()
@@ -231,7 +239,7 @@ public class LocoBase {
     }
 
 
-    public  List<RailroadCar> findSuitableCars(Locomotive loc){
+    public  List<IRailroadCar> findSuitableCars(Locomotive loc){
         return railroadCars
                 .values()
                 .stream()

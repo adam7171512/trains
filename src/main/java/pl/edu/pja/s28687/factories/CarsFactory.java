@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.factories;
 
 import pl.edu.pja.s28687.cars.*;
-import pl.edu.pja.s28687.load.Flags;
+import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
 
@@ -23,7 +23,7 @@ public class CarsFactory {
                 .build();
     }
 
-    public RailroadCar createMultiplePurposeSpecialCarForLoadTypes(Set<Flags> loadTypes){
+    public RailroadCar createMultiplePurposeSpecialCarForLoadTypes(Set<LoadType> loadTypes){
         CarBuilder carBuilder = new CarBuilder(locoBase);
         return carBuilder
                 .setFlag(CarType.NON_STANDARD)
@@ -55,16 +55,16 @@ public class CarsFactory {
 
 
 
-    public List<RailroadCar> createRandomCars(int quantity){
-        List<RailroadCar> cars = new ArrayList<>();
+    public List<IRailroadCar> createRandomCars(int quantity){
+        List<IRailroadCar> cars = new ArrayList<>();
         for (int i = 0; i < quantity ; i++){
             cars.add(createRandomCar());
         }
         return cars;
     }
 
-    public List<RailroadCar> createCarsOfType(CarType carType, int quantity){
-        List<RailroadCar> cars = new ArrayList<>();
+    public List<IRailroadCar> createCarsOfType(CarType carType, int quantity){
+        List<IRailroadCar> cars = new ArrayList<>();
         for (int i = 0; i < quantity ; i++){
             cars.add(createCarOfType(carType));
         }

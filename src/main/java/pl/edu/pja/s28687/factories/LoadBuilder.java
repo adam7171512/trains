@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class LoadBuilder{
 
-    private Set<Flags> flags;
+    private Set<LoadType> flags;
     private double weight;
     private int quantity;
     private LocoBase locoBase;
@@ -33,17 +33,17 @@ public class LoadBuilder{
     }
 
     public LoadBuilder(int quantity, LocoBase locoBase){
-        this.locoBase = LocoBase.getInstance();
+        this.locoBase = locoBase;
         this.quantity = quantity;
         this.flags = new HashSet<>();
     }
 
-    public LoadBuilder setFlags(Set<Flags> flags){
+    public LoadBuilder setFlags(Set<LoadType> flags){
         this.flags = flags;
         return this;
     }
 
-    public LoadBuilder addFlag(Flags flag){
+    public LoadBuilder addFlag(LoadType flag){
         this.flags.add(flag);
         return this;
     }
@@ -56,7 +56,7 @@ public class LoadBuilder{
     public LoadBuilder setRandomProperties(){
         this.weight = Math.random() * 100 + 1;
         this.quantity = (int) (Math.random() * 100) + 1;
-        this.flags = Set.of(Flags.values()[(int) (Math.random() * Flags.values().length)]);
+        this.flags = Set.of(LoadType.values()[(int) (Math.random() * LoadType.values().length)]);
         return this;
     }
 
@@ -70,11 +70,11 @@ public class LoadBuilder{
         return this;
     }
 
-    public Load<? extends IDeliverable> build(){
+    public IDeliverable build(){
         if (flags.isEmpty()) {
-            flags = Set.of(Flags.BASIC_FREIGHT);
+            flags = Set.of(LoadType.BASIC_FREIGHT);
         }
-        Load<? extends IDeliverable> load;
+        IDeliverable load;
             if (flags.size() == 1) {
                 load = switch (flags.iterator().next()) {
                 case HEAVY_FREIGHT -> new HeavyFreightLoad(weight);
@@ -89,12 +89,12 @@ public class LoadBuilder{
             };
             }
             else {
-                if (flags.equals(Set.of(Flags.LIQUID, Flags.TOXIC))) {
+                if (flags.equals(Set.of(LoadType.LIQUID, LoadType.TOXIC))) {
                     load = new LiquidToxicLoad(weight);
             }
-                else load = new Load<>(weight) {
+                else load = new Load(weight) {
                     @Override
-                    public Set<Flags> flags() {
+                    public Set<LoadType> flags() {
                         return flags;
                     }
                 };

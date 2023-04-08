@@ -1,20 +1,20 @@
 package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.load.Flags;
+import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.load.IDeliverable;
-import pl.edu.pja.s28687.load.Load;
 
-import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
-public interface ILoadCarrier<T>  extends IRailroadCar{
+public interface ILoadCarrier<T extends IDeliverable>  extends IRailroadCar{
 
-    boolean load(Load<? super T> load);
-    boolean unLoad(Load<?> load);
+    boolean load(T load);
+    boolean unLoad(T load);
 
-    boolean validateLoad(Load<? extends IDeliverable> load);
+    boolean validateLoad(IDeliverable load);
 
-    Set<Flags> allowedLoadFlags();
+    Set<LoadType> allowedLoadFlags();
 
 
+    List<T> getLoads();
 }

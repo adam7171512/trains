@@ -11,8 +11,8 @@ public class ToxicLoadCar extends HeavyFreightCarABC<IToxic>{
     }
 
     @Override
-    public Set<Flags> allowedLoadFlags() {
-        return Set.of(Flags.TOXIC);
+    public Set<LoadType> allowedLoadFlags() {
+        return Set.of(LoadType.TOXIC);
     }
 
     @Override

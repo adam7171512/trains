@@ -12,24 +12,34 @@ import java.util.List;
 import java.util.Optional;
 
 public class LoadAssignmentCenter {
-    public static void assignLoads(LocoBase locoBase) {
-        List<ILoadCarrier<? extends IDeliverable>> cars = new ArrayList<>(locoBase.getLoadCarriers());
+    public static <T extends IDeliverable> void assignLoads(LocoBase locoBase) {
+        List<ILoadCarrier<IDeliverable>> cars = new ArrayList<>(locoBase.getLoadCarriers());
 
-        for (ILoadCarrier<? extends IDeliverable> car : cars) {
+        for (ILoadCarrier<IDeliverable> car : cars) {
             while (true) {
-                List<Load<? extends IDeliverable>> loads = locoBase.findSuitableLoads(car);
+                List<IDeliverable> loads = locoBase.findSuitableLoads(car);
                 if (loads.isEmpty()) break;
-                car.load((Load<IDeliverable>) loads.get(0));
+                car.load((IDeliverable) loads.get(0));
                 loads.get(0).setLoaded();
             }
         }
     }
 
+    public static void assignLoads(ILoadCarrier<IDeliverable> car, LocoBase locoBase) {
+        while (true) {
+            List<IDeliverable> loads = locoBase.findSuitableLoads(car);
+            if (loads.isEmpty()) break;
+            car.load(loads.get(0));
+            loads.get(0).setLoaded();
+        }
+    }
+
+
     public static void assignLoadsToTrainSets(LocoBase locoBase){
-       List<Load<? extends IDeliverable>> loads = locoBase.getLoadList();
+       List<? extends IDeliverable> loads = locoBase.getLoadList();
        List<TrainSet> trainSets = locoBase.getTrainSets();
         System.out.println(trainSets);
-         for (Load<? extends IDeliverable> load : loads){
+         for (IDeliverable load : loads){
               if (! load.isLoaded()) {
                   Optional<TrainSet> tS =
                           trainSets

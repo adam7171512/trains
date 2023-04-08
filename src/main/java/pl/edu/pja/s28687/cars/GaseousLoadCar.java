@@ -12,8 +12,8 @@ public class GaseousLoadCar extends BasicFreightCarABC<IGaseous> {
     }
 
     @Override
-    public Set<Flags> allowedLoadFlags() {
-        return Set.of(Flags.GASEOUS);
+    public Set<LoadType> allowedLoadFlags() {
+        return Set.of(LoadType.GASEOUS);
     }
 
     @Override

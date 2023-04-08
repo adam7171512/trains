@@ -11,8 +11,8 @@ public class LiquidLoadCar extends BasicFreightCarABC<LiquidLoad> {
     }
 
     @Override
-    public Set<Flags> allowedLoadFlags() {
-        return Set.of(Flags.LIQUID);
+    public Set<LoadType> allowedLoadFlags() {
+        return Set.of(LoadType.LIQUID);
     }
 
     @Override

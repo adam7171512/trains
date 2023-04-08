@@ -124,7 +124,7 @@ public class Conductor extends Thread {
         TrainStation temp = locomotive.getSourceStation();
         locomotive.setSourceStation(locomotive.getDestStation());
         locomotive.setDestStation(temp);
-        System.out.println(locomotive.getSourceStation() + " " + locomotive.getDestStation());
+//        System.out.println(locomotive.getSourceStation() + " " + locomotive.getDestStation());
     }
 
     public void announceDeparture(TrainStation source, TrainStation destination){

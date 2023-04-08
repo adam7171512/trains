@@ -113,7 +113,11 @@ public class TrainStationFactory {
         return trainStations;
     }
 
-    public static void makeTrainStationsOfPolishTowns(LocoBase locoBase) throws IOException {
+    public List<TrainStation> createRandomTrainStations(int quantity){
+        return createRandomTrainStations(quantity, new RandomPlacementStrategy(), 700, 700);
+    }
+
+    public void makeTrainStationsOfPolishTowns() throws IOException {
         for (TrainStation ts : new PLCoordReader().prepareTrainStations()){
             locoBase.addTrainStation(ts);
         }

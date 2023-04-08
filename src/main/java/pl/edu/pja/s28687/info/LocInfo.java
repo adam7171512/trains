@@ -1,7 +1,10 @@
 package pl.edu.pja.s28687.info;
 
 import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.misc.TrainStatus;
+
+import java.util.List;
 
 public class LocInfo {
 
@@ -11,7 +14,6 @@ public class LocInfo {
 
     public static String getLocationInfo(Locomotive locomotive){
         StringBuilder stringBuilder = new StringBuilder();
-
 
         if (locomotive.getStatus() == TrainStatus.RUNNING){
             stringBuilder.append("\nRoad info :")
@@ -27,7 +29,6 @@ public class LocInfo {
                     .append("\nSegments : ").append(locomotive.getRoad())
                     .append("\nRecently visited train station: ").append(locomotive.getLastTrainStation())
                     .append("\n");
-
         }
         return stringBuilder.toString();
     }
@@ -41,14 +42,29 @@ public class LocInfo {
                 append(" | Max payload : ").append(locomotive.getMaxPayload()).
                 append(" tonnes").
                 append("\nCars attached : ").
-                append(" regular : ").append(locomotive.carsOccupied()).
+                append(" regular : ").append(locomotive.getCurrentCarNumber()).
                 append(" powered : ").append(locomotive.getPoweredCarsNumber()).
                 append(" | Car limits | ").
                 append(" regular : ").append(locomotive.getCarLimit()).
                 append(" powered : ").append(locomotive.getPoweredCarLimit()).
                 append(" | Passengers carried : ").append(locomotive.passengersOnBoard()).
                 append("\nCurrent status : ").append(locomotive.getStatus()).append("\n");
+        return stringBuilder.toString();
+    }
 
+    public static String getAggregatedBasicInfo(LocoBase locoBase){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(Locomotive loc: locoBase.getLocomotiveList()){
+            stringBuilder.append(getBasicInfo(loc));
+        }
+        return stringBuilder.toString();
+    }
+
+    public static String getAggregatedBasicInfo(List<Locomotive> locomotives){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(Locomotive loc: locomotives){
+            stringBuilder.append(getBasicInfo(loc));
+        }
         return stringBuilder.toString();
     }
 }

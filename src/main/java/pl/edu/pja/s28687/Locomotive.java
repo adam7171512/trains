@@ -7,14 +7,16 @@ import pl.edu.pja.s28687.logistics.Coordinates;
 import pl.edu.pja.s28687.logistics.RailroadLink;
 import pl.edu.pja.s28687.misc.RailroadHazard;
 import pl.edu.pja.s28687.misc.TrainStatus;
-import pl.edu.pja.s28687.validators.ILocomotiveCarValidator;
-import pl.edu.pja.s28687.validators.ILocomotiveLoadValidator;
+import pl.edu.pja.s28687.validators.locomotive.ILocomotiveCarValidator;
+import pl.edu.pja.s28687.validators.locomotive.ILocomotiveLoadValidator;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static java.lang.Math.min;
 
 public class Locomotive implements ILocomotive {
     private final int id;
@@ -29,7 +31,7 @@ public class Locomotive implements ILocomotive {
     private final BigDecimal defaultSpeed;
     private BigDecimal currentSpeed = BigDecimal.valueOf(0);
     private List<RailroadLink> road = new ArrayList<>();
-    private List<RailroadCar> cars = new ArrayList<>();
+    private List<IRailroadCar> cars = new ArrayList<>();
     private List<ILoadCarrier<? extends IDeliverable>> loadCarriers = new ArrayList<>();
     private BigDecimal currentTripDistanceCovered = BigDecimal.valueOf(0);
     private BigDecimal currentSegmentDistance = BigDecimal.valueOf(0);
@@ -61,7 +63,7 @@ public class Locomotive implements ILocomotive {
         this.id = id;
         this.maxCars = maxCars;
         this.maxFreight = maxFreight;
-        this.maxPoweredCars = maxPoweredCars;
+        this.maxPoweredCars = min(maxPoweredCars, maxCars);
         this.defaultSpeed = defaultSpeed;
         this.coordinates = new Coordinates(0, 0);
         this.status = TrainStatus.WAITING;
@@ -85,7 +87,7 @@ public class Locomotive implements ILocomotive {
         return loadCarriers;
     }
 
-    public void attach(RailroadCar car){
+    public void attach(IRailroadCar car){
         if(! validateCar(car)) System.out.println("Can't attach this car");
         else {
             cars.add(car);
@@ -96,7 +98,15 @@ public class Locomotive implements ILocomotive {
         }
     }
 
-    public boolean validateCar(RailroadCar car){
+    public void detach(IRailroadCar car){
+        cars.remove(car);
+        car.setDetached();
+        if (car instanceof ILoadCarrier<?>){
+            loadCarriers.remove((LoadableRailroadCar<? extends IDeliverable>) car);
+        }
+    }
+
+    public boolean validateCar(IRailroadCar car){
         return carValidator.validate(car, this);
     }
 
@@ -106,7 +116,7 @@ public class Locomotive implements ILocomotive {
         this.road = road;
     }
 
-    public List<RailroadCar> getCars(){
+    public List<IRailroadCar> getCars(){
         return cars;
     }
 
@@ -264,12 +274,12 @@ public class Locomotive implements ILocomotive {
         this.visualRepresentation = visualRepresentation;
     }
 
-    public int carsOccupied(){
+    public int getCurrentCarNumber(){
         return cars.size();
     }
 
     public int getPoweredCarsNumber(){
-        return (int) cars.stream().filter(RailroadCar::isPowered).count();
+        return (int) cars.stream().filter(IRailroadCar::isPowered).count();
     }
 
     public int getCarLimit() {
@@ -287,7 +297,7 @@ public class Locomotive implements ILocomotive {
     public BigDecimal getCurrentPayload(){
         return cars.
                 stream().
-                map(RailroadCar::getCurrentWeight).
+                map(IRailroadCar::getCurrentWeight).
                 reduce(BigDecimal::add).
                 orElse(BigDecimal.valueOf(0)).setScale(2, RoundingMode.CEILING);
     }

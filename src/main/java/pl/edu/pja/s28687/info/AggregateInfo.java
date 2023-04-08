@@ -1,4 +1,5 @@
 package pl.edu.pja.s28687.info;
+import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.cars.PassengerCar;
 import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.Locomotive;
@@ -13,7 +14,7 @@ public class AggregateInfo {
     public static String getInfo(LocoBase locoBase) {
 
         List<Locomotive> locList = locoBase.getLocomotiveList();
-        List<RailroadCar> carList = locoBase.getRailroadCarsList();
+        List<IRailroadCar> carList = locoBase.getRailroadCarsList();
 
         BigDecimal locsTotal = BigDecimal.valueOf(
                 locList.size());
@@ -27,7 +28,7 @@ public class AggregateInfo {
         BigDecimal carsAttached = BigDecimal.valueOf(
                 carList
                         .stream()
-                        .filter(RailroadCar::isAttached)
+                        .filter(IRailroadCar::isAttached)
                         .count());
         BigDecimal totalPayload = locList
                 .stream()
@@ -52,13 +53,13 @@ public class AggregateInfo {
                 carList
                         .stream()
                         .filter(car -> car instanceof PassengerCar)
-                        .filter(RailroadCar::isAttached)
+                        .filter(IRailroadCar::isAttached)
                         .count());
         BigDecimal passengersOnBoard = BigDecimal.valueOf(
                 carList
                         .stream()
                         .filter(car -> car instanceof PassengerCar)
-                        .filter(RailroadCar::isAttached)
+                        .filter(IRailroadCar::isAttached)
                         .map(car -> ((PassengerCar) car)
                                 .getNumberOfPassengers())
                         .reduce(Integer::sum)

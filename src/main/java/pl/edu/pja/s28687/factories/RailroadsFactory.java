@@ -37,15 +37,18 @@ public class RailroadsFactory {
         return createRailroadLink(station1.get(), station2.get());
     }
 
-    public RailroadLink createRandomRailroadLink() {
+    public RailroadLink createRandomRailroadLink() throws IllegalArgumentException {
         Random random = new Random();
         List<TrainStation> stations = locoBase.getTrainStations().stream().toList();
+        if (stations.size() < 2){
+            throw new IllegalArgumentException("Not enough stations to create a link");
+        }
         TrainStation station1 = stations.get(random.nextInt(stations.size()));
         TrainStation station2 = stations.get(random.nextInt(stations.size()));
         return createRailroadLink(station1, station2);
     }
 
-    public List<RailroadLink> createRandomRailroadLinks(int amount) {
+    public List<RailroadLink> createRandomRailroadLinks(int amount) throws IllegalArgumentException {
         List<RailroadLink> railroadLinks = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
             railroadLinks.add(createRandomRailroadLink());
@@ -101,9 +104,9 @@ public class RailroadsFactory {
 
             int h = 0;
             while (stations.get(finalI1).getNeighbors().size() < numberPerStation) {
-//                if (sortedPotantialNeighbours.size() < h){
-//                    break;
-//                }
+                if (sortedPotantialNeighbours.size() <= h){
+                    break;
+                }
                 if (stations.get(i).getNeighbors().contains(sortedPotantialNeighbours.get(h)))
                     h++;
                 else

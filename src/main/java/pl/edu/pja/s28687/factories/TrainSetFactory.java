@@ -4,6 +4,7 @@ import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.LocomotivePurpose;
 import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.cars.CarType;
+import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.logistics.*;
 
@@ -57,9 +58,9 @@ public class TrainSetFactory {
                 .setLocoBase(locoBase)
                 .build();
         int numberOfCars = random.nextInt(trainSet.getLocomotive().getCarLimit() - 5) + 5;
-        List<RailroadCar> cars = createCarsForTrainSet(trainSet, numberOfCars, type);
+        List<IRailroadCar> cars = createCarsForTrainSet(trainSet, numberOfCars, type);
 
-        for (RailroadCar car : cars)
+        for (IRailroadCar car : cars)
             loco.attach(car);
         return trainSet;
     }
@@ -72,8 +73,8 @@ public class TrainSetFactory {
         return createTrainSetsOfType(count, type, new NaiveRouteFinder(locoBase));
     }
 
-    private List<RailroadCar> createCarsForTrainSet(TrainSet trainSet, int maxCount, LocomotivePurpose type){
-        List<RailroadCar> cars = new ArrayList<>();
+    private List<IRailroadCar> createCarsForTrainSet(TrainSet trainSet, int maxCount, LocomotivePurpose type){
+        List<IRailroadCar> cars = new ArrayList<>();
         int number = Math.min(maxCount, trainSet.getLocomotive().getCarLimit());
         int count = 0;
 
@@ -109,7 +110,7 @@ public class TrainSetFactory {
             cars.add(carsFactory.createRandomCar());
             count++;
         }
-        while (trainSet.getLocomotive().carsOccupied() < (trainSet.getLocomotive().getCarLimit()) && count < number){
+        while (trainSet.getLocomotive().getCurrentCarNumber() < (trainSet.getLocomotive().getCarLimit()) && count < number){
             cars.add(carsFactory.createRandomNonPoweredCar());
             count++;
         }

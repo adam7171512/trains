@@ -5,68 +5,103 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a52adbf5-129b-40a5-a1d4-76dfdd60adec" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/CarFreightValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/CarPassengerValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/ICarFreightValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/locomotive/ILocomotiveCarValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/locomotive/ILocomotiveLoadValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/FreightValidator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/IFreightValidator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/ILoadValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/ICarLoadValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/IPassengerValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/ICarPassengerValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/IValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/IValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Appstate.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Appstate.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/Conductor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/Conductor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/Locomotive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/Locomotive.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/PassengerValidator.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/TrainSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/TrainSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/BasicFreightCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/BasicFreightCar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/BasicFreightCarABC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/BasicFreightCarABC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/CarType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/CarType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/ExplosivesCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/ExplosiveLoadCar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/FreightCarABC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/FreightCarABC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/GaseousCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/GaseousLoadCar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/ExplosiveLoadCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/ExplosiveLoadCar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/GaseousLoadCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/GaseousLoadCar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/HeavyFreightCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/HeavyFreightCar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/HeavyFreightCarABC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/HeavyFreightCarABC.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/ILoadCarrier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/ILoadCarrier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/LiquidToxicCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/LiquidToxicLoadCar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/LiquidsCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/LiquidLoadCar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/IRailroadCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/IRailroadCar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/LiquidLoadCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/LiquidLoadCar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/LiquidToxicLoadCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/LiquidToxicLoadCar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/LoadableRailroadCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/LoadableRailroadCar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/MailAndLuggageCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/MailAndLuggageCar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/PassengerCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/PassengerCar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/PostOfficeCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/PostOfficeCar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/RailroadCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/RailroadCar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/RefrigeratedCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/RefrigeratedLoadCar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/RefrigeratedLoadCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/RefrigeratedLoadCar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/RestaurantCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/RestaurantCar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/ToxicCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/ToxicLoadCar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/InfoMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/InfoMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/ToxicLoadCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/cars/ToxicLoadCar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/BulkCreationMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/BulkFreightCreationMenu2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/BulkLocomotiveCreationMenu2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/BulkObjectCreationMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/BulkTrainSetCreationMenu2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/BulkTrainStationCreationMenu2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/IMenuNode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/IndividualObjectCreationMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/InfoMenu.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/MainMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/Locomotives/LocManagementAvailableCars.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/Locomotives/LocManagementAvailableCars.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/Locomotives/LocomotivesManagementMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/Locomotives/LocomotivesManagementMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/RailroadCars/RailroadCarsManagementLoadedLoads.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/RailroadCars/RailroadCarsManagementLoadedLoads.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/RailroadCars/RailroadCarsManagementMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/RailroadCars/RailroadCarsManagementMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/objectCreationMenus/RailroadCarCreationMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/objectCreationMenus/RailroadCarCreationMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/MainMenu2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/Menu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/ObjectCreationMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/ObjectCreationMenu2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/TrainInfoMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/TrainStationCreationMenu2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/DeliverablesManagementMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/FreightManagementMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/Locomotives/LocManagementAvailableCars.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/Locomotives/LocomotivesManagementMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/RailroadCars/RailroadCarsManagementAvailableLoads.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/RailroadCars/RailroadCarsManagementLoadedLoads.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/freightManagementMenus/RailroadCars/RailroadCarsManagementMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/objectCreationMenus/LoadCreationMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/objectCreationMenus/LocomotiveCreationMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/objectCreationMenus/RailroadCarCreationMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/objectCreationMenus/TrainConnectionCreationMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/consoleInterface/objectCreationMenus/TrainStationCreationMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/CarAssignmentCenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/CarAssignmentCenter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/CarBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/CarBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/CarsFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/CarsFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/DispatchingCenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/DispatchingCenter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/LoadAssignmentCenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/LoadAssignmentCenter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/LoadBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/LoadBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/LoadFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/LoadFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/LocomotiveBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/LocomotiveBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/LocomotiveFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/LocomotiveFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/RailroadsFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/RailroadsFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/TrainSetBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/TrainSetBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/TrainSetFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/TrainSetFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/gui/Canvas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/gui/Canvas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/TrainStationFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/factories/TrainStationFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/info/AggregateInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/info/AggregateInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/info/CarInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/info/CarInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/info/LoadInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/info/LoadInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/info/LocInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/info/LocInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/info/TrainSetInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/info/TrainSetInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/ILiquid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/ILiquid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/ILiquidToxic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/ILiquidToxic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/BasicFreightLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/BasicFreightLoad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/Explosives.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/Explosives.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/Flags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/LoadType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/GaseousLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/GaseousLoad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/HeavyFreightLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/HeavyFreightLoad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/IDeliverable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/IDeliverable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/IPassengers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/IPassengers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/LiquidLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/LiquidLoad.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/LiquidToxicLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/LiquidToxicLoad.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/Load.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/Load.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/Luggage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/Luggage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/Mail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/Passengers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/Passengers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/RefrigeratedLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/RefrigeratedLoad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/ToxicGasLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/ToxicGasLoad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/ToxicLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/load/ToxicLoad.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/logistics/LocoBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/logistics/LocoBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/logistics/oldBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/logistics/oldBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/logistics/oldBase.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/misc/DemoPreparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/misc/DemoPreparator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/CarFreightValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/CarFreightValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/CarPassengerValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/CarPassengerValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/ICarLoadValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/ICarLoadValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/ICarPassengerValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/ICarPassengerValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/ILocomotiveCarValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/ILocomotiveLoadValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/LocomotiveCarValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/locomotive/LocomotiveCarValidatorForCurrentCarWeight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/LocomotiveLoadValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pja/s28687/validators/locomotive/LocomotiveLoadValidator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,6 +121,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-api/5.9.2/junit-jupiter-api-5.9.2.jar!/org/junit/jupiter/api/Assertions.class" root0="SKIP_INSPECTION" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -102,27 +140,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="pl.edu.pja.s28687" />
+      <recent name="pl.edu.pja.s28687.consoleInterface.newmenus" />
       <recent name="pl.edu.pja.s28687.validators" />
       <recent name="pl.edu.pja.s28687.consoleInterface" />
     </key>
@@ -130,6 +171,9 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="pl.edu.pja.s28687.validators.locomotive" />
+      <recent name="pl.edu.pja.s28687.cars" />
+      <recent name="pl.edu.pja.s28687.logistics" />
       <recent name="pl.edu.pja.s28687" />
     </key>
   </component>
@@ -139,7 +183,7 @@
       <module name="trains" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.edu.pja.s28687.validators.*" />
+          <option name="PATTERN" value="pl.edu.pja.s28687.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -147,17 +191,56 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainTest.testValidator" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="All in trains" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="trains" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LocomotiveCarValidatorForMaxCarWeightTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="trains" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.edu.pja.s28687.validators.*" />
+          <option name="PATTERN" value="pl.edu.pja.s28687.validators.locomotive.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pl.edu.pja.s28687" />
-      <option name="MAIN_CLASS_NAME" value="pl.edu.pja.s28687.MainTest" />
-      <option name="METHOD_NAME" value="testValidator" />
+      <option name="PACKAGE_NAME" value="pl.edu.pja.s28687.validators.locomotive" />
+      <option name="MAIN_CLASS_NAME" value="pl.edu.pja.s28687.validators.locomotive.LocomotiveCarValidatorForMaxCarWeightTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LocomotiveCarValidatorForMaxCarWeightTest.Should_NotValidatePoweredCar_When_LocomotiveHasReachedRegularCarLimit" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="trains" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.edu.pja.s28687.validators.locomotive.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.edu.pja.s28687.validators.locomotive" />
+      <option name="MAIN_CLASS_NAME" value="pl.edu.pja.s28687.validators.locomotive.LocomotiveCarValidatorForMaxCarWeightTest" />
+      <option name="METHOD_NAME" value="Should_NotValidatePoweredCar_When_LocomotiveHasReachedRegularCarLimit" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LocomotiveCarValidatorForMaxCarWeightTest.validateCarLimit" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="trains" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.edu.pja.s28687.validators.locomotive.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.edu.pja.s28687.validators.locomotive" />
+      <option name="MAIN_CLASS_NAME" value="pl.edu.pja.s28687.validators.locomotive.LocomotiveCarValidatorForMaxCarWeightTest" />
+      <option name="METHOD_NAME" value="validateCarLimit" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -166,7 +249,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.MainTest.testValidator" />
+        <item itemvalue="JUnit.All in trains" />
+        <item itemvalue="JUnit.LocomotiveCarValidatorForMaxCarWeightTest.Should_NotValidatePoweredCar_When_LocomotiveHasReachedRegularCarLimit" />
+        <item itemvalue="JUnit.LocomotiveCarValidatorForMaxCarWeightTest.validateCarLimit" />
+        <item itemvalue="JUnit.LocomotiveCarValidatorForMaxCarWeightTest" />
       </list>
     </recent_temporary>
   </component>
@@ -179,7 +265,10 @@
       <option name="presentableId" value="Default" />
       <updated>1679929472666</updated>
       <workItem from="1679929473801" duration="5388000" />
-      <workItem from="1679950098976" duration="167375000" />
+      <workItem from="1679950098976" duration="221249000" />
+      <workItem from="1680546712150" duration="4922000" />
+      <workItem from="1680685548420" duration="10644000" />
+      <workItem from="1680732616780" duration="38528000" />
     </task>
     <servers />
   </component>

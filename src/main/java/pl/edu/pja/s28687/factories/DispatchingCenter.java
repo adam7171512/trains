@@ -18,8 +18,10 @@ public class DispatchingCenter{
     public void dispatchTrainSet(TrainSet trainSet, TrainStation sourceStation, TrainStation destStation){
         trainSet.setHomeStation(sourceStation);
         trainSet.setSourceStation(sourceStation);
-        trainSet.setDestStation(destStation);
-        trainSet.start();
+        trainSet.setDestinationStation(destStation);
+        if (! trainSet.hasStarted() ){
+            trainSet.start();
+        }
     }
 
     public void dispatchTrainSet(TrainSet trainSet){
@@ -48,5 +50,16 @@ public class DispatchingCenter{
                 .filter(station -> station != trainStation)
                 .toList()
                 .get(random.nextInt(trainStations.size() - 1));
+    }
+
+    public void dispatchAllTrainSetsWithCars() {
+        List<TrainSet> trainSets = locoBase.getTrainSets()
+                .stream()
+                .filter(trainSet -> trainSet.getCars().size() > 0)
+                .toList();
+        for (TrainSet trainSet : trainSets){
+            dispatchTrainSet(trainSet);
+        }
+
     }
 }

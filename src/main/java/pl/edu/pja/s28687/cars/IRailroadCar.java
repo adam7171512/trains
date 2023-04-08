@@ -13,10 +13,12 @@ public interface IRailroadCar {
     boolean isAttached();
 
     CarType getCarType();
+    int getId();
 
     BigDecimal getNetWeight();
 
     BigDecimal getCurrentWeight();
 
     BigDecimal getGrossWeight();
+    BigDecimal getMaxWeight();
 }

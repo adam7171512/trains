@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.cars;
 
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.load.Flags;
+import pl.edu.pja.s28687.load.LoadType;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,8 +18,8 @@ public abstract class RailroadCar implements IRailroadCar{
     private BigDecimal currentWeight;
     private int numberOfSeats;
     private int id;
-    protected Set<Flags> forbidden;
-    protected Set<Flags> allowedLoadFlags;
+    protected Set<LoadType> forbidden;
+    protected Set<LoadType> allowedLoadFlags;
     private String name;
     private Optional<Locomotive> locomotive = Optional.empty();
 
@@ -36,15 +36,15 @@ public abstract class RailroadCar implements IRailroadCar{
         netWeight = netWeight.setScale(2, RoundingMode.CEILING);
 
         forbidden = new HashSet<>(Set.of(
-                Flags.REFRIGERATED,
-                Flags.GASEOUS,
-                Flags.PASSENGERS,
-                Flags.BASIC_FREIGHT,
-                Flags.HEAVY_FREIGHT,
-                Flags.LUGGAGE,
-                Flags.LIQUID,
-                Flags.TOXIC,
-                Flags.EXPLOSIVE));
+                LoadType.REFRIGERATED,
+                LoadType.GASEOUS,
+                LoadType.PASSENGERS,
+                LoadType.BASIC_FREIGHT,
+                LoadType.HEAVY_FREIGHT,
+                LoadType.LUGGAGE,
+                LoadType.LIQUID,
+                LoadType.TOXIC,
+                LoadType.EXPLOSIVE));
     }
 
     public void setName(String name){

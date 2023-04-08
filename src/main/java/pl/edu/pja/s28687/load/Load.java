@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-public abstract class Load<T extends IDeliverable> {
+public abstract class Load implements IDeliverable {
 
 
     BigDecimal quantity;
@@ -24,7 +24,7 @@ public abstract class Load<T extends IDeliverable> {
     }
 
 
-    public abstract Set<Flags> flags();
+    public abstract Set<LoadType> flags();
 
     public int getId() {
         return id;
@@ -53,19 +53,14 @@ public abstract class Load<T extends IDeliverable> {
     }
 
     public BigDecimal getWeight() {
-        return this.weight;
+        return this.weight.setScale(2, RoundingMode.CEILING);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Load<?> load)) return false;
-        return id == load.id
-                && loaded == load.loaded
-                && Objects.equals(quantity, load.quantity)
-                && weight.equals(load.weight)
-                && Objects.equals(name, load.name)
-                && flags().equals(load.flags());
+        if (!(o instanceof Load load)) return false;
+        return this.id == ((Load) load).id;
     }
 
     @Override
