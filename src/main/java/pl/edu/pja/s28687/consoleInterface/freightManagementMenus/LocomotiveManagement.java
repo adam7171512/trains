@@ -97,7 +97,7 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
                 System.out.println("All possible cars attached");
                 return;
             }
-            id = resourceContainer.parseToInt(scan.nextLine());
+            id = resourceContainer.parseToInt(input);
             IRailroadCar car = availableCars.get(id);
             if (car != null) {
                 loc.attach(car);
