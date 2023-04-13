@@ -1,6 +1,7 @@
 package pl.edu.pja.s28687;
 
 import pl.edu.pja.s28687.logistics.Coordinates;
+import pl.edu.pja.s28687.misc.RailroadHazard;
 import pl.edu.pja.s28687.misc.TrainStatus;
 
 import java.math.BigDecimal;
@@ -69,7 +70,7 @@ public class MachinistJob extends Thread{
                         .multiply(
                                 BigDecimal.valueOf(randomValue * 0.03)));
 
-        locomotive.setCurrentSpeed(currentSpeed);
+        setLocomotiveSpeed(currentSpeed);
     }
 
     public void setLocCoordinates(BigDecimal currentSegmentProgress){
@@ -91,7 +92,7 @@ public class MachinistJob extends Thread{
                 BigDecimal currentSpeed = locomotive.getCurrentSpeed();
                 BigDecimal defaultSpeed = locomotive.getDefaultSpeed();
                 currentSpeed = currentSpeed.add(defaultSpeed.multiply(BigDecimal.valueOf(0.01)));
-                locomotive.setCurrentSpeed(currentSpeed);
+                setLocomotiveSpeed(currentSpeed);
     }
 
     public void slowDownLocomotive(){
@@ -99,7 +100,15 @@ public class MachinistJob extends Thread{
             BigDecimal defaultSpeed = locomotive.getDefaultSpeed();
             currentSpeed = currentSpeed.subtract(defaultSpeed.multiply(BigDecimal.valueOf(0.04)));
             currentSpeed = currentSpeed.max(BigDecimal.valueOf(0));
-            locomotive.setCurrentSpeed(currentSpeed);
+            setLocomotiveSpeed(currentSpeed);
         }
+
+    private void setLocomotiveSpeed(BigDecimal speed){
+        try {
+            locomotive.setSpeed(speed);
+        } catch (RailroadHazard e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 }

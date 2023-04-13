@@ -184,13 +184,6 @@ public class Locomotive implements ILocomotive {
             ;}
     }
 
-    public void setSpeed(BigDecimal speed){
-        this.currentSpeed = speed;
-    }
-
-
-
-
     public TrainStation getHomeStation() {
         return homeTrainStation;
     }
@@ -230,20 +223,16 @@ public class Locomotive implements ILocomotive {
         return currentSpeed.setScale(2, RoundingMode.CEILING);
     }
 
-    public void setCurrentSpeed(BigDecimal currentSpeed){
-        this.currentSpeed = currentSpeed;
-        if (currentSpeed.doubleValue() > 200) {
-            try {
+    public void setSpeed(BigDecimal speed) throws RailroadHazard{
+        BigDecimal speedBeforeChange = this.currentSpeed;
+        this.currentSpeed = speed;
+        if (speedBeforeChange.doubleValue() < 200 && speed.doubleValue() > 200) {
                 throw new RailroadHazard(
                         "Train " +
                                 this.name +
                                 " exceeded speed 200 km/h !!!");
-            } catch (RailroadHazard e)
-            {
-                System.err.println(e.getMessage());}
         }
     }
-
 
     public int getId() {
         return id;
