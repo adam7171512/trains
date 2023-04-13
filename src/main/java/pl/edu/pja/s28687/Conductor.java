@@ -20,7 +20,7 @@ public class Conductor extends Thread {
     private Optional<LocoMap> locoMap = Optional.empty();
 
     public Conductor(Locomotive locomotive, LocoBase locoBase){
-        this.routeFinder = new BadRouteFinder(locoBase);
+        this.routeFinder = new NaiveRouteFinder(locoBase);
         this.locoBase = locoBase;
         this.locomotive = locomotive;
     }
