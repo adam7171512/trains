@@ -1,6 +1,7 @@
 package pl.edu.pja.s28687.gui;
 
 import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.logistics.Coordinates;
 
 import java.awt.Point;
@@ -22,12 +23,12 @@ public class TrainSetRepresentation extends JComponent {
 
     private Color color;
 
-    public TrainSetRepresentation(Locomotive loc){
-        initialize(loc);
+    public TrainSetRepresentation(TrainSet trainSet){
+        initialize(trainSet);
     }
 
-    private void initialize(Locomotive loc){
-        this.loc = loc;
+    private void initialize(TrainSet trainSet){
+        this.loc = trainSet.getLocomotive();
         trail = new ArrayList<>();
         this.setOpaque(false);
         this.setVisible(true);

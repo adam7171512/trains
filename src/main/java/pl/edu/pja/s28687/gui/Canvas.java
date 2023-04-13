@@ -1,5 +1,6 @@
 package pl.edu.pja.s28687.gui;
 import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.RailroadLink;
 import pl.edu.pja.s28687.TrainStation;
@@ -70,12 +71,12 @@ public class Canvas extends Thread {
         }
 
 
-        List<Locomotive> locomotiveList = locoBase.getLocomotiveList();
-        for (Locomotive loc : locomotiveList){
-            TrainSetRepresentation trainSetRepresentation = new TrainSetRepresentation(loc);
-            loc.setVisualRepresentation(trainSetRepresentation);
+        List<TrainSet> trainSets = locoBase.getTrainSets().stream().filter(TrainSet::hasStarted).toList();
+        for (TrainSet trainSet : trainSets){
+            TrainSetRepresentation trainSetRepresentation = new TrainSetRepresentation(trainSet);
+            trainSet.getLocomotive().setVisualRepresentation(trainSetRepresentation);
             locoMap.addTrain(trainSetRepresentation);
-            locoMap.addTrainLabel(loc);
+            locoMap.addTrainLabel(trainSet.getLocomotive());
 
         }
 
