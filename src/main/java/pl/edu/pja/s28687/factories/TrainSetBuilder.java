@@ -58,6 +58,7 @@ public class TrainSetBuilder {
 
         int id = locoBase.getIdForTrainSet();
         TrainSet t = new TrainSet(locomotive, conductor, locoBase, id, loadValidator);
+        locomotive.setTrainSetId(id);
         locoBase.registerTrainSet(t);
         return t;
     }

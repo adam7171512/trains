@@ -1,8 +1,11 @@
 package pl.edu.pja.s28687.consoleInterface.objectCreationMenus.bulk;
 
 import pl.edu.pja.s28687.LocomotivePurpose;
+import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.factories.TrainSetFactory;
+
+import java.util.List;
 
 public class BulkTrainSetCreation extends AbstractLeafMenu {
     @Override
@@ -29,12 +32,19 @@ public class BulkTrainSetCreation extends AbstractLeafMenu {
 
         TrainSetFactory trainSetFactory = resourceContainer.getTrainSetFactory();
 
-        switch (type) {
+        List<TrainSet> trainSets = switch (type) {
             case 1 -> trainSetFactory.createRandomTrainSets(number);
             case 2 -> trainSetFactory.createRandomTrainSetsWithCars(number);
             case 3 -> trainSetFactory.createTrainSetsOfType(number, LocomotivePurpose.PASSENGER);
             case 4 -> trainSetFactory.createTrainSetsOfType(number, LocomotivePurpose.BASIC_FREIGHT);
             case 5 -> trainSetFactory.createTrainSetsOfType(number, LocomotivePurpose.HEAVY_FREIGHT);
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        };
+
+        System.out.println("Enter 1 to randomly dispatch train sets or any other input to finish" +
+                "\nMore dispatching options available in dispatch menu");
+        if (scan.nextLine().equals("1")) {
+            resourceContainer.getDispatchingCenter().dispatchTrainSets(trainSets);
         }
     }
 

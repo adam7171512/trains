@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import static java.lang.Math.min;
@@ -46,6 +47,16 @@ public class Locomotive implements ILocomotive {
     private TrainSetRepresentation visualRepresentation;
     private ILocomotiveCarValidator carValidator;
     private ILocomotiveLoadValidator loadValidator;
+
+    private Integer trainSetId;
+
+    public Integer getTrainSetId() {
+        return trainSetId;
+    }
+
+    public void setTrainSetId(int trainSetId) {
+        this.trainSetId = trainSetId;
+    }
 
     public BigDecimal getDefaultSpeed(){
         return defaultSpeed;

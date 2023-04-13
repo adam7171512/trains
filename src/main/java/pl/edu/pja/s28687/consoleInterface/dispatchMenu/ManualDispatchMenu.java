@@ -32,9 +32,8 @@ public class ManualDispatchMenu extends AbstractLeafMenu implements IBrowsable<T
         }
         TrainSet ts = trainSett.get();
 
-        String s = new StringBuilder().append("1. Set route\n")
-                .append("2. Set route finding algorithm\n")
-                .toString();
+        String s = "1. Set route\n" +
+                "2. Set route finding algorithm\n";
         System.out.println(s);
 
         int selection = resourceContainer.parseToInt(scan.nextLine());

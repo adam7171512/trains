@@ -25,6 +25,10 @@ public class DispatchingCenter{
     }
 
     public void dispatchTrainSet(TrainSet trainSet){
+        if (locoBase.getTrainStations().size() < 2){
+            System.err.println("Not enough train stations to dispatch train set");
+            return;
+        }
         TrainStation sourceStation = getRandomTrainStation();
         TrainStation destStation = getRandomDestinationForTrainStation(sourceStation);
         dispatchTrainSet(trainSet, sourceStation, destStation);
@@ -61,5 +65,11 @@ public class DispatchingCenter{
             dispatchTrainSet(trainSet);
         }
 
+    }
+
+    public void dispatchTrainSets(List<TrainSet> trainSets) {
+        for (TrainSet trainSet : trainSets){
+            dispatchTrainSet(trainSet);
+        }
     }
 }

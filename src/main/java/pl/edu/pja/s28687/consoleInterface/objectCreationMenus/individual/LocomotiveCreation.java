@@ -1,5 +1,7 @@
 package pl.edu.pja.s28687.consoleInterface.objectCreationMenus.individual;
 
+import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.factories.LocomotiveBuilder;
 import pl.edu.pja.s28687.validators.locomotive.ILocomotiveCarValidator;
@@ -8,6 +10,7 @@ import pl.edu.pja.s28687.validators.locomotive.LocomotiveCarValidatorForMaxCarWe
 import pl.edu.pja.s28687.validators.locomotive.PassengerTrainCarValidator;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class LocomotiveCreation extends AbstractLeafMenu {
     @Override
@@ -58,12 +61,24 @@ public class LocomotiveCreation extends AbstractLeafMenu {
             case 3 -> new PassengerTrainCarValidator();
             default -> throw new IllegalStateException("Unexpected value: " + validator);
         };
-        new LocomotiveBuilder(resourceContainer.getLocoBase()).setName(name)
+        Locomotive locomotive = new LocomotiveBuilder(resourceContainer.getLocoBase()).setName(name)
                 .setRegularCars(maxCars)
                 .setPoweredCars(maxPoweredCars)
                 .setMaxPayload(freight)
                 .setDefaultSpeed(speed)
                 .setCarValidator(locomotiveCarValidator).build();
+
+        System.out.println("Would you like to form train out of created locomotive?" +
+                "\nTrains can get dispatched whereas locomotives can't" +
+                "\nEnter 1 to form train set or any other input to leave it as pure locomotive");
+        if (scan.nextLine().equals("1")) {
+            TrainSet trainSet = resourceContainer.getTrainSetFactory().createTrainSetFromLocomotive(locomotive);
+            System.out.println("Would you like to randomly dispatch created train?" +
+                    "\nEnter 1 to dispatch or any other input to finish");
+            if (scan.nextLine().equals("1")) {
+                resourceContainer.getDispatchingCenter().dispatchTrainSet(trainSet);
+            }
+        }
     }
 
     @Override

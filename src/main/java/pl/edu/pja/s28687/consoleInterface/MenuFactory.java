@@ -92,6 +92,10 @@ public class MenuFactory {
         menus.add(trainStationCreation);
         individualObjectCreationMenu.addSubMenu(trainStationCreation);
 
+        TrainSetCreation trainSetCreation = new TrainSetCreation();
+        menus.add(trainSetCreation);
+        individualObjectCreationMenu.addSubMenu(trainSetCreation);
+
         LocomotiveCreation locomotiveCreation = new LocomotiveCreation();
         menus.add(locomotiveCreation);
         individualObjectCreationMenu.addSubMenu(locomotiveCreation);

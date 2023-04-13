@@ -117,18 +117,33 @@ public class TrainSetFactory {
         return cars;
     }
 
-    public void createRandomTrainSetWithCars() {
+    public TrainSet createRandomTrainSetWithCars() {
         TrainSet trainSet = createRandomTrainSet();
         List<RailroadCar> cars = createRandomCarsForTrainSet(trainSet, 99);
         for (RailroadCar car : cars){
             trainSet.getLocomotive().attach(car);
         }
+        return trainSet;
     }
 
-    public void createRandomTrainSetsWithCars(int number){
+    public List<TrainSet> createRandomTrainSetsWithCars(int number){
+        List<TrainSet> trainSets = new ArrayList<>();
         for (int i = 0; i < number; i++){
-            createRandomTrainSetWithCars();
+            trainSets.add(createRandomTrainSetWithCars());
         }
+        return trainSets;
+    }
+
+    public TrainSet createTrainSetFromLocomotive(Locomotive locomotive){
+        return new TrainSetBuilder(locoBase).setLocomotive(locomotive).build();
+    }
+
+    public List<TrainSet> createTrainSetsFromLocomotives(List<Locomotive> locomotives){
+        List<TrainSet> trainSets = new ArrayList<>();
+        for (Locomotive loco : locomotives){
+            trainSets.add(createTrainSetFromLocomotive(loco));
+        }
+        return trainSets;
     }
 }
 
