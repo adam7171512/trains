@@ -161,6 +161,8 @@ public class MenuFactory {
         menus.add(infoSelectMenu);
         mainMenu.addSubMenu(infoSelectMenu);
 
+
+
         TrainSetInfoMenu trainSetInfoMenu = new TrainSetInfoMenu();
         menus.add(trainSetInfoMenu);
         infoSelectMenu.addSubMenu(trainSetInfoMenu);
@@ -180,6 +182,10 @@ public class MenuFactory {
         DispatchSelectionMenu dispatchSelectionMenu = new DispatchSelectionMenu();
         menus.add(dispatchSelectionMenu);
         mainMenu.addSubMenu(dispatchSelectionMenu);
+
+        Visualisation visualisation = new Visualisation();
+        menus.add(visualisation);
+        mainMenu.addSubMenu(visualisation);
 
         AutomaticDispatchMenu automaticDispatchMenu = new AutomaticDispatchMenu();
         menus.add(automaticDispatchMenu);
