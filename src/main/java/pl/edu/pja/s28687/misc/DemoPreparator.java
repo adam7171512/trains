@@ -49,7 +49,7 @@ public class DemoPreparator {
         canvas.start();
 
         AggregateLogger log= new AggregateLogger(locoBase);
-        log.start();
+        log.startLogging();
     }
 
     public void demoHard() {
@@ -70,7 +70,7 @@ public class DemoPreparator {
         canvas.start();
 
         AggregateLogger log= new AggregateLogger(locoBase);
-        log.start();
+        log.startLogging();
 
     }
 }
