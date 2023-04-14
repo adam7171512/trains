@@ -3,9 +3,8 @@ package pl.edu.pja.s28687.misc;
 import pl.edu.pja.s28687.LocomotivePurpose;
 import pl.edu.pja.s28687.factories.*;
 import pl.edu.pja.s28687.gui.Canvas;
-import pl.edu.pja.s28687.info.Logger;
+import pl.edu.pja.s28687.info.AggregateLogger;
 import pl.edu.pja.s28687.load.LoadType;
-import pl.edu.pja.s28687.logistics.BadRouteFinder;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.NaiveRouteFinder;
 import pl.edu.pja.s28687.logistics.RouteFindingAlgos;
@@ -14,7 +13,7 @@ public class DemoPreparator {
 
     private LocoBase locoBase;
     private Canvas canvas;
-    private Logger log;
+    private AggregateLogger log;
     private LocomotiveFactory locomotiveFactory;
     private CarsFactory carsFactory;
     private LoadFactory loadFactory;
@@ -49,7 +48,7 @@ public class DemoPreparator {
         Canvas canvas= new Canvas(locoBase);
         canvas.start();
 
-        Logger log= new Logger(locoBase);
+        AggregateLogger log= new AggregateLogger(locoBase);
         log.start();
     }
 
@@ -70,7 +69,7 @@ public class DemoPreparator {
         Canvas canvas= new Canvas(locoBase);
         canvas.start();
 
-        Logger log= new Logger(locoBase);
+        AggregateLogger log= new AggregateLogger(locoBase);
         log.start();
 
     }

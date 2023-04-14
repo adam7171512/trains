@@ -1,17 +1,11 @@
 package pl.edu.pja.s28687.logistics;
-
-
 import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.cars.*;
-import pl.edu.pja.s28687.info.Logger;
 import pl.edu.pja.s28687.load.*;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.TrainStation;
-
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.logging.FileHandler;
 
 public class LocoBase {
 

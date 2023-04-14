@@ -8,12 +8,11 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Logger extends Thread{
-
+public class AggregateLogger extends Thread{
 
     public PrintWriter logger;
     private LocoBase locoBase;
-    public Logger(LocoBase locoBase) {
+    public AggregateLogger(LocoBase locoBase) {
         this.locoBase = locoBase;
     }
 
@@ -35,8 +34,5 @@ public class Logger extends Thread{
             logger.println(TrainSetInfo.getAggregatedTrainSetsInfo(locoBase));
             logger.close();
         }
-
-
-
     }
 }
