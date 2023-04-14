@@ -75,7 +75,7 @@ public abstract class AbstractSelectMenu implements ISelectMenu {
 
     @Override
     public int readinput() {
-        return MenuFactory.parseToInt(scan.nextLine());
+        return ConsoleInterface.parseToInt(scan.nextLine());
     }
 
     @Override

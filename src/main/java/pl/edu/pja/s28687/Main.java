@@ -1,19 +1,10 @@
 package pl.edu.pja.s28687;
 
-import pl.edu.pja.s28687.consoleInterface.MainMenu;
-import pl.edu.pja.s28687.consoleInterface.MenuFactory;
-import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.consoleInterface.ConsoleInterface;
 
 public class Main {
     public static void main(String[] args) {
-        MenuFactory mf = new MenuFactory();
-        mf.create();
-        mf.show();
-
-
-
-
-
-
+        ConsoleInterface consoleInterface = new ConsoleInterface();
+        consoleInterface.show();
     }
 }

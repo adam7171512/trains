@@ -9,7 +9,7 @@ public class Visualisation extends AbstractLeafMenu{
     }
     @Override
     public String getTitle() {
-        return "Visualisation";
+        return "Map";
     }
 
     @Override

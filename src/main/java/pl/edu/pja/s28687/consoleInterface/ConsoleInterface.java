@@ -1,72 +1,50 @@
 package pl.edu.pja.s28687.consoleInterface;
-
 import pl.edu.pja.s28687.ResourceContainer;
 import pl.edu.pja.s28687.consoleInterface.dispatchMenu.AutomaticDispatchMenu;
 import pl.edu.pja.s28687.consoleInterface.dispatchMenu.DispatchSelectionMenu;
 import pl.edu.pja.s28687.consoleInterface.dispatchMenu.ManualDispatchMenu;
 import pl.edu.pja.s28687.consoleInterface.freightManagementMenus.*;
 import pl.edu.pja.s28687.consoleInterface.infoMenus.*;
-
-
 import pl.edu.pja.s28687.consoleInterface.objectCreationMenus.SimpleLocoSystemPreparation;
-
 import pl.edu.pja.s28687.consoleInterface.objectCreationMenus.ObjectCreationMethodSelectMenu;
-
 import pl.edu.pja.s28687.consoleInterface.objectCreationMenus.individual.IndividualObjectCreationMenu;
 import pl.edu.pja.s28687.consoleInterface.objectCreationMenus.bulk.*;
 import pl.edu.pja.s28687.consoleInterface.objectCreationMenus.individual.*;
-import pl.edu.pja.s28687.factories.*;
-import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.info.AggregateLogger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MenuFactory {
-    public static LocoBase locoBase = new LocoBase();
+public class ConsoleInterface {
 
-    public static TrainStationFactory trainStationFactory = new TrainStationFactory(locoBase);
-    public static LocomotiveFactory locomotiveFactory = new LocomotiveFactory(locoBase);
-    public static CarsFactory carsFactory = new CarsFactory(locoBase);
-    public static LoadFactory loadFactory = new LoadFactory(locoBase);
-    public static RailroadsFactory railroadsFactory = new RailroadsFactory(locoBase);
-    public static TrainSetFactory trainSetFactory = new TrainSetFactory(locoBase, locomotiveFactory, carsFactory);
-
+    public ConsoleInterface(){
+        initialize();
+    }
     public static int parseToInt(String s){
         try{
             return Integer.parseInt(s);
         }catch (NumberFormatException e){
+            System.err.println("Invalid input, please try again");
+            return parseToInt(new Scanner(System.in).nextLine());
         }
-        System.err.println("Invalid input, please try again");
-        return parseToInt(new Scanner(System.in).nextLine());
     }
 
     public static double parseToDouble(String s){
         try{
             return Double.parseDouble(s);
         }catch (NumberFormatException e){
+            System.err.println("Invalid input, please try again");
+            return parseToDouble(new Scanner(System.in).nextLine());
         }
-        System.err.println("Invalid input, please try again");
-        return parseToDouble(new Scanner(System.in).nextLine());
     }
-
-    public static LocoBase getLocoBase() {
-        return locoBase;
-    }
-
-    private List<IMenu> menus = new ArrayList<>();
+    private final List<IMenu> menus = new ArrayList<>();
     private IMenu root;
 
     public void show(){
         root.menuFlow();
     }
-
-    public void create(){
-        createTopMenu();
-    }
-
-
-    public void createTopMenu(){
+    public void initialize(){
         MainMenu mainMenu = new MainMenu();
         menus.add(mainMenu);
         root = mainMenu;
@@ -152,7 +130,6 @@ public class MenuFactory {
         menus.add(manualFreightManagementSelectMenu);
         freightManagementTypeSelectMenu.addSubMenu(manualFreightManagementSelectMenu);
 
-
         LocomotiveManagement locomotiveManagement = new LocomotiveManagement();
         menus.add(locomotiveManagement);
         manualFreightManagementSelectMenu.addSubMenu(locomotiveManagement);
@@ -164,8 +141,6 @@ public class MenuFactory {
         InfoSelectMenu infoSelectMenu = new InfoSelectMenu();
         menus.add(infoSelectMenu);
         mainMenu.addSubMenu(infoSelectMenu);
-
-
 
         TrainSetInfoMenu trainSetInfoMenu = new TrainSetInfoMenu();
         menus.add(trainSetInfoMenu);
@@ -191,6 +166,10 @@ public class MenuFactory {
         menus.add(visualisation);
         mainMenu.addSubMenu(visualisation);
 
+        Presentation presentation = new Presentation();
+        menus.add(presentation);
+        mainMenu.addSubMenu(presentation);
+
         AutomaticDispatchMenu automaticDispatchMenu = new AutomaticDispatchMenu();
         menus.add(automaticDispatchMenu);
         dispatchSelectionMenu.addSubMenu(automaticDispatchMenu);
@@ -199,16 +178,15 @@ public class MenuFactory {
         menus.add(manualDispatchMenu);
         dispatchSelectionMenu.addSubMenu(manualDispatchMenu);
 
-
-
-
-
-
         ResourceContainer resourceContainer = new ResourceContainer();
         for(IMenu menu : menus){
-            if (menu instanceof ILeafMenu)
+            if (menu instanceof ILeafMenu){
             ((ILeafMenu) menu).setResourceContainer(resourceContainer);
+            }
         }
+
+        AggregateLogger logger = new AggregateLogger(resourceContainer.getLocoBase());
+        logger.start();
 
     }
 }
