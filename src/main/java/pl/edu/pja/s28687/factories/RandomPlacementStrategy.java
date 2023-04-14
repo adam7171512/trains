@@ -9,11 +9,16 @@ import java.util.Random;
 public class RandomPlacementStrategy implements IStationPlacementStrategy{
     @Override
     public List<Coordinates> createCoordinates(int numberOfStations, int xBound, int yBound) {
+
+        if (numberOfStations < 1) {
+            throw new IllegalArgumentException("Number of stations must be greater than 0");
+        }
+
         Random random = new Random();
         List<Coordinates> coordinatesList = new ArrayList<>();
         for (int i = 0; i < numberOfStations; i++) {
-            int x = random.nextInt(xBound - 30) + 30;
-            int y = random.nextInt(yBound - 30) + 30;
+            int x = random.nextInt(xBound);
+            int y = random.nextInt(yBound);
             coordinatesList.add(new Coordinates(x, y));
         }
         return coordinatesList;

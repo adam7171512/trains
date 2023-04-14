@@ -8,14 +8,22 @@ import java.util.List;
 public class RectangularNetPlacementStrategy implements IStationPlacementStrategy{
     @Override
     public List<Coordinates> createCoordinates(int numberOfStations, int xBound, int yBound) {
-        List<Coordinates> coordinatesList = new ArrayList<>();
-        int x = (int) Math.sqrt(numberOfStations);
 
-        for (int i = 0; i < x; i++){
-            for (int j = 0; j < x; j++){
-                int xPos = 30 + ((xBound - 30) / x) * i;
-                int yPos = 30 + ((yBound - 30) / x) * j;
-                System.out.println("xPos: " + xPos + " yPos: " + yPos);
+        if (numberOfStations < 1) {
+            throw new IllegalArgumentException("Number of stations must be greater than 0");
+        }
+
+        List<Coordinates> coordinatesList = new ArrayList<>();
+
+        int ratio = Math.ceilDiv(xBound, yBound);
+        int columns = (int) Math.ceil(Math.sqrt(Math.ceilDiv(numberOfStations , ratio)));
+        int rows = (int) Math.ceil(Math.ceilDiv(numberOfStations , columns));
+
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++){
+                if (coordinatesList.size() == numberOfStations) break;
+                int xPos = ((xBound) / rows) * i;
+                int yPos = ((yBound) / columns) * j;
                 Coordinates c = new Coordinates(xPos, yPos);
                 coordinatesList.add(c);
             }}
