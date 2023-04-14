@@ -49,6 +49,9 @@ public class ConsoleInterface {
         menus.add(mainMenu);
         root = mainMenu;
 
+        ResourceContainer resourceContainer = new ResourceContainer();
+        AggregateLogger logger = new AggregateLogger(resourceContainer.getLocoBase());
+
         ObjectCreationMethodSelectMenu objectCreationMethodSelectMenu = new ObjectCreationMethodSelectMenu();
         menus.add(objectCreationMethodSelectMenu);
         mainMenu.addSubMenu(objectCreationMethodSelectMenu);
@@ -170,6 +173,10 @@ public class ConsoleInterface {
         menus.add(presentation);
         mainMenu.addSubMenu(presentation);
 
+        LoggingMenu loggingMenu = new LoggingMenu(logger);
+        menus.add(loggingMenu);
+        mainMenu.addSubMenu(loggingMenu);
+
         AutomaticDispatchMenu automaticDispatchMenu = new AutomaticDispatchMenu();
         menus.add(automaticDispatchMenu);
         dispatchSelectionMenu.addSubMenu(automaticDispatchMenu);
@@ -178,15 +185,12 @@ public class ConsoleInterface {
         menus.add(manualDispatchMenu);
         dispatchSelectionMenu.addSubMenu(manualDispatchMenu);
 
-        ResourceContainer resourceContainer = new ResourceContainer();
+
         for(IMenu menu : menus){
             if (menu instanceof ILeafMenu){
             ((ILeafMenu) menu).setResourceContainer(resourceContainer);
             }
         }
-
-        AggregateLogger logger = new AggregateLogger(resourceContainer.getLocoBase());
-        logger.start();
 
     }
 }
