@@ -55,7 +55,6 @@ public class TrainSetFactory {
         TrainSet trainSet = new TrainSetBuilder(locoBase)
                 .setLocomotive(loco)
                 .setAlgorithm(algorithm)
-                .setLocoBase(locoBase)
                 .build();
         int numberOfCars = random.nextInt(trainSet.getLocomotive().getCarLimit() - 5) + 5;
         List<IRailroadCar> cars = createCarsForTrainSet(trainSet, numberOfCars, type);
