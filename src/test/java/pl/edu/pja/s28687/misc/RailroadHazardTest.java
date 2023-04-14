@@ -1,5 +1,4 @@
 package pl.edu.pja.s28687.misc;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.edu.pja.s28687.ILocomotive;
@@ -9,8 +8,6 @@ import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.validators.locomotive.ILocomotiveCarValidator;
 import pl.edu.pja.s28687.validators.locomotive.ILocomotiveLoadValidator;
-import pl.edu.pja.s28687.validators.locomotive.LocomotiveCarValidatorForCurrentCarWeight;
-import pl.edu.pja.s28687.validators.locomotive.LocomotiveLoadValidator;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -67,25 +64,24 @@ class RailroadHazardTest {
                 , 10
                 , BigDecimal.TEN
                 , 10
-                , BigDecimal.TEN
+                , BigDecimal.valueOf(100)
                 , mockCarValidator
                 , mockLoadValidator
         );
     }
-
     @Test
-    void should_ThrowRailroadHazard_When_Speed_Exceeds_200() {
+    void setSpeed_Over200_ThrowsRailroadHazard_When_SpeedWasLowerThan200() {
         assertThrows(RailroadHazard.class, () -> locomotive.setSpeed(BigDecimal.valueOf(201)));
     }
 
     @Test
-    void shouldNot_ThrowRailroadHazard_When_SpeedWasAlreadyHigherThan200() {
+    void setSpeed_Over200_DoesNotThrowRailroadHazard_When_SpeedWasAlreadyHigherThan200() {
         assertThrows(RailroadHazard.class, () -> locomotive.setSpeed(BigDecimal.valueOf(201)));
         assertDoesNotThrow(() -> locomotive.setSpeed(BigDecimal.valueOf(205)));
     }
 
     @Test
-    void should_ThrowRailroadHazard_When_SpeedExceeds200Again() {
+    void setSpeed_Over200_ThrowsRailroadHazard_When_SpeedDroppedBelow200AndThenExceeded200Again() {
         assertThrows(RailroadHazard.class, () -> locomotive.setSpeed(BigDecimal.valueOf(201)));
         assertDoesNotThrow(() -> locomotive.setSpeed(BigDecimal.valueOf(205)));
         assertDoesNotThrow(() -> locomotive.setSpeed(BigDecimal.valueOf(199)));
