@@ -374,6 +374,10 @@ public class Locomotive implements ILocomotive {
         return coordinates;
     }
 
+    public ILocomotiveLoadValidator getLoadValidator() {
+        return loadValidator;
+    }
+
     public List<ILoadCarrier<? extends IDeliverable>> getLoadableCars() {
         return loadCarriers;
     }
