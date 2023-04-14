@@ -15,13 +15,11 @@ public class TrainSet {
     private int id;
     private Locomotive locomotive;
     private Conductor conductor;
-    private LocoBase locoBase;
     boolean started = false;
 
-    public TrainSet(Locomotive locomotive, Conductor conductor, LocoBase locoBase, int id)  {
+    public TrainSet(Locomotive locomotive, Conductor conductor, int id)  {
         this.locomotive = locomotive;
         this.conductor = conductor;
-        this.locoBase = locoBase;
         this.id = id;
     }
 
