@@ -41,14 +41,9 @@ public class BulkTrainStationCreation extends AbstractLeafMenu {
         };
 
         if (strategy == null){
-            try {
-                resourceContainer
-                        .getTrainStationFactory()
-                        .makeTrainStationsOfPolishTowns();
-            } catch (IOException e) {
-                System.err.println("Error while creating Train Stations");
-                e.printStackTrace();
-            }
+            resourceContainer
+                    .getTrainStationFactory()
+                    .createTrainStationsPolishCoords();
         } else {
             resourceContainer
                     .getTrainStationFactory()
