@@ -11,12 +11,10 @@ public class TrainSetBuilder {
     private LocoBase locoBase;
     private Locomotive locomotive;
     private IRouteFinder algorithm;
-    private ILocomotiveLoadValidator loadValidator;
 
     public TrainSetBuilder(LocoBase locoBase){
         this.locoBase = locoBase;
     }
-
 
     public TrainSetBuilder setLocoBase(LocoBase locoBase){
         this.locoBase = locoBase;
@@ -25,11 +23,6 @@ public class TrainSetBuilder {
 
     public TrainSetBuilder setAlgorithm(IRouteFinder algorithm){
         this.algorithm = algorithm;
-        return this;
-    }
-
-    public TrainSetBuilder setLoadValidator(ILocomotiveLoadValidator loadValidator){
-        this.loadValidator = loadValidator;
         return this;
     }
 
@@ -51,18 +44,11 @@ public class TrainSetBuilder {
         if (algorithm != null){
             conductor.setRouteFindingAlgorithm(algorithm);
         }
-        if (loadValidator == null){
-            loadValidator = new LocomotiveLoadValidator();
-        }
-
 
         int id = locoBase.getIdForTrainSet();
-        TrainSet t = new TrainSet(locomotive, conductor, locoBase, id, loadValidator);
+        TrainSet t = new TrainSet(locomotive, conductor, locoBase, id);
         locomotive.setTrainSetId(id);
         locoBase.registerTrainSet(t);
         return t;
     }
-
-
-
 }

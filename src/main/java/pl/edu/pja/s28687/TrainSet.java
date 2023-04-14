@@ -16,16 +16,13 @@ public class TrainSet {
     private Locomotive locomotive;
     private Conductor conductor;
     private LocoBase locoBase;
-    private ILocomotiveLoadValidator loadValidator;
     boolean started = false;
 
-    public TrainSet(Locomotive locomotive, Conductor conductor, LocoBase locoBase, int id, ILocomotiveLoadValidator loadValidator)  {
+    public TrainSet(Locomotive locomotive, Conductor conductor, LocoBase locoBase, int id)  {
         this.locomotive = locomotive;
         this.conductor = conductor;
         this.locoBase = locoBase;
         this.id = id;
-        this.loadValidator = loadValidator;
-
     }
 
     public void start(){
@@ -90,18 +87,18 @@ public class TrainSet {
     }
 
     public boolean validateLoadWeight(IDeliverable load){
-        return loadValidator.validateWeight(load, this.locomotive);
+        return locomotive.getLoadValidator().validateWeight(load, this.locomotive);
     }
 
     public boolean validateLoad(IDeliverable load){
-        return loadValidator.validate(load, this.locomotive);
+        return locomotive.getLoadValidator().validate(load, this.locomotive);
     }
 
     public <T extends IDeliverable> List<ILoadCarrier<T>> getCarsThatCouldLoad(T load){
         if (!validateLoadWeight(load)){
             return List.of();
         }
-        return loadValidator.getCarsThatCouldLoad(load, this.locomotive);
+        return locomotive.getLoadValidator().getCarsThatCouldLoad(load, this.locomotive);
         }
 
 
