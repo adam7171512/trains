@@ -97,6 +97,10 @@ public class TrainStationFactory {
             , int xBound
             , int yBound) {
 
+        if (quantity < 0) {
+            throw new IllegalArgumentException
+                    ("Quantity has to be greater than 0");
+        }
         List<TrainStation> trainStations = new ArrayList<>();
         List<Coordinates> coordinatesList =
                 placementStrategy
@@ -116,11 +120,5 @@ public class TrainStationFactory {
     public List<TrainStation> createRandomTrainStations(int quantity){
         return createRandomTrainStations(quantity, new RandomPlacementStrategy(), 700, 700);
     }
-
-    public void makeTrainStationsOfPolishTowns() throws IOException {
-        for (TrainStation ts : new PLCoordReader().prepareTrainStations()){
-            locoBase.addTrainStation(ts);
-        }
-    }
-    }
+}
 
