@@ -16,11 +16,6 @@ public class TrainSetBuilder {
         this.locoBase = locoBase;
     }
 
-    public TrainSetBuilder setLocoBase(LocoBase locoBase){
-        this.locoBase = locoBase;
-        return this;
-    }
-
     public TrainSetBuilder setAlgorithm(IRouteFinder algorithm){
         this.algorithm = algorithm;
         return this;
