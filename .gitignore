@@ -41,3 +41,5 @@ build/
 .idea/
 
 *.lck
+
+Appstate.txt
