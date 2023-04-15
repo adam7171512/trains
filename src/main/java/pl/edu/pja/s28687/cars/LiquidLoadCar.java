@@ -5,7 +5,7 @@ import pl.edu.pja.s28687.load.*;
 import java.util.Set;
 
 
-public class LiquidLoadCar extends BasicFreightCarABC<LiquidLoad> {
+public class LiquidLoadCar extends BasicFreightCarABC<ILiquid> {
     public LiquidLoadCar(int id, ICarLoadValidator validator) {
         super(id, validator);
     }
