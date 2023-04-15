@@ -3,7 +3,6 @@ package pl.edu.pja.s28687.info;
 import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.cars.PassengerCar;
-import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.logistics.LocoBase;
 

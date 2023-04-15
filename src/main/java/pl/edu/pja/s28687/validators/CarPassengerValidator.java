@@ -3,7 +3,6 @@ package pl.edu.pja.s28687.validators;
 import pl.edu.pja.s28687.cars.*;
 import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.load.IPassengers;
-import pl.edu.pja.s28687.load.Load;
 
 
 public class CarPassengerValidator implements ICarPassengerValidator {
