@@ -16,6 +16,11 @@ public class TrainStation implements Comparable<TrainStation>{
         this.coordinates = coordinates;
     }
 
+    public TrainStation(String name, int x, int y){
+        this.name = name;
+        this.coordinates = new Coordinates(x, y);
+    }
+
     public Coordinates getCoordinates(){
         return coordinates;
     }
