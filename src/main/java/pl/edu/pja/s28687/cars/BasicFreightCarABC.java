@@ -6,8 +6,8 @@ import pl.edu.pja.s28687.load.IDeliverable;
 import java.math.BigDecimal;
 
 public abstract class BasicFreightCarABC<T extends IDeliverable> extends LoadableRailroadCar<T>{
-    private static final BigDecimal NET_WEIGHT = BigDecimal.valueOf(10.4);
-    private static final BigDecimal GROSS_WEIGHT = BigDecimal.valueOf(446.7);
+    private static final BigDecimal NET_WEIGHT = BigDecimal.valueOf(20);
+    private static final BigDecimal GROSS_WEIGHT = BigDecimal.valueOf(70);
     private static final int NUMBER_OF_SEATS = 4;
 
     public BasicFreightCarABC(int id, String shipper, String securityInfo, ICarLoadValidator validator) {
