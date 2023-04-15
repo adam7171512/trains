@@ -101,38 +101,35 @@ public class Locomotive implements ILocomotive {
     }
 
     public boolean attach(IRailroadCar car) {
-        if (!carValidator.validateCarLimit(car, this)) {
-            System.err.println("Can't attach this car ! Maximum number of cars reached !");
-            return false;
-        }
-        if (!carValidator.validatePoweredCarLimit(car, this)) {
-            System.err.println("Can't attach this car ! Maximum number of powered cars reached !");
-            return false;
-        }
-        if (!carValidator.validatePayloadLimit(car, this)) {
-            System.err.println("Can't attach this car ! Maximum payload limit reached !");
-            return false;
-        }
         if (!carValidator.validate(car, this)) {
-            System.err.println("Can't attach this car ! This train does not support cars of type ! " + car.getCarType());
-            return false;
+            if (!carValidator.validateCarLimit(car, this)) {
+                throw new ValidationException("Can't attach this car ! Maximum number of cars reached !");
+            } else if (!carValidator.validatePoweredCarLimit(car, this)) {
+                throw new ValidationException("Can't attach this car ! Maximum number of powered cars reached !");
+            } else if (!carValidator.validatePayloadLimit(car, this)) {
+                throw new ValidationException("Can't attach this car ! Maximum payload reached !");
+            } else {
+                throw new ValidationException("Can't attach this car ! This train does not support cars of type ! " + car.getCarType());
+            }
         }
-
         cars.add(car);
         car.setAttachedTo(this);
         if (car instanceof ILoadCarrier<?>) {
             loadCarriers.add((LoadableRailroadCar<? extends IDeliverable>) car);
-
         }
         return true;
     }
 
-    public void detach(IRailroadCar car) {
+    public boolean detach(IRailroadCar car) {
+        if (!cars.contains(car)) {
+            throw new ValidationException("Can't detach this car ! This train does not contain this car !");
+        }
         cars.remove(car);
         car.setDetached();
         if (car instanceof ILoadCarrier<?>) {
             loadCarriers.remove((LoadableRailroadCar<? extends IDeliverable>) car);
         }
+        return true;
     }
 
     public boolean validateCar(IRailroadCar car) {
