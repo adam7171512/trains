@@ -7,7 +7,7 @@ import pl.edu.pja.s28687.load.ILuggage;
 import java.math.BigDecimal;
 import java.util.Set;
 
-public class MailAndLuggageCar extends FreightCarABC<ILuggage> {
+public class MailAndLuggageCar extends LoadableRailroadCar<ILuggage> {
     static final String shipper = "Siemens";
     static final String securityInfo = "SecInfoMail";
     static final BigDecimal netWeight = BigDecimal.valueOf(6.4);
