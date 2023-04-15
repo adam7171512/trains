@@ -23,6 +23,21 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
 
     @Override
     public boolean load(T load) {
+        if (!validator.validateFlags(load, this)){
+            Set<LoadType> incompatibleFlags = new HashSet<>(load.flags());
+            incompatibleFlags.removeAll(allowedLoadFlags());
+            System.err.println("Load type incompatible !" + incompatibleFlags);
+            return false;
+        }
+        if (!validator.validateWeight(load, this)){
+            System.err.println("Load too heavy !");
+            System.err.println(
+                    "\nPayload limit available: " + getGrossWeight().subtract(getCurrentWeight())
+                            + " Load weight: " + load.getWeight()
+
+                    );
+            return false;
+        }
         if (validateLoad(load)){
             loads.add(load);
             load.setLoaded();

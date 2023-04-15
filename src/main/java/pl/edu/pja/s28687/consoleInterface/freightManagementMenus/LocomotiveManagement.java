@@ -25,13 +25,15 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
             locomotive.ifPresentOrElse(
                     loc -> {
                         String s = new StringBuilder().append("1. See attached cars\n")
-                                .append("2. See cars available for this locomotive\n")
+                                .append("2. See all cars available validated for this locomotive\n")
+                                .append("3. See all free cars from the loco base \n")
                                 .toString();
                         System.out.println(s);
                         int selection = resourceContainer.parseToInt(scan.nextLine());
                         switch (selection) {
                             case 1 -> loadedCarsMenu(loc);
                             case 2 -> availableCarsMenu(loc);
+                            case 3 -> allCarsMenu(loc);
                             default -> System.out.println("Wrong input");
                         }
                     },
@@ -82,16 +84,20 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
     }
 
     private void availableCarsMenu(Locomotive loc){
-        int id;
+        int id = -1;
         do {
             Map<Integer, IRailroadCar> availableCars = getAvailableCars(loc, resourceContainer.getLocoBase());
-            printAvailableCars(availableCars);
             System.out.println("""
                     Enter either :
+                    ls to list out all vars available for this locomotive
                     Car ID to attach it
                     all to attach all possible cars from the list\s
                     0 to go back""");
             String input = scan.nextLine();
+            if (input.equals("ls")) {
+                printAvailableCars(availableCars);
+                continue;
+            }
             if (input.equals("all")) {
                 CarAssignmentCenter.assignCarsToLocomotive(loc, resourceContainer.getLocoBase());
                 System.out.println("All possible cars attached");
@@ -99,6 +105,31 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
             }
             id = resourceContainer.parseToInt(input);
             IRailroadCar car = availableCars.get(id);
+            if (car != null) {
+                loc.attach(car);
+            } else if(id != 0){
+                System.out.println("Incorrect ID " + id);
+            }
+        } while (id != 0);
+    }
+
+    private void allCarsMenu(Locomotive loc){
+        int id = -1;
+        do {
+            Map<Integer, IRailroadCar> allCars = getAllCars(loc, resourceContainer.getLocoBase());
+            printAvailableCars(allCars);
+            System.out.println("""
+                    Enter either :
+                    ls to list out all free cars from loco base
+                    Car ID to try to attach it
+                    0 to go back""");
+            String input = scan.nextLine();
+            if (input.equals("ls")) {
+                printAvailableCars(allCars);
+                continue;
+            }
+            id = resourceContainer.parseToInt(input);
+            IRailroadCar car = allCars.get(id);
             if (car != null) {
                 loc.attach(car);
             } else if(id != 0){
@@ -124,6 +155,14 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
                         .findSuitableCars(loc)
                         .stream()
                         .collect(Collectors.toMap(IRailroadCar::getId, Function.identity()));
+    }
+
+    public Map<Integer, IRailroadCar> getAllCars(Locomotive loc, LocoBase locoBase){
+        return locoBase
+                .getRailroadCarsList()
+                .stream()
+                .filter(car -> !car.isAttached())
+                .collect(Collectors.toMap(IRailroadCar::getId, Function.identity()));
     }
 
     @Override

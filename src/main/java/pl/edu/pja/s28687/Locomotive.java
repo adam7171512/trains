@@ -1,6 +1,9 @@
 package pl.edu.pja.s28687;
 
-import pl.edu.pja.s28687.cars.*;
+import pl.edu.pja.s28687.cars.ILoadCarrier;
+import pl.edu.pja.s28687.cars.IRailroadCar;
+import pl.edu.pja.s28687.cars.LoadableRailroadCar;
+import pl.edu.pja.s28687.cars.PassengerCar;
 import pl.edu.pja.s28687.gui.TrainSetRepresentation;
 import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.logistics.Coordinates;
@@ -14,7 +17,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import static java.lang.Math.min;
@@ -25,11 +27,13 @@ public class Locomotive implements ILocomotive {
     private final int maxCars;
     private final BigDecimal maxFreight;
     private final int maxPoweredCars;
+    private final BigDecimal defaultSpeed;
+    public int x = 0;
+    public int y = 0;
     private TrainStation homeTrainStation;
     private TrainStation sourceTrainStation;
     private TrainStation destTrainStation;
     private TrainStation lastTrainStation;
-    private final BigDecimal defaultSpeed;
     private BigDecimal currentSpeed = BigDecimal.valueOf(0);
     private List<RailroadLink> road = new ArrayList<>();
     private List<IRailroadCar> cars = new ArrayList<>();
@@ -40,8 +44,6 @@ public class Locomotive implements ILocomotive {
     private RailroadLink currentSegment;
     private TrainStatus status;
     private Coordinates coordinates;
-    public int x = 0;
-    public int y = 0;
     private TrainStation currentSegmentDestination;
     private BigDecimal currentSegmentProgress;
     private TrainSetRepresentation visualRepresentation;
@@ -49,18 +51,6 @@ public class Locomotive implements ILocomotive {
     private ILocomotiveLoadValidator loadValidator;
 
     private Integer trainSetId;
-
-    public Integer getTrainSetId() {
-        return trainSetId;
-    }
-
-    public void setTrainSetId(int trainSetId) {
-        this.trainSetId = trainSetId;
-    }
-
-    public BigDecimal getDefaultSpeed(){
-        return defaultSpeed;
-    }
 
     public Locomotive(String name,
                       int id,
@@ -82,6 +72,18 @@ public class Locomotive implements ILocomotive {
         this.loadValidator = loadValidator;
     }
 
+    public Integer getTrainSetId() {
+        return trainSetId;
+    }
+
+    public void setTrainSetId(int trainSetId) {
+        this.trainSetId = trainSetId;
+    }
+
+    public BigDecimal getDefaultSpeed() {
+        return defaultSpeed;
+    }
+
     public void setHomeTrainStation(TrainStation homeTrainStation) {
         this.homeTrainStation = homeTrainStation;
     }
@@ -98,61 +100,67 @@ public class Locomotive implements ILocomotive {
         return loadCarriers;
     }
 
-    public void attach(IRailroadCar car){
-        if(! validateCar(car)) System.out.println("Can't attach this car");
-        else {
-            cars.add(car);
-            car.setAttachedTo(this);
-            if (car instanceof ILoadCarrier<?>){
-                loadCarriers.add((LoadableRailroadCar<? extends IDeliverable>) car);
-            }
+    public void attach(IRailroadCar car) {
+        if (!carValidator.validateCarLimit(car, this)) {
+            System.err.println("Can't attach this car ! Maximum number of cars reached !");
+            return;
+        }
+        if (!carValidator.validatePoweredCarLimit(car, this)) {
+            System.err.println("Can't attach this car ! Maximum number of powered cars reached !");
+            return;
+        }
+        if (!carValidator.validatePayloadLimit(car, this)) {
+            System.err.println("Can't attach this car ! Maximum payload limit reached !");
+            return;
+        }
+        if (!carValidator.validate(car, this)) {
+            System.err.println("Can't attach this car ! This train does not support cars of type ! " + car.getCarType());
+            return;
+        }
+
+        cars.add(car);
+        car.setAttachedTo(this);
+        if (car instanceof ILoadCarrier<?>) {
+            loadCarriers.add((LoadableRailroadCar<? extends IDeliverable>) car);
+
         }
     }
 
-    public void detach(IRailroadCar car){
+    public void detach(IRailroadCar car) {
         cars.remove(car);
         car.setDetached();
-        if (car instanceof ILoadCarrier<?>){
+        if (car instanceof ILoadCarrier<?>) {
             loadCarriers.remove((LoadableRailroadCar<? extends IDeliverable>) car);
         }
     }
 
-    public boolean validateCar(IRailroadCar car){
+    public boolean validateCar(IRailroadCar car) {
         return carValidator.validate(car, this);
     }
 
-
-
-    public void setRoad(List<RailroadLink> road){
-        this.road = road;
-    }
-
-    public List<IRailroadCar> getCars(){
+    public List<IRailroadCar> getCars() {
         return cars;
     }
 
-    public void setCurrentTripDistanceCovered(BigDecimal distance){
+    public void setCurrentTripDistanceCovered(BigDecimal distance) {
         currentTripDistanceCovered = distance;
     }
 
-    public void updateCurrentTripDistanceCovered(BigDecimal distance){
+    public void updateCurrentTripDistanceCovered(BigDecimal distance) {
         currentTripDistanceCovered = currentTripDistanceCovered.add(distance);
     }
 
-
     //TODO: refactor
-    public int getCurrentSegmentProgress(){
+    public int getCurrentSegmentProgress() {
         if (currentSegmentProgress == null) return 0;
         return currentSegmentProgress.intValue();
     }
 
-    public void setCurrentSegmentProgress(BigDecimal progress){
+    public void setCurrentSegmentProgress(BigDecimal progress) {
         currentSegmentProgress = progress;
     }
 
-
-
-    public BigDecimal getCurrentTripDistance(){
+    public BigDecimal getCurrentTripDistance() {
         return road
                 .stream()
                 .map(RailroadLink::getDistance)
@@ -160,20 +168,17 @@ public class Locomotive implements ILocomotive {
                 .orElse(BigDecimal.valueOf(0));
     }
 
-    public int getCurrentTripProgress(){
+    public int getCurrentTripProgress() {
         BigDecimal currentTripDIstance = getCurrentTripDistance();
 
         return currentTripDIstance.intValue() == 0 ?
                 0
                 :
                 currentTripDistanceCovered.
-                divide(currentTripDIstance, RoundingMode.FLOOR).
-                multiply(BigDecimal.valueOf(100)).
-                intValue();
+                        divide(currentTripDIstance, RoundingMode.FLOOR).
+                        multiply(BigDecimal.valueOf(100)).
+                        intValue();
     }
-
-
-
 
     public void randomlyChangeSpeed() {
         Random random = new Random();
@@ -189,28 +194,29 @@ public class Locomotive implements ILocomotive {
                         "Train " +
                                 this.name +
                                 " exceeded speed 200 km/h !!!");
-            }}
-        catch (RailroadHazard e) {
+            }
+        } catch (RailroadHazard e) {
 //            System.out.println(e.getMessage())
-            ;}
+            ;
+        }
     }
 
     public TrainStation getHomeStation() {
         return homeTrainStation;
     }
 
-    public void setLastTrainStation(TrainStation trainStation){
-//        x = (int) trainStation.getCoordinates().getX();
-//        y = (int) trainStation.getCoordinates().getY();
-        this.lastTrainStation = trainStation;
+    public void setHomeStation(TrainStation homeTrainStation) {
+        this.homeTrainStation = homeTrainStation;
     }
 
-    public TrainStation getLastTrainStation(){
+    public TrainStation getLastTrainStation() {
         return this.lastTrainStation;
     }
 
-    public void setHomeStation(TrainStation homeTrainStation) {
-        this.homeTrainStation = homeTrainStation;
+    public void setLastTrainStation(TrainStation trainStation) {
+//        x = (int) trainStation.getCoordinates().getX();
+//        y = (int) trainStation.getCoordinates().getY();
+        this.lastTrainStation = trainStation;
     }
 
     public TrainStation getSourceStation() {
@@ -234,14 +240,14 @@ public class Locomotive implements ILocomotive {
         return currentSpeed.setScale(2, RoundingMode.CEILING);
     }
 
-    public void setSpeed(BigDecimal speed) throws RailroadHazard{
+    public void setSpeed(BigDecimal speed) throws RailroadHazard {
         BigDecimal speedBeforeChange = this.currentSpeed;
         this.currentSpeed = speed;
         if (speedBeforeChange.doubleValue() < 200 && speed.doubleValue() > 200) {
-                throw new RailroadHazard(
-                        "Train " +
-                                this.name +
-                                " exceeded speed 200 km/h !!!");
+            throw new RailroadHazard(
+                    "Train " +
+                            this.name +
+                            " exceeded speed 200 km/h !!!");
         }
     }
 
@@ -249,36 +255,36 @@ public class Locomotive implements ILocomotive {
         return id;
     }
 
-    public String getLocName(){
+    public String getLocName() {
         return this.name;
     }
 
-    public void setDefaultSpeed(){
+    public void setDefaultSpeed() {
         currentSpeed = defaultSpeed;
     }
 
-    public void stopTheTrain(){
+    public void stopTheTrain() {
         currentSpeed = BigDecimal.valueOf(0);
     }
 
-    public void setCurrentSegmentDistance(BigDecimal distance){
+    public void setCurrentSegmentDistance(BigDecimal distance) {
         this.currentSegmentDistance = distance;
     }
 
-    public void updateSegmentDistanceCovered(BigDecimal distanceTravelled){
+    public void updateSegmentDistanceCovered(BigDecimal distanceTravelled) {
 
         this.currentSegmentDistanceCovered = distanceTravelled;
     }
 
-    public void setVisualRepresentation(TrainSetRepresentation visualRepresentation){
+    public void setVisualRepresentation(TrainSetRepresentation visualRepresentation) {
         this.visualRepresentation = visualRepresentation;
     }
 
-    public int getCurrentCarNumber(){
+    public int getCurrentCarNumber() {
         return cars.size();
     }
 
-    public int getPoweredCarsNumber(){
+    public int getPoweredCarsNumber() {
         return (int) cars.stream().filter(IRailroadCar::isPowered).count();
     }
 
@@ -290,11 +296,11 @@ public class Locomotive implements ILocomotive {
         return maxPoweredCars;
     }
 
-    public BigDecimal getMaxPayload(){
+    public BigDecimal getMaxPayload() {
         return maxFreight.setScale(2, RoundingMode.CEILING);
     }
 
-    public BigDecimal getCurrentPayload(){
+    public BigDecimal getCurrentPayload() {
         return cars.
                 stream().
                 map(IRailroadCar::getCurrentWeight).
@@ -307,23 +313,26 @@ public class Locomotive implements ILocomotive {
         return maxFreight.subtract(getCurrentPayload()).setScale(2, RoundingMode.CEILING);
     }
 
-    public RailroadLink getCurrentSegment(){
+    public RailroadLink getCurrentSegment() {
         return currentSegment;
     }
 
-    public TrainStatus getStatus(){
-        return status;
-    }
-
-    public void setCurrentSegment(RailroadLink segment){
+    public void setCurrentSegment(RailroadLink segment) {
         this.currentSegment = segment;
         x = (int) currentSegment.getStation1().getCoordinates().getX();
         y = (int) currentSegment.getStation1().getCoordinates().getY();
 
     }
 
+    public TrainStatus getStatus() {
+        return status;
+    }
 
-    public int passengersOnBoard(){
+    public void setStatus(TrainStatus status) {
+        this.status = status;
+    }
+
+    public int passengersOnBoard() {
         return cars.
                 stream().
                 filter(car -> car instanceof PassengerCar).
@@ -333,12 +342,12 @@ public class Locomotive implements ILocomotive {
                 orElse(0);
     }
 
-    public void setStatus(TrainStatus status){
-        this.status = status;
+    public List<RailroadLink> getRoad() {
+        return road;
     }
 
-    public List<RailroadLink> getRoad(){
-        return road;
+    public void setRoad(List<RailroadLink> road) {
+        this.road = road;
     }
 
     @Override
@@ -353,14 +362,6 @@ public class Locomotive implements ILocomotive {
         this.currentSegmentDestination = destination;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
-        if (visualRepresentation != null) {
-
-            visualRepresentation.updatePosition(coordinates);
-        }
-    }
-
     public TrainStation getNextTrainStation() {
         RailroadLink rl = getCurrentSegment();
         if (rl.getStation1() == getLastTrainStation()) {
@@ -372,6 +373,14 @@ public class Locomotive implements ILocomotive {
 
     public Coordinates getCoordinates() {
         return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+        if (visualRepresentation != null) {
+
+            visualRepresentation.updatePosition(coordinates);
+        }
     }
 
     public ILocomotiveLoadValidator getLoadValidator() {

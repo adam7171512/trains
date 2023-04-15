@@ -26,11 +26,15 @@ public class RailroadCarManagement extends AbstractLeafMenu implements IBrowsabl
             car.ifPresentOrElse(
                     rCar -> {
                         System.out.println(CarInfo.getBasicInfo(rCar));
-                        System.out.println("Press 1 to see loaded loads or 2 to see available loads for this carrier");
+                        System.out.println("Enter" +
+                                "\n1 to see loads loaded to this carrier" +
+                                "\n2 to see all validated loads available for this carrier" +
+                                "\n3 to see all free loads in the loco base");
                         int selection = resourceContainer.parseToInt(scan.nextLine());
                         switch (selection) {
                             case 1 -> loadedLoadsMenu(rCar);
                             case 2 -> availableLoadsMenu(rCar);
+                            case 3 -> allLoadsMenu(rCar);
                             default -> System.out.println("Wrong input");
                         }
                     },
@@ -81,16 +85,21 @@ public class RailroadCarManagement extends AbstractLeafMenu implements IBrowsabl
     }
 
     private void availableLoadsMenu(ILoadCarrier<IDeliverable> carrier){
-        int id;
+        int id = -1;
         do {
             Map<Integer, IDeliverable> availableLoads = getAvailableLoads(carrier, resourceContainer.getLocoBase());
-            printAvailableLoads(availableLoads);
             System.out.println("""
                     Enter either :
-                    load ID to load it
+                    ls to print out available loads
+                    ID of the load to load it
                     all to load up the car with items from the list\s
                     0 to go back""");
             String input = scan.nextLine();
+            if (input.equals("ls")) {
+                System.out.println("Available loads:");
+                printAvailableLoads(availableLoads);
+                continue;
+            }
             if (input.equals("all")) {
                 LoadAssignmentCenter.assignLoads(carrier, resourceContainer.getLocoBase());
                 System.out.println("Car has been loaded up!");
@@ -98,6 +107,38 @@ public class RailroadCarManagement extends AbstractLeafMenu implements IBrowsabl
             }
             id = resourceContainer.parseToInt(input);
             IDeliverable load = availableLoads.get(id);
+            if (load != null) {
+                carrier.load(load);
+            } else if(id != 0){
+                System.out.println("Incorrect ID " + id);
+            }
+        } while (id != 0);
+    }
+
+    private void allLoadsMenu(ILoadCarrier<IDeliverable> carrier){
+        int id = -1;
+        do {
+            Map<Integer, IDeliverable> allLoads = resourceContainer
+                    .getLocoBase()
+                    .getLoadList()
+                    .stream()
+                    .filter(l -> !l.isLoaded())
+                    .collect(Collectors.toMap(IDeliverable::getId, Function.identity()));
+
+            printAvailableLoads(allLoads);
+            System.out.println("""
+                    Enter either :
+                    ls to print out all free loads
+                    load ID to try to load it
+                    0 to go back""");
+            String input = scan.nextLine();
+            if (input.equals("ls")) {
+                System.out.println("All free loads:");
+                printAvailableLoads(allLoads);
+                continue;
+            }
+            id = resourceContainer.parseToInt(input);
+            IDeliverable load = allLoads.get(id);
             if (load != null) {
                 carrier.load(load);
             } else if(id != 0){

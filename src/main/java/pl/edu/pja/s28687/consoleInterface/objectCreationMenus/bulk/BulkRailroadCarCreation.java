@@ -17,25 +17,31 @@ public class BulkRailroadCarCreation extends AbstractLeafMenu {
 
 
         String typeSelection = """
-                Please select car category :\s
-                1 Passenger car\s
-                2 Mail/Luggage car\s
-                3 Basic Freight car\s
-                4 Heavy Freight car\s
+                Please select car category :
+                1 Passenger car
+                2 Mail/Luggage car
+                3 Basic Freight car
+                4 Heavy Freight car
                 5 Special purpose Freight cars
                 6 Restaurant car
-                7 Post office car""";
+                7 Post office car
+                8 Random""";
         System.out.println(typeSelection);
 
         int typeSelect;
         do {
             typeSelect = resourceContainer.parseToInt(scan.nextLine());
-            if (typeSelect < 1 || typeSelect > 7) {
-                System.out.println("Please select number from 1 to 7");
+            if (typeSelect < 1 || typeSelect > 8) {
+                System.out.println("Please select number from 1 to 8");
             }
-        } while (typeSelect < 1 || typeSelect > 7);
+        } while (typeSelect < 1 || typeSelect > 8);
 
-        CarType carType = switch (typeSelect){
+        if (typeSelect == 8) {
+            resourceContainer.getCarsFactory().createRandomCars(number);
+            return;
+        }
+
+        CarType carType = switch (typeSelect) {
             case 1 -> CarType.PASSENGERS;
             case 2 -> CarType.LUGGAGE;
             case 4 -> CarType.HEAVY_FREIGHT;
@@ -47,7 +53,7 @@ public class BulkRailroadCarCreation extends AbstractLeafMenu {
         resourceContainer.getCarsFactory().createCarsOfType(carType, number);
     }
 
-    private CarType makeSpecialFreightCar(){
+    private CarType makeSpecialFreightCar() {
         String menu = ("""
                 Please select type of the freight:\s
                 1 Liquid\s
@@ -66,7 +72,7 @@ public class BulkRailroadCarCreation extends AbstractLeafMenu {
             }
         } while (type < 1 || type > 6);
 
-        return switch (type){
+        return switch (type) {
             case 1 -> CarType.LIQUID;
             case 2 -> CarType.GASEOUS;
             case 3 -> CarType.TOXIC;

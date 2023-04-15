@@ -24,13 +24,19 @@ public class BulkLoadCreation extends AbstractLeafMenu {
                 2 Mail/Luggage\s
                 3 Basic Freight\s
                 4 Heavy Freight\s
-                5 Special Freight""";
+                5 Special Freight
+                6 Random\s""";
 
         int selection;
         do {
             System.out.println(menu);
             selection = resourceContainer.parseToInt(scan.nextLine());
-        } while (selection <0 || selection > 5);
+        } while (selection <0 || selection > 6);
+
+        if (selection == 6){
+            resourceContainer.getLoadFactory().createRandomLoads(number);
+            return;
+        }
 
         Set<LoadType> flags = switch (selection){
             case 1 -> Set.of(LoadType.PASSENGERS);
@@ -40,6 +46,7 @@ public class BulkLoadCreation extends AbstractLeafMenu {
             default -> Set.of(LoadType.BASIC_FREIGHT);
         };
 
+        //todo: make sure loads are created properly
         if (flags.contains(LoadType.PASSENGERS)){
             resourceContainer.getLoadFactory().createRandomLoadsOfType(number, LoadType.PASSENGERS);
         }
