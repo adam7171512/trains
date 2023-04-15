@@ -85,6 +85,9 @@ public class LocoBase {
 
 
     public void unRegisterCar(int id){
+        if (!railroadCars.containsKey(id)) {
+            throw new IllegalArgumentException("LocBase : Railroad Car with id " + id + " does not exist !");
+        }
         railroadCars.remove(id);
         loadCarriers.remove(id);
     }
@@ -113,6 +116,9 @@ public class LocoBase {
     }
 
     public void unregisterLoc(int id){
+        if (!locomotives.containsKey(id)) {
+            throw new IllegalArgumentException("LocBase : Locomotive with id " + id + " does not exist !");
+        }
         locomotives.remove(id);
     }
 
@@ -147,6 +153,9 @@ public class LocoBase {
         return railroadConnections;
     }
     public void registerRailroadConnection(RailroadLink connection){
+        if (railroadConnections.contains(connection)) {
+            throw new IllegalArgumentException("Railroad connection already exists !");
+        }
         railroadConnections.add(connection);
         logger.log(java.util.logging.Level.INFO,
                 "Railroad connection registered ! Total number of connections registered : "
@@ -242,7 +251,7 @@ public class LocoBase {
                 .toList();
     }
 
-    // move to another class
+    //todo : move to another class
     public BigDecimal calcDistance(TrainStation station1, TrainStation station2){
         Coordinates sourceCoords = station1.getCoordinates();
         Coordinates destCoords = station2.getCoordinates();
