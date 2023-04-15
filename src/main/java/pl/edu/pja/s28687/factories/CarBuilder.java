@@ -1,22 +1,23 @@
 package pl.edu.pja.s28687.factories;
 
 import pl.edu.pja.s28687.cars.*;
-import pl.edu.pja.s28687.load.*;
+import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.validators.CarFreightValidator;
-import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import pl.edu.pja.s28687.validators.CarPassengerValidator;
+import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class CarBuilder{
+public class CarBuilder {
 
+    private final LocoBase locoBase;
     private CarType flag;
     private Set<LoadType> loadTypes;
-    private final LocoBase locoBase;
     private ICarLoadValidator loadValidator;
 
     private boolean isPowered;
@@ -27,17 +28,17 @@ public class CarBuilder{
     private String nonStdCarSecurityInfo;
 
 
-    public CarBuilder(LocoBase locoBase){
+    public CarBuilder(LocoBase locoBase) {
         this.locoBase = locoBase;
     }
 
 
-    public CarBuilder setFlag(CarType flag){
+    public CarBuilder setFlag(CarType flag) {
         this.flag = flag;
         return this;
     }
 
-    public CarBuilder setRandomProperties(){
+    public CarBuilder setRandomProperties() {
         List<CarType> randomTypes = new ArrayList<>(List.of(CarType.values()));
         randomTypes.remove(CarType.NON_STANDARD);
         this.flag = randomTypes.get((int) (Math.random() * randomTypes.size()));
@@ -45,84 +46,82 @@ public class CarBuilder{
     }
 
 
-    public CarBuilder setLoadTypes(Set<LoadType> loadTypes){
+    public CarBuilder setLoadTypes(Set<LoadType> loadTypes) {
         this.loadTypes = loadTypes;
         return this;
     }
 
-    public CarBuilder setLoadValidator(ICarLoadValidator loadValidator){
+    public CarBuilder setLoadValidator(ICarLoadValidator loadValidator) {
         this.loadValidator = loadValidator;
         return this;
     }
 
-    public CarBuilder setPoweredForNonStandardCar(boolean isPowered){
+    public CarBuilder setPoweredForNonStandardCar(boolean isPowered) {
         this.isPowered = isPowered;
         return this;
     }
 
-    public CarBuilder setShipperForNonStandardCar(String shipper){
+    public CarBuilder setShipperForNonStandardCar(String shipper) {
         this.nonStdCarShipper = shipper;
         return this;
     }
 
-    public CarBuilder setSecurityInfoForNonStandardCar(String securityInfo){
+    public CarBuilder setSecurityInfoForNonStandardCar(String securityInfo) {
         this.nonStdCarSecurityInfo = securityInfo;
         return this;
     }
 
-    public CarBuilder setNetWeightForNonStandardCar(double netWeight){
+    public CarBuilder setNetWeightForNonStandardCar(double netWeight) {
         this.nonStdCarNetWeight = BigDecimal.valueOf(netWeight);
         return this;
-        }
+    }
 
-    public CarBuilder setMaxWeightForNonStandardCar(double grossWeight){
+    public CarBuilder setMaxWeightForNonStandardCar(double grossWeight) {
         this.nonStdCarGrossWeight = BigDecimal.valueOf(grossWeight);
         return this;
     }
 
-    public CarBuilder setNumberOfSeatsForNonStandardCar(int numberOfSeats){
+    public CarBuilder setNumberOfSeatsForNonStandardCar(int numberOfSeats) {
         this.nonStdCarNumberOfSeats = numberOfSeats;
         return this;
     }
 
-    public <T extends IDeliverable> RailroadCar build(){
-        if (flag == null){
+    public <T extends IDeliverable> RailroadCar build() {
+        if (flag == null) {
             flag = CarType.BASIC_FREIGHT;
         }
 
-        if (loadValidator == null){
-            if (flag == CarType.PASSENGERS){
+        if (loadValidator == null) {
+            if (flag == CarType.PASSENGERS) {
                 loadValidator = new CarPassengerValidator();
-            }
-            else {
+            } else {
                 loadValidator = new CarFreightValidator();
-        }
+            }
         }
         RailroadCar car;
         int id = locoBase.getIdForCar();
 
         car = switch (flag) {
-                case HEAVY_FREIGHT -> new HeavyFreightCar(id, loadValidator);
-                case LIQUID -> new LiquidLoadCar(id, loadValidator);
-                case LUGGAGE -> new MailAndLuggageCar(id, loadValidator);
-                case GASEOUS -> new GaseousLoadCar(id, loadValidator);
-                case TOXIC -> new ToxicLoadCar(id, loadValidator);
-                case REFRIGERATED -> new RefrigeratedLoadCar(id, loadValidator);
-                case EXPLOSIVE -> new ExplosiveLoadCar(id, loadValidator);
-                case PASSENGERS -> new PassengerCar(id, loadValidator);
-                case POST_OFFICE -> new PostOfficeCar(id);
-                case RESTAURANT -> new RestaurantCar(id);
-                case LIQUID_TOXIC -> new LiquidToxicLoadCar(id, loadValidator);
-                case NON_STANDARD -> {
-                    if (nonStdCarShipper == null
-                            || nonStdCarSecurityInfo == null
-                            || nonStdCarNetWeight == null
-                            || nonStdCarGrossWeight == null
-                            || nonStdCarNumberOfSeats == 0)
-                    {
-                        throw new IllegalArgumentException("Non standard car must have all properties set");
-                    }
-                     else {
+            //todo : reshape this builder and think about validators
+            case HEAVY_FREIGHT -> new HeavyFreightCar(id, loadValidator);
+            case LIQUID -> new LiquidLoadCar(id, loadValidator);
+            case LUGGAGE -> new MailAndLuggageCar(id, loadValidator);
+            case GASEOUS -> new GaseousLoadCar(id, loadValidator);
+            case TOXIC -> new ToxicLoadCar(id, loadValidator);
+            case REFRIGERATED -> new RefrigeratedLoadCar(id, loadValidator);
+            case EXPLOSIVE -> new ExplosiveLoadCar(id, loadValidator);
+            case PASSENGERS -> new PassengerCar(id, loadValidator);
+            case POST_OFFICE -> new PostOfficeCar(id, loadValidator);
+            case RESTAURANT -> new RestaurantCar(id);
+            case LIQUID_TOXIC -> new LiquidToxicLoadCar(id, loadValidator);
+            case NON_STANDARD -> {
+                if (nonStdCarShipper == null
+                        || nonStdCarSecurityInfo == null
+                        || nonStdCarNetWeight == null
+                        || nonStdCarGrossWeight == null
+                        || nonStdCarNumberOfSeats == 0) {
+                    throw new IllegalArgumentException("Non standard car must have all properties set");
+                } else {
                     yield new LoadableRailroadCar<T>(
                             nonStdCarShipper,
                             nonStdCarSecurityInfo,
@@ -147,9 +146,9 @@ public class CarBuilder{
                         }
                     };
                 }
-                }
+            }
             default -> new BasicFreightCar(id, loadValidator);
-            };
+        };
         if (car instanceof LoadableRailroadCar<?> && loadTypes != null) {
             ((LoadableRailroadCar<?>) car).setAllowedFlags(loadTypes);
         }
