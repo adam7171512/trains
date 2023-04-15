@@ -100,22 +100,22 @@ public class Locomotive implements ILocomotive {
         return loadCarriers;
     }
 
-    public void attach(IRailroadCar car) {
+    public boolean attach(IRailroadCar car) {
         if (!carValidator.validateCarLimit(car, this)) {
             System.err.println("Can't attach this car ! Maximum number of cars reached !");
-            return;
+            return false;
         }
         if (!carValidator.validatePoweredCarLimit(car, this)) {
             System.err.println("Can't attach this car ! Maximum number of powered cars reached !");
-            return;
+            return false;
         }
         if (!carValidator.validatePayloadLimit(car, this)) {
             System.err.println("Can't attach this car ! Maximum payload limit reached !");
-            return;
+            return false;
         }
         if (!carValidator.validate(car, this)) {
             System.err.println("Can't attach this car ! This train does not support cars of type ! " + car.getCarType());
-            return;
+            return false;
         }
 
         cars.add(car);
@@ -124,6 +124,7 @@ public class Locomotive implements ILocomotive {
             loadCarriers.add((LoadableRailroadCar<? extends IDeliverable>) car);
 
         }
+        return true;
     }
 
     public void detach(IRailroadCar car) {

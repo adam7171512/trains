@@ -88,18 +88,13 @@ public class RailroadCarManagement extends AbstractLeafMenu implements IBrowsabl
         int id = -1;
         do {
             Map<Integer, IDeliverable> availableLoads = getAvailableLoads(carrier, resourceContainer.getLocoBase());
+            printLoads(availableLoads);
             System.out.println("""
                     Enter either :
-                    ls to print out available loads
                     ID of the load to load it
                     all to load up the car with items from the list\s
                     0 to go back""");
             String input = scan.nextLine();
-            if (input.equals("ls")) {
-                System.out.println("Available loads:");
-                printAvailableLoads(availableLoads);
-                continue;
-            }
             if (input.equals("all")) {
                 LoadAssignmentCenter.assignLoads(carrier, resourceContainer.getLocoBase());
                 System.out.println("Car has been loaded up!");
@@ -125,35 +120,36 @@ public class RailroadCarManagement extends AbstractLeafMenu implements IBrowsabl
                     .filter(l -> !l.isLoaded())
                     .collect(Collectors.toMap(IDeliverable::getId, Function.identity()));
 
-            printAvailableLoads(allLoads);
+            printLoads(allLoads);
             System.out.println("""
                     Enter either :
-                    ls to print out all free loads
                     load ID to try to load it
                     0 to go back""");
             String input = scan.nextLine();
-            if (input.equals("ls")) {
-                System.out.println("All free loads:");
-                printAvailableLoads(allLoads);
-                continue;
-            }
             id = resourceContainer.parseToInt(input);
             IDeliverable load = allLoads.get(id);
             if (load != null) {
-                carrier.load(load);
+                boolean loaded = carrier.load(load);
+                if (loaded) {
+                    System.out.println("Load has been loaded");
+                } else {
+                    System.out.println("Load has not been loaded");
+                }
+                System.out.println("Press Enter to continue browsing");
+                scan.nextLine();
             } else if(id != 0){
                 System.out.println("Incorrect ID " + id);
             }
         } while (id != 0);
     }
 
-    private void printAvailableLoads(Map<Integer, IDeliverable> availableLoads){
-        if (availableLoads.isEmpty()){
+    private void printLoads(Map<Integer, IDeliverable> loads){
+        if (loads.isEmpty()){
             System.out.println("No available loads");
             return;
         }
         int n = 1;
-        for (IDeliverable ava : availableLoads.values()){
+        for (IDeliverable ava : loads.values()){
             System.out.println(n + ". " + LoadInfo.getBasicInfo(ava));
             n++;
         }

@@ -21,13 +21,19 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
 
         Optional<Locomotive> locomotive;
         do {
-            locomotive = preProcessInput(scan, "Please enter locomotive ID, ls to list out locomotives or 0 to exit");
+            locomotive = preProcessInput(scan, """
+                    Please enter : \s
+                    locomotive ID\s
+                    ls to list out locomotives\s
+                    0 to exit""");
             locomotive.ifPresentOrElse(
                     loc -> {
-                        String s = new StringBuilder().append("1. See attached cars\n")
-                                .append("2. See all cars available validated for this locomotive\n")
-                                .append("3. See all free cars from the loco base \n")
-                                .toString();
+                        String s ="""
+                    Please select option to browse : \s
+                    1. Cars attached to this locomotive\s
+                    2. Cars validated for attaching to this locomotive\s
+                    3. All Free cars from LocoBase\s
+                    0 to exit""";
                         System.out.println(s);
                         int selection = resourceContainer.parseToInt(scan.nextLine());
                         switch (selection) {
@@ -84,20 +90,16 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
     }
 
     private void availableCarsMenu(Locomotive loc){
-        int id = -1;
+        int id;
         do {
             Map<Integer, IRailroadCar> availableCars = getAvailableCars(loc, resourceContainer.getLocoBase());
+            printCars(availableCars);
             System.out.println("""
                     Enter either :
-                    ls to list out all vars available for this locomotive
                     Car ID to attach it
                     all to attach all possible cars from the list\s
                     0 to go back""");
             String input = scan.nextLine();
-            if (input.equals("ls")) {
-                printAvailableCars(availableCars);
-                continue;
-            }
             if (input.equals("all")) {
                 CarAssignmentCenter.assignCarsToLocomotive(loc, resourceContainer.getLocoBase());
                 System.out.println("All possible cars attached");
@@ -106,7 +108,14 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
             id = resourceContainer.parseToInt(input);
             IRailroadCar car = availableCars.get(id);
             if (car != null) {
-                loc.attach(car);
+                boolean attached = loc.attach(car);
+                if (attached) {
+                    System.out.println("Car attached");
+                } else {
+                    System.out.println("Car not attached");
+                }
+                System.out.println("Press Enter to continue browsing");
+                scan.nextLine();
             } else if(id != 0){
                 System.out.println("Incorrect ID " + id);
             }
@@ -114,37 +123,39 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
     }
 
     private void allCarsMenu(Locomotive loc){
-        int id = -1;
+        int id;
         do {
             Map<Integer, IRailroadCar> allCars = getAllCars(loc, resourceContainer.getLocoBase());
-            printAvailableCars(allCars);
+            printCars(allCars);
             System.out.println("""
                     Enter either :
-                    ls to list out all free cars from loco base
                     Car ID to try to attach it
                     0 to go back""");
             String input = scan.nextLine();
-            if (input.equals("ls")) {
-                printAvailableCars(allCars);
-                continue;
-            }
             id = resourceContainer.parseToInt(input);
             IRailroadCar car = allCars.get(id);
             if (car != null) {
-                loc.attach(car);
+                boolean attached = loc.attach(car);
+                if (attached) {
+                    System.out.println("Car attached");
+                } else {
+                    System.out.println("Car not attached");
+                }
+                System.out.println("Press Enter to continue browsing");
+                scan.nextLine();
             } else if(id != 0){
                 System.out.println("Incorrect ID " + id);
             }
         } while (id != 0);
     }
 
-    private void printAvailableCars(Map<Integer, IRailroadCar> availableCars){
-        if (availableCars.isEmpty()){
+    private void printCars(Map<Integer, IRailroadCar> cars){
+        if (cars.isEmpty()){
             System.out.println("No available cars");
             return;
         }
         int n = 1;
-        for (IRailroadCar ava : availableCars.values()){
+        for (IRailroadCar ava : cars.values()){
             System.out.println(n + ". " + CarInfo.getBasicInfo(ava));
             n++;
         }
