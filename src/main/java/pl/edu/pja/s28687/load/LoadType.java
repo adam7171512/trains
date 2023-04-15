@@ -11,5 +11,6 @@ public enum LoadType {
     EXPLOSIVE,
     LUGGAGE,
     LIQUID_TOXIC,
+    MAIL,
     //todo: add liquid toxic etc
 }

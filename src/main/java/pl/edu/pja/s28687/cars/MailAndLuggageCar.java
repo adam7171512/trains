@@ -1,20 +1,27 @@
 package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.validators.ICarLoadValidator;
-import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.load.ILuggage;
+import pl.edu.pja.s28687.load.LoadType;
+import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.math.BigDecimal;
 import java.util.Set;
 
 public class MailAndLuggageCar extends LoadableRailroadCar<ILuggage> {
-    static final String shipper = "Siemens";
-    static final String securityInfo = "SecInfoMail";
-    static final BigDecimal netWeight = BigDecimal.valueOf(6.4);
-    static final BigDecimal grossWeight = BigDecimal.valueOf(96.7);
-    static final int numberOfSeats = 0;
+    private static final String SHIPPER = "ALSTOM";
+    private static final String SECURITY_INFO =
+            """
+                    Notice: This is a mail car.
+                    Please handle mail and packages with care
+                    and refrain from tampering with any materials.
+                    In case of suspicious activity, report it immediately to the authorities.
+                    """;
+    private static final BigDecimal NET_WEIGHT = BigDecimal.valueOf(15);
+    private static final BigDecimal GROSS_WEIGHT = BigDecimal.valueOf(40);
+    private static final int NUMBER_OF_SEATS = 0;
+
     public MailAndLuggageCar(int id, ICarLoadValidator validator) {
-        super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, id, validator);
+        super(SHIPPER, SECURITY_INFO, NET_WEIGHT, GROSS_WEIGHT, NUMBER_OF_SEATS, id, validator);
     }
 
     @Override

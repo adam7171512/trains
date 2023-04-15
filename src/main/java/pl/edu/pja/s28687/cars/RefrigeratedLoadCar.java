@@ -1,15 +1,24 @@
 package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.validators.ICarLoadValidator;
-import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.load.IRefrigerated;
+import pl.edu.pja.s28687.load.LoadType;
+import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.util.Set;
 
-public class RefrigeratedLoadCar extends BasicFreightCarABC<IRefrigerated> implements IPowered{
+public class RefrigeratedLoadCar extends BasicFreightCarABC<IRefrigerated> implements IPowered {
+    private static final String SHIPPER = "GENERAL ELECTRIC";
+    private static final String SECURITY_INFO =
+            """
+                    Caution: This is a refrigerated cargo car.
+                    Please do not open the doors or tamper with the refrigeration unit.
+                    Any unauthorized access may compromise the safety and quality of the goods being transported.
+                    In case of an emergency, follow the evacuation procedures
+                    and contact trained personnel immediately.
+                    """;
 
     public RefrigeratedLoadCar(int id, ICarLoadValidator validator) {
-        super(id, validator);
+        super(id, SHIPPER, SECURITY_INFO, validator);
     }
 
     @Override

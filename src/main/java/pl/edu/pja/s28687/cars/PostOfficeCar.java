@@ -1,15 +1,28 @@
 package pl.edu.pja.s28687.cars;
 
-import java.math.BigDecimal;
+import pl.edu.pja.s28687.load.IMail;
+import pl.edu.pja.s28687.load.LoadType;
+import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
-public class PostOfficeCar extends RailroadCar implements IPowered{
-    static final String shipper = "General Electric";
-    static final String securityInfo = "SecInfoPostOffice";
-    static final BigDecimal netWeight = BigDecimal.valueOf(4.4);
-    static final BigDecimal grossWeight = BigDecimal.valueOf(32.7);
-    static final int numberOfSeats = 22;
-    public PostOfficeCar(int id) {
-        super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, id);
+import java.math.BigDecimal;
+import java.util.Set;
+
+public class PostOfficeCar extends LoadableRailroadCar<IMail> implements IPowered {
+
+    private static final String SHIPPER = "GENERAL ELECTRIC";
+    private static final String SECURITY_INFO =
+            """
+                    Warning: This is a post office car.
+                    Please handle mail and packages with care
+                    and do not attempt to tamper with any materials.
+                    Any suspicious activity should be reported immediately to the authorities.
+                    """;
+    private static final BigDecimal NET_WEIGHT = BigDecimal.valueOf(15);
+    private static final BigDecimal GROSS_WEIGHT = BigDecimal.valueOf(40);
+    private static final int NUMBER_OF_SEATS = 22;
+
+    public PostOfficeCar(int id, ICarLoadValidator loadValidator) {
+        super(SHIPPER, SECURITY_INFO, NET_WEIGHT, GROSS_WEIGHT, NUMBER_OF_SEATS, id, loadValidator);
     }
 
     @Override
@@ -20,5 +33,10 @@ public class PostOfficeCar extends RailroadCar implements IPowered{
     @Override
     public boolean isPowered() {
         return true;
+    }
+
+    @Override
+    public Set<LoadType> allowedLoadFlags() {
+        return Set.of(LoadType.MAIL);
     }
 }
