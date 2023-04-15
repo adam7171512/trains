@@ -18,7 +18,6 @@ public abstract class RailroadCar implements IRailroadCar{
     private BigDecimal currentWeight;
     private int numberOfSeats;
     private int id;
-    protected Set<LoadType> forbidden;
     protected Set<LoadType> allowedLoadFlags;
     private String name;
     private Optional<Locomotive> locomotive = Optional.empty();
@@ -31,20 +30,6 @@ public abstract class RailroadCar implements IRailroadCar{
         this.grossWeight = grossWeight;
         this.numberOfSeats = numberOfSeats;
         this.id = id;
-        currentWeight = currentWeight.setScale(2, RoundingMode.CEILING);
-        grossWeight = grossWeight.setScale(2, RoundingMode.CEILING);
-        netWeight = netWeight.setScale(2, RoundingMode.CEILING);
-
-        forbidden = new HashSet<>(Set.of(
-                LoadType.REFRIGERATED,
-                LoadType.GASEOUS,
-                LoadType.PASSENGERS,
-                LoadType.BASIC_FREIGHT,
-                LoadType.HEAVY_FREIGHT,
-                LoadType.LUGGAGE,
-                LoadType.LIQUID,
-                LoadType.TOXIC,
-                LoadType.EXPLOSIVE));
     }
 
     public void setName(String name){
@@ -95,38 +80,4 @@ public abstract class RailroadCar implements IRailroadCar{
     public abstract CarType getCarType();
 
     public abstract boolean isPowered();
-
-
-
-    //    public void load(T load){
-//        if (validateLoad(load)) this.load.add(load);
-//    }
-//
-
-//    public void load(T load){
-//        if (! validatePassengerLimit(load)) throw new IllegalArgumentException("Too many passengers !");
-//        if (! validateLoadWeight(load)) throw new IllegalArgumentException("Load too heavy!");
-//        currentWeight = currentWeight.add(load.getWeight());
-//        // need to fix it
-//        this.load.add(load);
-//    }
-//
-//    public void deload(Load load){
-//        this.load.remove(load);
-//        currentWeight = currentWeight.subtract(load.getWeight());
-//    }
-
-//    private boolean validatePassengerLimit(T load){
-//        int currentPassengers = this.load.stream().map(T::getPassengers).reduce(Integer::sum).orElse(0);
-//        return currentPassengers + load.getPassengers() < numberOfSeats;
-//    }
-//
-//    private boolean validateLoadWeight(Load load){
-//        BigDecimal currentFreight = this.load.stream().map(T::getWeight).reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
-//        return currentFreight.add(this.netWeight).
-//                add(load.getWeight()).
-//                add(netWeight).
-//                compareTo(grossWeight)
-//                < 1;
-//    }
 }
