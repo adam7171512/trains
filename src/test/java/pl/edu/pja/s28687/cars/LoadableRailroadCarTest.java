@@ -4,10 +4,7 @@ import org.junit.jupiter.api.Test;
 import pl.edu.pja.s28687.ValidationException;
 import pl.edu.pja.s28687.factories.CarsFactory;
 import pl.edu.pja.s28687.factories.LoadFactory;
-import pl.edu.pja.s28687.load.BasicFreightLoad;
-import pl.edu.pja.s28687.load.IDeliverable;
-import pl.edu.pja.s28687.load.LiquidToxicLoad;
-import pl.edu.pja.s28687.load.LoadType;
+import pl.edu.pja.s28687.load.*;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.validators.CarFreightValidator;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
@@ -44,7 +41,7 @@ class LoadableRailroadCarTest {
     void load_HeavyFreight_ToBasicFreightCar_ShouldThrowValidationException() {
         // used generic methods disallow us to directly load concrete incompatible load types to concrete car types
         ILoadCarrier<IDeliverable> car = (ILoadCarrier<IDeliverable>) CARS_FACTORY.createCarOfType(CarType.BASIC_FREIGHT);
-        IDeliverable load = LOAD_FACTORY.createRandomLoadOfType(LoadType.HEAVY_FREIGHT);
+        IDeliverable load = new HeavyFreightLoad(1);
         assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getGrossWeight()) < 0);
         assertThrows(ValidationException.class, () -> car.load(load));
     }
@@ -62,7 +59,7 @@ class LoadableRailroadCarTest {
     void load_LiquidLoad_ToHeavyFreightCar_ShouldThrowValidationException() {
         // used generic methods disallow us to directly load concrete incompatible load types to concrete car types
         ILoadCarrier<IDeliverable> car = (ILoadCarrier<IDeliverable>) CARS_FACTORY.createCarOfType(CarType.HEAVY_FREIGHT);
-        IDeliverable load = LOAD_FACTORY.createRandomLoadOfType(LoadType.LIQUID);
+        IDeliverable load = new LiquidLoad(1, 2);
         assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getGrossWeight()) < 0);
         assertThrows(ValidationException.class, () -> car.load(load));
     }
@@ -71,7 +68,7 @@ class LoadableRailroadCarTest {
     void load_LiquidToxicLoad_ToLiquidLoadCar_ShouldThrowValidationException() {
         // used generic methods disallow us to directly load concrete incompatible load types to concrete car types
         ILoadCarrier<IDeliverable> car = (ILoadCarrier<IDeliverable>) CARS_FACTORY.createCarOfType(CarType.LIQUID);
-        IDeliverable load = LOAD_FACTORY.createRandomLoadOfType(Set.of(LoadType.LIQUID, LoadType.TOXIC));
+        IDeliverable load = new LiquidToxicLoad(1, 2);
         assertThrows(ValidationException.class, () -> car.load(load));
 
     }
