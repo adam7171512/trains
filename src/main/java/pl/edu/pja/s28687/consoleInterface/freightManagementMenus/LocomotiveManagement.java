@@ -1,6 +1,7 @@
 package pl.edu.pja.s28687.consoleInterface.freightManagementMenus;
 
 import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.ValidationException;
 import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.consoleInterface.IBrowsable;
@@ -108,7 +109,12 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
             id = resourceContainer.parseToInt(input);
             IRailroadCar car = availableCars.get(id);
             if (car != null) {
-                boolean attached = loc.attach(car);
+                boolean attached = false;
+                try {
+                    attached = loc.attach(car);
+                } catch (ValidationException e) {
+                    System.err.println(e.getMessage());
+                }
                 if (attached) {
                     System.out.println("Car attached");
                 } else {

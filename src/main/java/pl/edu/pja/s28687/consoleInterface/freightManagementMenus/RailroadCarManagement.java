@@ -1,5 +1,6 @@
 package pl.edu.pja.s28687.consoleInterface.freightManagementMenus;
 
+import pl.edu.pja.s28687.ValidationException;
 import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.consoleInterface.IBrowsable;
@@ -129,7 +130,12 @@ public class RailroadCarManagement extends AbstractLeafMenu implements IBrowsabl
             id = resourceContainer.parseToInt(input);
             IDeliverable load = allLoads.get(id);
             if (load != null) {
-                boolean loaded = carrier.load(load);
+                boolean loaded = false;
+                try {
+                    loaded = carrier.load(load);
+                } catch (ValidationException e) {
+                    System.err.println(e.getMessage());
+                }
                 if (loaded) {
                     System.out.println("Load has been loaded");
                 } else {

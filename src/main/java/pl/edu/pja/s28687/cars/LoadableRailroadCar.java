@@ -1,19 +1,23 @@
 package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.validators.ICarLoadValidator;
-import pl.edu.pja.s28687.load.LoadType;
+import pl.edu.pja.s28687.ValidationException;
 import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.load.LoadType;
+import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public abstract class LoadableRailroadCar<T extends IDeliverable> extends RailroadCar implements ILoadCarrier<T>{
+public abstract class LoadableRailroadCar<T extends IDeliverable> extends RailroadCar implements ILoadCarrier<T> {
 
+    protected ICarLoadValidator validator;
     List<T> loads;
     Set<LoadType> allowedFlags;
     private BigDecimal currentWeight;
 
-    protected ICarLoadValidator validator;
     public LoadableRailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id, ICarLoadValidator validator) {
         super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, id);
         loads = new ArrayList<>();
@@ -23,67 +27,67 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
 
     @Override
     public boolean load(T load) {
-        if (!validator.validateFlags(load, this)){
-            Set<LoadType> incompatibleFlags = new HashSet<>(load.flags());
-            incompatibleFlags.removeAll(allowedLoadFlags());
-            System.err.println("Load type incompatible !" + incompatibleFlags);
-            return false;
+        if (!validator.validate(load, this)) {
+            if (!validator.validateFlags(load, this)) {
+                Set<LoadType> incompatibleFlags = new HashSet<>(load.flags());
+                incompatibleFlags.removeAll(allowedLoadFlags());
+                throw new ValidationException("Load type incompatible !" + incompatibleFlags);
+            } else if (!validator.validateWeight(load, this)) {
+                throw new ValidationException(
+                        "Load too heavy !" + "\nPayload limit available: "
+                                + getGrossWeight().subtract(getCurrentWeight())
+                                + " Load weight: " + load.getWeight());
+            } else {
+                //todo add more specific exception
+                throw new ValidationException("Locomotive can't handle this much payload!");
+            }
         }
-        if (!validator.validateWeight(load, this)){
-            System.err.println("Load too heavy !");
-            System.err.println(
-                    "\nPayload limit available: " + getGrossWeight().subtract(getCurrentWeight())
-                            + " Load weight: " + load.getWeight()
-
-                    );
-            return false;
-        }
-        if (validateLoad(load)){
-            loads.add(load);
-            load.setLoaded();
-            currentWeight = currentWeight.add(load.getWeight());
-            return true;
-        }
-        return false;
+        loads.add(load);
+        load.setLoaded();
+        currentWeight = currentWeight.add(load.getWeight());
+        return true;
     }
 
     @Override
-    public boolean unLoad(T load){
-        boolean removed = loads.remove(load);
-        if (removed){
-            load.setDeloaded();
-            currentWeight = currentWeight.subtract(load.getWeight());
+    public boolean unLoad(T load) {
+        if (!loads.contains(load)) {
+            throw new ValidationException("Load not found in this car!");
         }
-        return removed;
+        loads.remove(load);
+        load.setDeloaded();
+        currentWeight = currentWeight.subtract(load.getWeight());
+        return true;
     }
 
 
-    public BigDecimal getCurrentWeight(){
+    public BigDecimal getCurrentWeight() {
         return currentWeight;
     }
 
-    public boolean validateWeight(IDeliverable load){
+    public boolean validateWeight(IDeliverable load) {
         return validator.validateWeight(load, this);
     }
 
-    public boolean validateFlags(IDeliverable load){
+    public boolean validateFlags(IDeliverable load) {
         return validator.validateFlags(load, this);
     }
 
-    public Set<LoadType> getAllowedLoadFlags(){
+    public Set<LoadType> getAllowedLoadFlags() {
         return allowedFlags != null ? allowedFlags : allowedLoadFlags();
     }
 
-    public void setAllowedFlags(Set<LoadType> flags){
+    public void setAllowedFlags(Set<LoadType> flags) {
         allowedFlags = flags;
     }
+
     public abstract Set<LoadType> allowedLoadFlags();
 
-    public List<T> getLoads(){
+    public List<T> getLoads() {
         return loads;
     }
+
     @Override
-    public boolean validateLoad(IDeliverable load){
+    public boolean validateLoad(IDeliverable load) {
         return validator.validate(load, this);
     }
 
