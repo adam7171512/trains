@@ -90,7 +90,7 @@ public class LoadBuilder{
             }
             else {
                 if (flags.equals(Set.of(LoadType.LIQUID, LoadType.TOXIC))) {
-                    load = new LiquidToxicLoad(weight);
+                    load = new LiquidToxicLoad(weight, volume);
             }
                 else load = new Load(weight) {
                     @Override

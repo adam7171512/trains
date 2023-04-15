@@ -1,19 +1,17 @@
 package pl.edu.pja.s28687.load;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 public class LiquidToxicLoad extends Load implements ILiquidToxic{
-    public LiquidToxicLoad(double weight) {
+    private BigDecimal volume;
+    public LiquidToxicLoad(double weight, double volume) {
         super(weight);
+        this.volume = BigDecimal.valueOf(volume);
     }
-
-    public LiquidToxicLoad(int quantity, double weight) {
-        super(quantity, weight);
-    }
-
     @Override
     public Set<LoadType> flags() {
-        return Set.of(LoadType.LIQUID, LoadType.TOXIC);
+        return Set.of(LoadType.LIQUID_TOXIC);
     }
 
 }

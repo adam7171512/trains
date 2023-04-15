@@ -10,5 +10,6 @@ public enum LoadType {
     REFRIGERATED,
     EXPLOSIVE,
     LUGGAGE,
+    LIQUID_TOXIC,
     //todo: add liquid toxic etc
 }
