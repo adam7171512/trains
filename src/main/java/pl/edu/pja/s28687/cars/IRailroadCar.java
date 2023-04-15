@@ -20,5 +20,4 @@ public interface IRailroadCar {
     BigDecimal getCurrentWeight();
 
     BigDecimal getGrossWeight();
-    BigDecimal getMaxWeight();
 }

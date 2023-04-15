@@ -19,10 +19,10 @@ public class LocomotiveCarValidatorForMaxCarWeight implements ILocomotiveCarVali
         return locomotive
                 .getCars()
                 .stream()
-                .map(IRailroadCar::getMaxWeight)
+                .map(IRailroadCar::getGrossWeight)
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO)
-                .add(car.getMaxWeight())
+                .add(car.getGrossWeight())
                 .compareTo(locomotive.getMaxPayload())
                 <= 0;
     }

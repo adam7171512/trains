@@ -28,7 +28,7 @@ class LoadableRailroadCarTest {
     void load_BasicFreight_ToBasicFreightCar_WhenBelowWeightLimit_ShouldReturnTrue() {
         BasicFreightCar car = new BasicFreightCar(1, LOAD_VALIDATOR);
         BasicFreightLoad load = new BasicFreightLoad(1);
-        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getMaxWeight()) <= 0);
+        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getGrossWeight()) <= 0);
         assertTrue(car.load(load));
     }
 
@@ -36,7 +36,7 @@ class LoadableRailroadCarTest {
     void load_BasicFreight_ToBasicFreightCar_WhenAboveWeightLimit_ShouldThrowValidationException() {
         BasicFreightCar car = new BasicFreightCar(1, LOAD_VALIDATOR);
         BasicFreightLoad load = new BasicFreightLoad(20000000);
-        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getMaxWeight()) > 0);
+        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getGrossWeight()) > 0);
         assertThrows(ValidationException.class, () -> car.load(load));
     }
 
@@ -45,7 +45,7 @@ class LoadableRailroadCarTest {
         // used generic methods disallow us to directly load concrete incompatible load types to concrete car types
         ILoadCarrier<IDeliverable> car = (ILoadCarrier<IDeliverable>) CARS_FACTORY.createCarOfType(CarType.BASIC_FREIGHT);
         IDeliverable load = LOAD_FACTORY.createRandomLoadOfType(LoadType.HEAVY_FREIGHT);
-        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getMaxWeight()) < 0);
+        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getGrossWeight()) < 0);
         assertThrows(ValidationException.class, () -> car.load(load));
     }
 
@@ -54,7 +54,7 @@ class LoadableRailroadCarTest {
         // used generic methods disallow us to directly load concrete incompatible load types to concrete car types
         ILoadCarrier<IDeliverable> car = (ILoadCarrier<IDeliverable>) CARS_FACTORY.createCarOfType(CarType.HEAVY_FREIGHT);
         IDeliverable load = LOAD_FACTORY.createRandomLoadOfType(LoadType.BASIC_FREIGHT);
-        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getMaxWeight()) < 0);
+        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getGrossWeight()) < 0);
         assertThrows(ValidationException.class, () -> car.load(load));
     }
 
@@ -63,7 +63,7 @@ class LoadableRailroadCarTest {
         // used generic methods disallow us to directly load concrete incompatible load types to concrete car types
         ILoadCarrier<IDeliverable> car = (ILoadCarrier<IDeliverable>) CARS_FACTORY.createCarOfType(CarType.HEAVY_FREIGHT);
         IDeliverable load = LOAD_FACTORY.createRandomLoadOfType(LoadType.LIQUID);
-        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getMaxWeight()) < 0);
+        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getGrossWeight()) < 0);
         assertThrows(ValidationException.class, () -> car.load(load));
     }
 
@@ -80,7 +80,7 @@ class LoadableRailroadCarTest {
     void load_LiquidToxicLoad_ToLiquidToxicLoadCar_ShouldReturnTrue() {
         LiquidToxicLoadCar car = new LiquidToxicLoadCar(2, LOAD_VALIDATOR);
         LiquidToxicLoad load = new LiquidToxicLoad(1, 2);
-        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getMaxWeight()) < 0);
+        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getGrossWeight()) < 0);
         assertTrue(car.load(load));
     }
 
@@ -96,7 +96,7 @@ class LoadableRailroadCarTest {
     void unload_LoadedLoad_ShouldReturnTrue() {
         BasicFreightCar car = new BasicFreightCar(1, LOAD_VALIDATOR);
         BasicFreightLoad load = new BasicFreightLoad(1);
-        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getMaxWeight()) <= 0);
+        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getGrossWeight()) <= 0);
         assertTrue(car.load(load));
         assertTrue(car.unLoad(load));
     }
@@ -112,7 +112,7 @@ class LoadableRailroadCarTest {
     void unload_LoadedLoad_ShouldRemoveItFromLoadList() {
         BasicFreightCar car = new BasicFreightCar(1, LOAD_VALIDATOR);
         BasicFreightLoad load = new BasicFreightLoad(1);
-        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getMaxWeight()) <= 0);
+        assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getGrossWeight()) <= 0);
         assertTrue(car.load(load));
         assertTrue(car.getLoads().contains(load));
         assertTrue(car.unLoad(load));
