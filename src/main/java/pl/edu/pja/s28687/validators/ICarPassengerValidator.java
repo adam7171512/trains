@@ -11,10 +11,3 @@ public interface ICarPassengerValidator extends ICarLoadValidator {
 
     boolean validateSeats(IPassengers load, IPassengerCarrier receiver);
 }
-
-
-//public interface IPassengerValidator extends IValidator{
-//
-//    boolean validateFlags(Load<?> component, PassengerCar receiver);
-//    boolean validatePassengers(Load<?> component, PassengerCar receiver);
-//}
