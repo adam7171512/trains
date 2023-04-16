@@ -4,6 +4,7 @@ import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.cars.LoadableRailroadCar;
 import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.load.Load;
 import pl.edu.pja.s28687.logistics.IRouteFinder;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.validators.locomotive.ILocomotiveLoadValidator;
@@ -69,17 +70,17 @@ public class TrainSet {
         return locomotive.getLoadableCars();
     }
 
-    public <T extends IDeliverable> ILoadCarrier<T> load(T load){
+    public ILoadCarrier<? extends IDeliverable> load(IDeliverable load){
         if (! validateLoadWeight(load)){
             throw new IllegalArgumentException("Load is too heavy for this train");
         }
 
-        ILoadCarrier<T> carToLoad =
+        ILoadCarrier<? extends IDeliverable> carToLoad =
                 getCarsThatCouldLoad(load)
                         .stream()
                         .findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException("No car could load this load"));
-        carToLoad.load(load);
+                        .orElseThrow(() -> new ValidationException("No car could load this load"));
+        ((ILoadCarrier<IDeliverable>) carToLoad).load(load);
         System.out.println("Loaded " + load + " to " + carToLoad);
         return carToLoad;
     }
@@ -92,7 +93,7 @@ public class TrainSet {
         return locomotive.getLoadValidator().validate(load, this.locomotive);
     }
 
-    public <T extends IDeliverable> List<ILoadCarrier<T>> getCarsThatCouldLoad(T load){
+    public List<ILoadCarrier<? extends IDeliverable>> getCarsThatCouldLoad(IDeliverable load){
         if (!validateLoadWeight(load)){
             return List.of();
         }

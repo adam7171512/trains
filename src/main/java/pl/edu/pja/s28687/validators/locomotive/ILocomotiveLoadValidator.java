@@ -23,7 +23,7 @@ public interface ILocomotiveLoadValidator extends IValidator<IDeliverable, ILoco
      * @param receiver The locomotive to which the potential load carriers belong
      * @return List of validated Load Carriers that can carry the given load
      */
-    <T extends IDeliverable> List<ILoadCarrier<T>> getCarsThatCouldLoad(IDeliverable load, ILocomotive receiver);
+    List<ILoadCarrier<? extends IDeliverable>> getCarsThatCouldLoad(IDeliverable load, ILocomotive receiver);
 
     /**
      * Validates whether a given load can be added to one of the cars

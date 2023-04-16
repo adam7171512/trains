@@ -33,7 +33,7 @@ class LocomotiveCarValidatorForMaxCarWeightTest {
         }
 
         @Override
-        public <T extends IDeliverable> List<ILoadCarrier<T>> getCarsThatCouldLoad(IDeliverable load, ILocomotive receiver) {
+        public List<ILoadCarrier<? extends IDeliverable>> getCarsThatCouldLoad(IDeliverable load, ILocomotive receiver) {
             return null;
         }
 
