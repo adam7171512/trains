@@ -3,7 +3,7 @@ package pl.edu.pja.s28687.validators;
 import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.load.IDeliverable;
 
-public class CarFreightValidator implements ICarFreightValidator {
+public class CarFreightValidator implements ICarLoadValidator {
 
     @Override
     public boolean validate(IDeliverable load, ILoadCarrier<? extends IDeliverable> receiver) {
