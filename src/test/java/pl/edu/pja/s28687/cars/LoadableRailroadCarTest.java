@@ -50,7 +50,7 @@ class LoadableRailroadCarTest {
     void load_BasicFreight_ToHeavyFreightCar_ShouldThrowValidationException() {
         // used generic methods disallow us to directly load concrete incompatible load types to concrete car types
         ILoadCarrier<IDeliverable> car = (ILoadCarrier<IDeliverable>) CARS_FACTORY.createCarOfType(CarType.HEAVY_FREIGHT);
-        IDeliverable load = LOAD_FACTORY.createRandomLoadOfType(LoadType.BASIC_FREIGHT);
+        IDeliverable load = new BasicFreightLoad(1);
         assertTrue(car.getCurrentWeight().add(load.getWeight()).compareTo(car.getGrossWeight()) < 0);
         assertThrows(ValidationException.class, () -> car.load(load));
     }
