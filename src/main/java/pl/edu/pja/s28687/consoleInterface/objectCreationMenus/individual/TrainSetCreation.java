@@ -5,8 +5,8 @@ import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.factories.TrainSetFactory;
 import pl.edu.pja.s28687.info.LocInfo;
-import pl.edu.pja.s28687.logistics.BadRouteFinder;
-import pl.edu.pja.s28687.logistics.NaiveRouteFinder;
+import pl.edu.pja.s28687.logistics.AStarRouteFinder;
+
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -98,8 +98,8 @@ public class TrainSetCreation extends AbstractLeafMenu {
         int selection = resourceContainer.parseToInt(scan.nextLine());
         //todo: add more algorithms
         switch (selection) {
-            case 3 -> trainSet.setAlgorithm(new BadRouteFinder(resourceContainer.getLocoBase()));
-            default -> trainSet.setAlgorithm(new NaiveRouteFinder(resourceContainer.getLocoBase()));
+            case 3 -> trainSet.setAlgorithm(new AStarRouteFinder(resourceContainer.getLocoBase()));
+            default -> trainSet.setAlgorithm(new AStarRouteFinder(resourceContainer.getLocoBase()));
         }
         return trainSet;
     }

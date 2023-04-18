@@ -6,8 +6,8 @@ import pl.edu.pja.s28687.logistics.RailroadLink;
 import java.util.*;
 
 public class TrainStation implements Comparable<TrainStation>{
-    private Coordinates coordinates;
-    private String name;
+    private final Coordinates coordinates;
+    private final String name;
 
     private List<RailroadLink> railroadLinkList = new ArrayList<>();
     private Set<TrainStation> neighbors = new HashSet<>();

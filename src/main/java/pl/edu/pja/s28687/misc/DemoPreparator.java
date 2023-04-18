@@ -5,8 +5,8 @@ import pl.edu.pja.s28687.factories.*;
 import pl.edu.pja.s28687.gui.Canvas;
 import pl.edu.pja.s28687.info.AggregateLogger;
 import pl.edu.pja.s28687.load.LoadType;
+import pl.edu.pja.s28687.logistics.AStarRouteFinder;
 import pl.edu.pja.s28687.logistics.LocoBase;
-import pl.edu.pja.s28687.logistics.NaiveRouteFinder;
 import pl.edu.pja.s28687.logistics.RouteFindingAlgos;
 
 public class DemoPreparator {
@@ -38,7 +38,7 @@ public class DemoPreparator {
     }
     public void demoStandard(){
         trainStationFactory.createRandomTrainStations(40, new RectangularNetPlacementStrategy(), 800, 800);
-        trainSetFactory.createTrainSetsOfType(15, LocomotivePurpose.PASSENGER, new NaiveRouteFinder(locoBase));
+        trainSetFactory.createTrainSetsOfType(15, LocomotivePurpose.PASSENGER, new AStarRouteFinder(locoBase));
         carsFactory.createRandomCars(20);
         loadFactory.createRandomLoads(2000);
         LoadAssignmentCenter.assignLoads(locoBase);
@@ -54,8 +54,8 @@ public class DemoPreparator {
 
     public void demoHard() {
         trainStationFactory.createTrainStationsPolishCoords();
-        trainSetFactory.createTrainSetsOfType(5, LocomotivePurpose.PASSENGER, new NaiveRouteFinder(locoBase));
-        trainSetFactory.createTrainSetsOfType(5, LocomotivePurpose.BASIC_FREIGHT, new NaiveRouteFinder(locoBase));
+        trainSetFactory.createTrainSetsOfType(5, LocomotivePurpose.PASSENGER, new AStarRouteFinder(locoBase));
+        trainSetFactory.createTrainSetsOfType(5, LocomotivePurpose.BASIC_FREIGHT, new AStarRouteFinder(locoBase));
         trainSetFactory.createRandomTrainSets(20);
         carsFactory.createRandomCars(2000);
         loadFactory.createRandomLoads(20000);

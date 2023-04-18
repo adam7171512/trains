@@ -65,11 +65,11 @@ public class TrainSetFactory {
     }
 
     public TrainSet createTrainSetOfType(LocomotivePurpose type){
-        return createTrainSetOfType(type, new NaiveRouteFinder(locoBase));
+        return createTrainSetOfType(type, new AStarRouteFinder(locoBase));
     }
 
     public List<TrainSet> createTrainSetsOfType(int count, LocomotivePurpose type){
-        return createTrainSetsOfType(count, type, new NaiveRouteFinder(locoBase));
+        return createTrainSetsOfType(count, type, new AStarRouteFinder(locoBase));
     }
 
     private List<IRailroadCar> createCarsForTrainSet(TrainSet trainSet, int maxCount, LocomotivePurpose type){

@@ -5,9 +5,8 @@ import pl.edu.pja.s28687.TrainStation;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.consoleInterface.IBrowsable;
 import pl.edu.pja.s28687.info.TrainSetInfo;
-import pl.edu.pja.s28687.logistics.BadRouteFinder;
+import pl.edu.pja.s28687.logistics.AStarRouteFinder;
 import pl.edu.pja.s28687.logistics.LocoBase;
-import pl.edu.pja.s28687.logistics.NaiveRouteFinder;
 
 import java.util.List;
 import java.util.Optional;
@@ -64,8 +63,8 @@ public class ManualDispatchMenu extends AbstractLeafMenu implements IBrowsable<T
         System.out.println(s);
         int selection = resourceContainer.parseToInt(scan.nextLine());
         switch (selection) {
-            case 3 -> trainSet.setAlgorithm(new BadRouteFinder(resourceContainer.getLocoBase()));
-            default -> trainSet.setAlgorithm(new NaiveRouteFinder(resourceContainer.getLocoBase()));
+            case 3 -> trainSet.setAlgorithm(new AStarRouteFinder(resourceContainer.getLocoBase()));
+            default -> trainSet.setAlgorithm(new AStarRouteFinder(resourceContainer.getLocoBase()));
         }
     }
 
