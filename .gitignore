@@ -43,3 +43,5 @@ build/
 *.lck
 
 Appstate.txt
+
+*.1
