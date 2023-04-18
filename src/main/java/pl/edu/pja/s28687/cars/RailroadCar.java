@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -22,6 +23,10 @@ public abstract class RailroadCar implements IRailroadCar {
     private BigDecimal currentWeight;
     private String name;
     private Optional<Locomotive> locomotive = Optional.empty();
+
+    static {
+        logger.setLevel(Level.SEVERE);
+    }
 
     public RailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id) {
         this.shipper = shipper;
