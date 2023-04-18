@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,46 +24,42 @@ import static java.lang.Math.min;
 
 public class Locomotive implements ILocomotive {
     private static final Logger logger = Logger.getLogger(Locomotive.class.getName());
+
+    static {
+        logger.setLevel(Level.SEVERE);
+    }
+
     private final int id;
     private final String name;
     private final int maxCars;
     private final BigDecimal maxFreight;
     private final int maxPoweredCars;
-    private final BigDecimal defaultSpeed;
-    public int x = 0;
-    public int y = 0;
+    private final BigDecimal nominalSpeed;
     private TrainStation homeTrainStation;
     private TrainStation sourceTrainStation;
     private TrainStation destTrainStation;
     private TrainStation lastTrainStation;
     private BigDecimal currentSpeed = BigDecimal.valueOf(0);
-    private List<RailroadLink> road = new ArrayList<>();
+    private List<RailroadLink> route = new ArrayList<>();
     private List<IRailroadCar> cars = new ArrayList<>();
     private List<ILoadCarrier<? extends IDeliverable>> loadCarriers = new ArrayList<>();
-    private BigDecimal currentTripDistanceCovered = BigDecimal.valueOf(0);
-    private BigDecimal currentSegmentDistance = BigDecimal.valueOf(0);
-    private BigDecimal currentSegmentDistanceCovered = BigDecimal.valueOf(0);
+    private BigDecimal currentTripDistanceCovered = BigDecimal.ZERO;
+    private BigDecimal currentSegmentDistanceCovered = BigDecimal.ZERO;
     private RailroadLink currentSegment;
     private TrainStatus status;
-    private Coordinates coordinates;
-    private TrainStation currentSegmentDestination;
-    private BigDecimal currentSegmentProgress;
+    private Coordinates currentLocation;
+    //todo: separate this
     private TrainSetRepresentation visualRepresentation;
     private ILocomotiveCarValidator carValidator;
     private ILocomotiveLoadValidator loadValidator;
-
     private Integer trainSetId;
-
-    static {
-        logger.setLevel(Level.SEVERE);
-    }
 
     public Locomotive(String name,
                       int id,
                       int maxCars,
                       BigDecimal maxFreight,
                       int maxPoweredCars,
-                      BigDecimal defaultSpeed,
+                      BigDecimal nominalSpeed,
                       ILocomotiveCarValidator carValidator,
                       ILocomotiveLoadValidator loadValidator) {
         this.name = name;
@@ -72,8 +67,8 @@ public class Locomotive implements ILocomotive {
         this.maxCars = maxCars;
         this.maxFreight = maxFreight;
         this.maxPoweredCars = min(maxPoweredCars, maxCars);
-        this.defaultSpeed = defaultSpeed;
-        this.coordinates = new Coordinates(0, 0);
+        this.nominalSpeed = nominalSpeed;
+        this.currentLocation = new Coordinates(0, 0);
         this.status = TrainStatus.WAITING;
         this.carValidator = carValidator;
         this.loadValidator = loadValidator;
@@ -87,8 +82,8 @@ public class Locomotive implements ILocomotive {
         this.trainSetId = trainSetId;
     }
 
-    public BigDecimal getDefaultSpeed() {
-        return defaultSpeed;
+    public BigDecimal getNominalSpeed() {
+        return nominalSpeed;
     }
 
     public void setHomeTrainStation(TrainStation homeTrainStation) {
@@ -147,42 +142,55 @@ public class Locomotive implements ILocomotive {
         return cars;
     }
 
-    public void setCurrentTripDistanceCovered(BigDecimal distance) {
-        currentTripDistanceCovered = distance;
+    public BigDecimal getCurrentSegmentProgress() {
+        if (currentSegment == null) {
+            return BigDecimal.ZERO;
+        }
+        return currentSegmentDistanceCovered
+                .divide(currentSegment.getDistance(), RoundingMode.FLOOR)
+                .setScale(2, RoundingMode.FLOOR);
     }
 
-    public void updateCurrentTripDistanceCovered(BigDecimal distance) {
-        currentTripDistanceCovered = currentTripDistanceCovered.add(distance);
+    public BigDecimal getCurrentSegmentDistanceCovered() {
+        return currentSegmentDistanceCovered;
     }
 
-    //TODO: refactor
-    public int getCurrentSegmentProgress() {
-        if (currentSegmentProgress == null) return 0;
-        return currentSegmentProgress.intValue();
+    public void setCurrentSegmentDistanceCovered(BigDecimal distance) {
+        this.currentSegmentDistanceCovered = distance;
+        //todo: separate this
+        updateVisualRepresentation();
     }
 
-    public void setCurrentSegmentProgress(BigDecimal progress) {
-        currentSegmentProgress = progress;
+    public void updateVisualRepresentation() {
+        if (visualRepresentation != null) {
+            visualRepresentation.updatePosition(getCoordinates());
+        }
     }
 
     public BigDecimal getCurrentTripDistance() {
-        return road
+        return route
                 .stream()
                 .map(RailroadLink::getDistance)
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.valueOf(0));
     }
 
-    public int getCurrentTripProgress() {
-        BigDecimal currentTripDIstance = getCurrentTripDistance();
+    public BigDecimal getCurrentTripDistanceCovered() {
+        return currentTripDistanceCovered;
+    }
 
-        return currentTripDIstance.intValue() == 0 ?
-                0
+    public void setCurrentTripDistanceCovered(BigDecimal distance) {
+        currentTripDistanceCovered = distance;
+    }
+
+    public BigDecimal getCurrentTripProgress() {
+        BigDecimal currentTripDistance = getCurrentTripDistance();
+
+        return currentTripDistance.compareTo(BigDecimal.ZERO) == 0 ?
+                BigDecimal.ZERO
                 :
                 currentTripDistanceCovered.
-                        divide(currentTripDIstance, RoundingMode.FLOOR).
-                        multiply(BigDecimal.valueOf(100)).
-                        intValue();
+                        divide(currentTripDistance, RoundingMode.FLOOR);
     }
 
     public TrainStation getHomeStation() {
@@ -198,8 +206,6 @@ public class Locomotive implements ILocomotive {
     }
 
     public void setLastTrainStation(TrainStation trainStation) {
-//        x = (int) trainStation.getCoordinates().getX();
-//        y = (int) trainStation.getCoordinates().getY();
         this.lastTrainStation = trainStation;
     }
 
@@ -212,11 +218,11 @@ public class Locomotive implements ILocomotive {
         this.lastTrainStation = sourceTrainStation;
     }
 
-    public TrainStation getDestStation() {
+    public TrainStation getDestinationStation() {
         return destTrainStation;
     }
 
-    public void setDestStation(TrainStation destTrainStation) {
+    public void setDestinationStation(TrainStation destTrainStation) {
         this.destTrainStation = destTrainStation;
     }
 
@@ -224,7 +230,7 @@ public class Locomotive implements ILocomotive {
         return currentSpeed.setScale(2, RoundingMode.CEILING);
     }
 
-    public void setSpeed(BigDecimal speed) throws RailroadHazard {
+    public void setCurrentSpeed(BigDecimal speed) throws RailroadHazard {
         BigDecimal speedBeforeChange = this.currentSpeed;
         this.currentSpeed = speed;
         if (speedBeforeChange.doubleValue() < 200 && speed.doubleValue() > 200) {
@@ -241,27 +247,11 @@ public class Locomotive implements ILocomotive {
         return id;
     }
 
-    public String getLocName() {
+    public String getName() {
         return this.name;
     }
 
-    public void setDefaultSpeed() {
-        currentSpeed = defaultSpeed;
-    }
-
-    public void stopTheTrain() {
-        currentSpeed = BigDecimal.valueOf(0);
-    }
-
-    public void setCurrentSegmentDistance(BigDecimal distance) {
-        this.currentSegmentDistance = distance;
-    }
-
-    public void updateSegmentDistanceCovered(BigDecimal distanceTravelled) {
-
-        this.currentSegmentDistanceCovered = distanceTravelled;
-    }
-
+    //todo: separate this
     public void setVisualRepresentation(TrainSetRepresentation visualRepresentation) {
         this.visualRepresentation = visualRepresentation;
     }
@@ -305,8 +295,6 @@ public class Locomotive implements ILocomotive {
 
     public void setCurrentSegment(RailroadLink segment) {
         this.currentSegment = segment;
-        x = (int) currentSegment.getStation1().getCoordinates().getX();
-        y = (int) currentSegment.getStation1().getCoordinates().getY();
     }
 
     public TrainStatus getStatus() {
@@ -317,7 +305,7 @@ public class Locomotive implements ILocomotive {
         this.status = status;
     }
 
-    public int passengersOnBoard() {
+    public int getPassengerNumber() {
         return cars.
                 stream().
                 filter(car -> car instanceof PassengerCar).
@@ -327,45 +315,18 @@ public class Locomotive implements ILocomotive {
                 orElse(0);
     }
 
-    public List<RailroadLink> getRoad() {
-        return road;
+    public List<RailroadLink> getRoute() {
+        return route;
     }
 
-    public void setRoad(List<RailroadLink> road) {
-        this.road = road;
+    public void setRoute(List<RailroadLink> route) {
+        this.route = route;
     }
 
-    @Override
-    public String toString() {
-        return "Locomotive{" +
-                "locId=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
-
-    public void setCurrentSegmentDestination(TrainStation destination) {
-        this.currentSegmentDestination = destination;
-    }
 
     public TrainStation getNextTrainStation() {
         RailroadLink rl = getCurrentSegment();
-        if (rl.getStation1() == getLastTrainStation()) {
-            return rl.getStation2();
-        } else {
-            return rl.getStation1();
-        }
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
-        if (visualRepresentation != null) {
-
-            visualRepresentation.updatePosition(coordinates);
-        }
+        return rl.getStation1() == getLastTrainStation() ? rl.getStation2() : rl.getStation1();
     }
 
     public ILocomotiveLoadValidator getLoadValidator() {
@@ -376,12 +337,38 @@ public class Locomotive implements ILocomotive {
         return loadCarriers;
     }
 
-    public Logger getLogger(){
+    public Coordinates getCoordinates() {
+        Coordinates source = getLastTrainStation().getCoordinates();
+        BigDecimal sourceX = BigDecimal.valueOf(source.getX());
+        BigDecimal sourceY = BigDecimal.valueOf(source.getY());
+        Coordinates dest = getNextTrainStation().getCoordinates();
+        BigDecimal destX = BigDecimal.valueOf(dest.getX());
+        BigDecimal destY = BigDecimal.valueOf(dest.getY());
+
+        BigDecimal currentSegmentProgress = getCurrentSegmentProgress();
+
+        Coordinates currentCoordinates = new Coordinates(
+                sourceX.add(destX.subtract(sourceX).multiply(currentSegmentProgress)),
+                sourceY.add(destY.subtract(sourceY).multiply(currentSegmentProgress))
+        );
+        return currentCoordinates;
+    }
+
+    public Logger getLogger() {
         return logger;
     }
 
-    public void raiseAlert(String message){
+    public void raiseAlert(String message) {
         logger.log(Level.SEVERE, message);
     }
+
+    @Override
+    public String toString() {
+        return "Locomotive{" +
+                "locId=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
 }
 

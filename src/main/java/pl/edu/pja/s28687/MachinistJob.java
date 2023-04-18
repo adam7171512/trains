@@ -1,131 +1,162 @@
 package pl.edu.pja.s28687;
 
-import pl.edu.pja.s28687.logistics.Coordinates;
 import pl.edu.pja.s28687.misc.RailroadHazard;
 import pl.edu.pja.s28687.misc.TrainStatus;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Random;
 import java.util.logging.Level;
 
 public class MachinistJob extends Thread {
-    private Locomotive locomotive;
-    private BigDecimal distanceToTravel;
+    private final Locomotive locomotive;
+    private final BigDecimal distanceToTravel;
+    private final int timeUpdateInterval;
+    final double timeWarp;
+    private final BigDecimal slowDownProcedureDistance = BigDecimal.valueOf(1000);
+    private final BigDecimal stationApproachingSpeed;
 
     public MachinistJob(Locomotive locomotive, BigDecimal distanceToTravel) {
+        this(locomotive, distanceToTravel, 1, 1);
+    }
+
+    public MachinistJob(Locomotive locomotive, BigDecimal distanceToTravel, int timeUpdateInterval, double timeWarp) {
         this.distanceToTravel = distanceToTravel;
         this.locomotive = locomotive;
+        this.timeUpdateInterval = timeUpdateInterval;
+        this.timeWarp = timeWarp;
+        stationApproachingSpeed = locomotive.getNominalSpeed().multiply(BigDecimal.valueOf(0.3));
+    }
+
+    public void directSegment(BigDecimal distanceToTravel){
+        locomotive.setCurrentSegmentDistanceCovered(BigDecimal.ZERO);
+        locomotive.setStatus(TrainStatus.RUNNING);
+
+        BigDecimal distanceLeft = distanceToTravel;
+        boolean reachedNominalSpeed = false;
+
+        BigDecimal currentSpeed;
+        BigDecimal nominalSpeed = locomotive.getNominalSpeed();
+        while (distanceLeft.compareTo(BigDecimal.ZERO) > 0) {
+            currentSpeed = locomotive.getCurrentSpeed();
+            if (locomotive.getStatus() == TrainStatus.EMERGENCY) {
+                handleEmergency();
+                currentSpeed = locomotive.getCurrentSpeed();
+            }
+            if (!reachedNominalSpeed) {
+                currentSpeed = speedUp(currentSpeed, nominalSpeed);
+                if (currentSpeed.compareTo(nominalSpeed) >= 0) {
+                    reachedNominalSpeed = true;
+                }
+            }
+            try {
+                Thread.sleep(timeUpdateInterval);
+            } catch (InterruptedException e) {
+                throw new RuntimeException("MachinistJob interrupted");
+            }
+            BigDecimal distanceInterval = calculateDistanceInterval(distanceLeft, currentSpeed);
+            distanceLeft = distanceLeft.subtract(distanceInterval);
+
+            currentSpeed = manipulateSpeed(distanceLeft, currentSpeed, nominalSpeed);
+            updateLocomotiveValues(currentSpeed, distanceInterval);
+        }
+        setLocomotiveSpeed(BigDecimal.ZERO);
+        locomotive.setStatus(TrainStatus.WAITING);
+    }
+
+    private void updateLocomotiveValues(BigDecimal currentSpeed, BigDecimal distanceInterval) {
+        locomotive.setCurrentTripDistanceCovered(
+                locomotive.getCurrentTripDistanceCovered().add(distanceInterval)
+        );
+        locomotive.setCurrentSegmentDistanceCovered(
+                locomotive.getCurrentSegmentDistanceCovered().add(distanceInterval)
+        );
+        setLocomotiveSpeed(currentSpeed);
+    }
+
+    private BigDecimal manipulateSpeed(BigDecimal distanceLeft, BigDecimal currentSpeed, BigDecimal nominalSpeed) {
+        // If the train is approaching station, decrease the speed
+        if (
+                distanceLeft.compareTo(slowDownProcedureDistance) < 0
+                        && currentSpeed.compareTo(stationApproachingSpeed) > 0
+        ) {
+            currentSpeed = slowDown(currentSpeed, nominalSpeed);
+
+            // Speed changes every second by 3% , so given enough time
+            // it will drop to very low values, so this mechanism is used to prevent it:
+        } else if (currentSpeed.compareTo(stationApproachingSpeed) < 0) {
+            currentSpeed = speedUp(currentSpeed, nominalSpeed);
+        }
+        //randomly change speed by 3% every 1 second regardless of the distance left and speed
+        currentSpeed = randomlyChangeSpeed(currentSpeed);
+        return currentSpeed;
+    }
+
+    private BigDecimal calculateDistanceInterval(BigDecimal distanceLeft, BigDecimal currentSpeed) {
+        BigDecimal distanceInterval =
+                currentSpeed
+                        .multiply(BigDecimal.valueOf(timeWarp)
+                                .multiply(BigDecimal.valueOf(timeUpdateInterval)))
+                        .divide(BigDecimal.valueOf(3_600), RoundingMode.FLOOR);
+
+        distanceInterval = distanceInterval.min(distanceLeft);
+        return distanceInterval;
     }
 
     @Override
     public void run() {
-        BigDecimal distanceTravelled = BigDecimal.valueOf(0);
+        directSegment(distanceToTravel);
+    }
 
-        locomotive.updateSegmentDistanceCovered(distanceTravelled);
-        locomotive.setStatus(TrainStatus.RUNNING);
-        boolean reachedNominalSpeed = false;
-        while (distanceTravelled.compareTo(distanceToTravel) < 0) {
-            if (locomotive.getStatus() == TrainStatus.EMERGENCY) {
-                locomotive.stopTheTrain();
-                locomotive.getLogger().log(Level.SEVERE,
-                        "\nLocomotive " + locomotive.getLocName() + " , ID : " + locomotive.getId()
-                                + " had an emergency at : " + locomotive.getCurrentSegment() + " and had to stop."
-                                + " Help is on the way. Train will continue its trip in 30 seconds");
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException("MachinistJob interrupted");
-                }
-                locomotive.setStatus(TrainStatus.RUNNING);
-            }
-            if (!reachedNominalSpeed) {
-                speedUpLocomotive();
-                if (locomotive.getCurrentSpeed().compareTo(locomotive.getDefaultSpeed()) >= 0) {
-                    reachedNominalSpeed = true;
-                }
-            }
-            BigDecimal distanceLeft = distanceToTravel.subtract(distanceTravelled);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException("MachinistJob interrupted");
-            }
-            BigDecimal currentSpeed = locomotive.getCurrentSpeed();
-            BigDecimal distanceInterval =
-                    currentSpeed
-                            .divide(BigDecimal.valueOf(36), RoundingMode.FLOOR);
-
-            distanceInterval = distanceInterval.min(distanceLeft);
-            distanceTravelled = distanceTravelled.add(distanceInterval);
-
-            locomotive.updateCurrentTripDistanceCovered(distanceInterval);
-            locomotive.updateSegmentDistanceCovered(distanceTravelled);
-            BigDecimal currentSegmentProgress = distanceTravelled.divide(distanceToTravel, RoundingMode.FLOOR);
-            locomotive.setCurrentSegmentProgress(currentSegmentProgress.multiply(BigDecimal.valueOf(100)));
-            setLocCoordinates(currentSegmentProgress);
-
-            if (currentSpeed.divide(locomotive.getDefaultSpeed(), RoundingMode.FLOOR).doubleValue() > 0.3
-                    && distanceLeft.compareTo(BigDecimal.valueOf(3)) < 0) {
-                slowDownLocomotive();
-            } else if (currentSpeed.divide(locomotive.getDefaultSpeed(), RoundingMode.FLOOR).doubleValue() < 0.3) {
-                speedUpLocomotive();
-            }
-
-            randomlyChangeLocomotiveSpeed();
+    private void handleEmergency() {
+        emergencyStop();
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("MachinistJob interrupted");
         }
-        locomotive.setStatus(TrainStatus.WAITING);
-        locomotive.stopTheTrain();
+        restartAfterEmergencyStop();
     }
 
-    public void randomlyChangeLocomotiveSpeed() {
-        Random random = new Random();
-        int randomValue = random.nextInt(2) == 0 ? -1 : 1;
-        BigDecimal currentSpeed = locomotive.getCurrentSpeed();
-        currentSpeed = currentSpeed
-                .add(currentSpeed
+    public void emergencyStop() {
+        setLocomotiveSpeed(BigDecimal.ZERO);
+        locomotive.getLogger().log(Level.SEVERE,
+                "\nLocomotive " + locomotive.getName() + " , ID : " + locomotive.getId()
+                        + " had an emergency at : " + locomotive.getCurrentSegment() + " and had to stop."
+                        + " Help is on the way!");
+    }
+
+    public void restartAfterEmergencyStop(){
+        locomotive.setStatus(TrainStatus.RUNNING);
+        locomotive.getLogger().log(Level.SEVERE,
+                "\nLocomotive " + locomotive.getName() + " , ID : " + locomotive.getId()
+                        + " is back on track!");
+    }
+
+    public BigDecimal randomlyChangeSpeed(BigDecimal newSpeed) {
+        int direction = Math.random() < 0.5 ? -1 : 1;
+        newSpeed = newSpeed
+                .add(newSpeed
                         .multiply(
-                                BigDecimal.valueOf(randomValue * 0.03)));
-
-        setLocomotiveSpeed(currentSpeed);
+                                BigDecimal.valueOf(direction * 0.03)));
+        return newSpeed;
     }
 
-    public void setLocCoordinates(BigDecimal currentSegmentProgress) {
-        Coordinates source = locomotive.getLastTrainStation().getCoordinates();
-        BigDecimal sourceX = BigDecimal.valueOf(source.getX());
-        BigDecimal sourceY = BigDecimal.valueOf(source.getY());
-        Coordinates dest = locomotive.getNextTrainStation().getCoordinates();
-        BigDecimal destX = BigDecimal.valueOf(dest.getX());
-        BigDecimal destY = BigDecimal.valueOf(dest.getY());
-
-        Coordinates current = new Coordinates(
-                sourceX.add(destX.subtract(sourceX).multiply(currentSegmentProgress)),
-                sourceY.add(destY.subtract(sourceY).multiply(currentSegmentProgress))
-        );
-        locomotive.setCoordinates(current);
+    public BigDecimal speedUp(BigDecimal currentSpeed, BigDecimal nominalSpeed) {
+        return currentSpeed.add(nominalSpeed.multiply(BigDecimal.valueOf(0.04)));
     }
 
-    public void speedUpLocomotive() {
-        BigDecimal currentSpeed = locomotive.getCurrentSpeed();
-        BigDecimal defaultSpeed = locomotive.getDefaultSpeed();
-        currentSpeed = currentSpeed.add(defaultSpeed.multiply(BigDecimal.valueOf(0.04)));
-        setLocomotiveSpeed(currentSpeed);
-    }
-
-    public void slowDownLocomotive() {
-        BigDecimal currentSpeed = locomotive.getCurrentSpeed();
-        BigDecimal defaultSpeed = locomotive.getDefaultSpeed();
-        currentSpeed = currentSpeed.subtract(defaultSpeed.multiply(BigDecimal.valueOf(0.04)));
-        currentSpeed = currentSpeed.max(BigDecimal.valueOf(0));
-        setLocomotiveSpeed(currentSpeed);
+    public BigDecimal slowDown(BigDecimal currentSpeed, BigDecimal nominalSpeed) {
+        return currentSpeed
+                .subtract(nominalSpeed.multiply
+                        (BigDecimal.valueOf(0.04)))
+                .max(BigDecimal.ZERO);
     }
 
     private void setLocomotiveSpeed(BigDecimal speed) {
         try {
-            locomotive.setSpeed(speed);
+            locomotive.setCurrentSpeed(speed);
         } catch (RailroadHazard e) {
             locomotive.getLogger().log(Level.SEVERE, e.getMessage());
         }
     }
-
 }
