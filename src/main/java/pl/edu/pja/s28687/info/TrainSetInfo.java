@@ -33,6 +33,7 @@ public class TrainSetInfo {
                 .append(" | Passengers carried : ").append(locomotive.passengersOnBoard())
                 .append("\nSegment info | ")
                 .append(" Current speed : ").append(locomotive.getCurrentSpeed()).append(" km/h")
+                .append(" Nominal speed : ").append(locomotive.getDefaultSpeed()).append(" km/h")
                 .append(" | Current rail segment : ").append(locomotive.getCurrentSegment())
                 .append(" | Segment progress : ").append(locomotive.getCurrentSegmentProgress())
                 .append(" %")

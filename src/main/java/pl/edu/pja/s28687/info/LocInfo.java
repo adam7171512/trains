@@ -18,6 +18,7 @@ public class LocInfo {
         if (locomotive.getStatus() == TrainStatus.RUNNING){
             stringBuilder.append("\nRoad info :")
                     .append("\nCurrent speed : ").append(locomotive.getCurrentSpeed()).append(" km/h")
+                    .append(" | Nominal speed : ").append(locomotive.getDefaultSpeed()).append(" km/h")
                     .append(" | Current rail segment : ").append(locomotive.getCurrentSegment())
                     .append(" | Segment progress : ").append(locomotive.getCurrentSegmentProgress())
                     .append(" %")
