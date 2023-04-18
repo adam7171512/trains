@@ -4,10 +4,7 @@ import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.cars.LoadableRailroadCar;
 import pl.edu.pja.s28687.load.IDeliverable;
-import pl.edu.pja.s28687.load.Load;
 import pl.edu.pja.s28687.logistics.IRouteFinder;
-import pl.edu.pja.s28687.logistics.LocoBase;
-import pl.edu.pja.s28687.validators.locomotive.ILocomotiveLoadValidator;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -46,7 +43,7 @@ public class TrainSet {
     }
 
     public void setDestinationStation(TrainStation destStation){
-        locomotive.setDestStation(destStation);
+        locomotive.setDestinationStation(destStation);
     }
 
     public void setSourceStation(TrainStation sourceStation){

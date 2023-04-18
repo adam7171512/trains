@@ -5,7 +5,8 @@ import pl.edu.pja.s28687.factories.*;
 import pl.edu.pja.s28687.gui.Canvas;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.logistics.LocoBase;
-import pl.edu.pja.s28687.logistics.NaiveRouteFinder;
+import pl.edu.pja.s28687.logistics.AStarRouteFinder;
+import pl.edu.pja.s28687.logistics.ReverseDijkstraRouteFinder;
 
 public class Presentation extends AbstractLeafMenu{
     @Override
@@ -21,8 +22,8 @@ public class Presentation extends AbstractLeafMenu{
         trainStationFactory.createTrainStationsPolishCoords();
         railroadsFactory.createOrderedConnectionsBetweenStations(3);
 
-        trainSetFactory.createTrainSetsOfType(7, LocomotivePurpose.PASSENGER, new NaiveRouteFinder(locoBase));
-        trainSetFactory.createTrainSetsOfType(7, LocomotivePurpose.BASIC_FREIGHT, new NaiveRouteFinder(locoBase));
+        trainSetFactory.createTrainSetsOfType(7, LocomotivePurpose.PASSENGER, new AStarRouteFinder(locoBase));
+        trainSetFactory.createTrainSetsOfType(7, LocomotivePurpose.BASIC_FREIGHT, new AStarRouteFinder(locoBase));
         trainSetFactory.createRandomTrainSets(16);
         carsFactory.createRandomCars(400);
         loadFactory.createRandomLoads(2000);

@@ -40,16 +40,16 @@ public class Conductor extends Thread {
     }
 
     public List<RailroadLink> findRoute() throws InterruptedException {
-        if (this.route != null && locomotive.getLastTrainStation() != locomotive.getDestStation()){
-            locomotive.setRoad(this.route);
+        if (this.route != null && locomotive.getLastTrainStation() != locomotive.getDestinationStation()){
+            locomotive.setRoute(this.route);
             return this.route;
         }
         TrainStation sourceStation = locomotive.getSourceStation();
-        TrainStation destStation = locomotive.getDestStation();
+        TrainStation destStation = locomotive.getDestinationStation();
         Optional<List<RailroadLink>> route = routeFinder.findRoute(sourceStation, destStation);
         while (route.isEmpty()) {
             locomotive.setStatus(TrainStatus.UNABLE_TO_FIND_ROUTE);
-            String s = "Train " + this.locomotive.getLocName() +
+            String s = "Train " + this.locomotive.getName() +
                     " Can't start the journey because railroad connection between" +
                     sourceStation.getName() + " and " +
                     destStation.getName() + " does not exist" +
@@ -72,9 +72,9 @@ public class Conductor extends Thread {
         BigDecimal segmentDistance = segment.getDistance();
         segment.enterRailway(locomotive);
         locomotive.setCurrentSegment(segment);
-        locomotive.setCurrentSegmentDestination(destination);
+//        locomotive.setCurrentSegmentDestination(destination);
         announceDeparture(locomotive.getLastTrainStation(), destination);
-        locomotive.setCurrentSegmentDistance(segmentDistance);
+//        locomotive.setCurrentSegmentDistance(segmentDistance);
         MachinistJob machinistJob = new MachinistJob(locomotive, segmentDistance);
         machinistJob.start();
         machinistJob.join();
@@ -84,7 +84,7 @@ public class Conductor extends Thread {
     }
 
     public void directRoute(List<RailroadLink> route){
-        locomotive.setRoad(route);
+        locomotive.setRoute(route);
         locomotive.setCurrentTripDistanceCovered(BigDecimal.valueOf(0));
         for (RailroadLink tdc : route){
             try {
@@ -107,27 +107,27 @@ public class Conductor extends Thread {
 
     public void reverseTrip(){
         TrainStation temp = locomotive.getSourceStation();
-        locomotive.setSourceStation(locomotive.getDestStation());
-        locomotive.setDestStation(temp);
+        locomotive.setSourceStation(locomotive.getDestinationStation());
+        locomotive.setDestinationStation(temp);
     }
 
     public void announceDeparture(TrainStation source, TrainStation destination){
         locomotive
                 .getLogger()
-                .log(Level.INFO, "Train " + locomotive.getLocName()
-                        + " travelling to " + locomotive.getDestStation()
+                .log(Level.INFO, "Train " + locomotive.getName()
+                        + " travelling to " + locomotive.getDestinationStation()
                         + " leaves  " + source + " , next station " + destination);
     }
 
     public void announceArrival(TrainStation destination){
         String message;
-        if (locomotive.getDestStation().equals(destination)) {
-            message = "Train " + locomotive.getLocName()
+        if (locomotive.getDestinationStation().equals(destination)) {
+            message = "Train " + locomotive.getName()
                     + " has arrived at its final destination  " + destination;
         }
         else {
-            message = "Train " + locomotive.getLocName()
-                    + " travelling to " + locomotive.getDestStation()
+            message = "Train " + locomotive.getName()
+                    + " travelling to " + locomotive.getDestinationStation()
                     + " arrives at " + destination;
         }
         locomotive
@@ -138,7 +138,7 @@ public class Conductor extends Thread {
     public void switchDestination(){
         int i = new Random().nextInt(locoBase.getTrainStations().size() - 1);
         TrainStation newDestination = locoBase.getTrainStations().stream().toList().get(i);
-        locomotive.setDestStation(newDestination);
+        locomotive.setDestinationStation(newDestination);
 
     }
 

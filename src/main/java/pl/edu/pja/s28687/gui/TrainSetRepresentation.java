@@ -50,10 +50,10 @@ public class TrainSetRepresentation extends JComponent {
                         .getCoordinates()
                         .getY()));
         sourceAndDest.add(new Point(
-                (int) loc.getDestStation()
+                (int) loc.getDestinationStation()
                         .getCoordinates()
                         .getX(),
-                (int) loc.getDestStation()
+                (int) loc.getDestinationStation()
                         .getCoordinates()
                         .getY()));
 //        locLabel = new TrainSetLabel(loc);

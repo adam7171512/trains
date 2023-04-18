@@ -30,19 +30,19 @@ public class TrainSetLabel extends JTextArea {
     private String labelText(){
         String s = new StringBuilder()
                 .append("Name: ")
-                .append(this.loc.getLocName())
+                .append(this.loc.getName())
                 .append(" ID: ")
                 .append(this.loc.getId())
                 .append("\nSource : ")
                 .append(this.loc.getSourceStation())
                 .append(" - ")
-                .append(this.loc.getDestStation())
+                .append(this.loc.getDestinationStation())
                 .append("\nSpeed : ")
                 .append(this.loc.getCurrentSpeed())
                 .append(" km/h")
                 .append("\nTrip :")
-                .append(loc.getRoad().size()).append(" stops !")
-                .append(loc.getRoad().stream().map(RailroadLink::getDistance).reduce(BigDecimal::add).orElse(BigDecimal.ZERO))
+                .append(loc.getRoute().size()).append(" stops !")
+                .append(loc.getRoute().stream().map(RailroadLink::getDistance).reduce(BigDecimal::add).orElse(BigDecimal.ZERO))
                 .append(" KM distance")
 //                .append(loc.getRoad())
                 .append("\nCurrent segment : ")
@@ -50,7 +50,7 @@ public class TrainSetLabel extends JTextArea {
                 .append("\nCurrent station : ")
                 .append(loc.getLastTrainStation())
                 .append("\nTrip progress % : ")
-                .append(loc.getCurrentTripProgress())
+                .append(loc.getCurrentTripProgress().multiply(BigDecimal.valueOf(100)))
                 .toString();
         return s;
     }

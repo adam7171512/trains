@@ -71,20 +71,20 @@ class RailroadHazardTest {
     }
     @Test
     void setSpeed_Over200_ThrowsRailroadHazard_When_SpeedWasLowerThan200() {
-        assertThrows(RailroadHazard.class, () -> locomotive.setSpeed(BigDecimal.valueOf(201)));
+        assertThrows(RailroadHazard.class, () -> locomotive.setCurrentSpeed(BigDecimal.valueOf(201)));
     }
 
     @Test
     void setSpeed_Over200_DoesNotThrowRailroadHazard_When_SpeedWasAlreadyHigherThan200() {
-        assertThrows(RailroadHazard.class, () -> locomotive.setSpeed(BigDecimal.valueOf(201)));
-        assertDoesNotThrow(() -> locomotive.setSpeed(BigDecimal.valueOf(205)));
+        assertThrows(RailroadHazard.class, () -> locomotive.setCurrentSpeed(BigDecimal.valueOf(201)));
+        assertDoesNotThrow(() -> locomotive.setCurrentSpeed(BigDecimal.valueOf(205)));
     }
 
     @Test
     void setSpeed_Over200_ThrowsRailroadHazard_When_SpeedDroppedBelow200AndThenExceeded200Again() {
-        assertThrows(RailroadHazard.class, () -> locomotive.setSpeed(BigDecimal.valueOf(201)));
-        assertDoesNotThrow(() -> locomotive.setSpeed(BigDecimal.valueOf(205)));
-        assertDoesNotThrow(() -> locomotive.setSpeed(BigDecimal.valueOf(199)));
-        assertThrows(RailroadHazard.class, () -> locomotive.setSpeed(BigDecimal.valueOf(201)));
+        assertThrows(RailroadHazard.class, () -> locomotive.setCurrentSpeed(BigDecimal.valueOf(201)));
+        assertDoesNotThrow(() -> locomotive.setCurrentSpeed(BigDecimal.valueOf(205)));
+        assertDoesNotThrow(() -> locomotive.setCurrentSpeed(BigDecimal.valueOf(199)));
+        assertThrows(RailroadHazard.class, () -> locomotive.setCurrentSpeed(BigDecimal.valueOf(201)));
     }
 }

@@ -4,6 +4,7 @@ import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,7 +19,7 @@ public class TrainSetInfo {
         StringBuilder loco = new StringBuilder()
                 .append("\nTrainSet ID : ").append(trainSet.getId())
                 .append("\nLocomotive ID : ").append(locomotive.getId())
-                .append(" | Loc name : ").append(locomotive.getLocName())
+                .append(" | Loc name : ").append(locomotive.getName())
                 .append(" | Current status : ").append(locomotive.getStatus()).append("\n")
                 .append("Home station : ").append(locomotive.getHomeStation())
                 .append(" | Current payload : ").append(locomotive.getCurrentPayload())
@@ -30,19 +31,20 @@ public class TrainSetInfo {
                 .append(" | Car limits : ")
                 .append(" regular : ").append(locomotive.getCarLimit())
                 .append(" powered : ").append(locomotive.getPoweredCarLimit())
-                .append(" | Passengers carried : ").append(locomotive.passengersOnBoard())
+                .append(" | Passengers carried : ").append(locomotive.getPassengerNumber())
                 .append("\nSegment info | ")
                 .append(" Current speed : ").append(locomotive.getCurrentSpeed()).append(" km/h")
-                .append(" Nominal speed : ").append(locomotive.getDefaultSpeed()).append(" km/h")
+                .append(" Nominal speed : ").append(locomotive.getNominalSpeed()).append(" km/h")
                 .append(" | Current rail segment : ").append(locomotive.getCurrentSegment())
-                .append(" | Segment progress : ").append(locomotive.getCurrentSegmentProgress())
+                .append(" | Segment progress : ")
+                .append(locomotive.getCurrentSegmentProgress().multiply(BigDecimal.valueOf(100)))
                 .append(" %")
                 .append("\nTrip info |  ")
                 .append("Source  : ").append(locomotive.getSourceStation())
-                .append(" | Destination  : ").append(locomotive.getDestStation())
+                .append(" | Destination  : ").append(locomotive.getDestinationStation())
                 .append(" | Trip distance  : ").append(locomotive.getCurrentTripDistance()).append(" km")
-                .append(" | Stops  : ").append(locomotive.getRoad().size())
-                .append(" | Trip progress : ").append(locomotive.getCurrentTripProgress()).append(" %");
+                .append(" | Stops  : ").append(locomotive.getRoute().size())
+                .append(" | Trip progress : ").append(locomotive.getCurrentTripProgress().multiply(BigDecimal.valueOf(100))).append(" %");
 //                .append("\nTrip segments : ").append(locomotive.getRoad())
 
 
@@ -76,10 +78,10 @@ public class TrainSetInfo {
                 .append(" tonnes")
                 .append("\nCars attached : ")
                 .append(locomotive.getCurrentCarNumber())
-                .append(" | Passengers carried : ").append(locomotive.passengersOnBoard())
-                .append(" | Destination  : ").append(locomotive.getDestStation())
+                .append(" | Passengers carried : ").append(locomotive.getPassengerNumber())
+                .append(" | Destination  : ").append(locomotive.getDestinationStation())
                 .append(" | Trip distance  : ").append(locomotive.getCurrentTripDistance()).append(" km")
-                .append(" | Trip progress : ").append(locomotive.getCurrentTripProgress()).append(" %").toString();
+                .append(" | Trip progress : ").append(locomotive.getCurrentTripProgress().multiply(BigDecimal.valueOf(100))).append(" %").toString();
     }
 
     public static String getAggregatedBasicTrainSetsInfo(LocoBase locoBase){

@@ -4,6 +4,7 @@ import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.misc.TrainStatus;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class LocInfo {
@@ -18,16 +19,18 @@ public class LocInfo {
         if (locomotive.getStatus() == TrainStatus.RUNNING){
             stringBuilder.append("\nRoad info :")
                     .append("\nCurrent speed : ").append(locomotive.getCurrentSpeed()).append(" km/h")
-                    .append(" | Nominal speed : ").append(locomotive.getDefaultSpeed()).append(" km/h")
+                    .append(" | Nominal speed : ").append(locomotive.getNominalSpeed()).append(" km/h")
                     .append(" | Current rail segment : ").append(locomotive.getCurrentSegment())
-                    .append(" | Segment progress : ").append(locomotive.getCurrentSegmentProgress())
+                    .append(" | Segment progress : ")
+                    .append(locomotive.getCurrentSegmentProgress().multiply(BigDecimal.valueOf(100)))
                     .append(" %")
                     .append("\nTrip info : \n")
                     .append("Source  : ").append(locomotive.getSourceStation())
-                    .append(" | Destination  : ").append(locomotive.getDestStation())
+                    .append(" | Destination  : ").append(locomotive.getDestinationStation())
                     .append(" | Trip distance  : ").append(locomotive.getCurrentTripDistance()).append(" km")
-                    .append(" | Trip progress : ").append(locomotive.getCurrentTripProgress()).append(" %")
-                    .append("\nSegments : ").append(locomotive.getRoad())
+                    .append(" | Trip progress : ")
+                    .append(locomotive.getCurrentTripProgress().multiply(BigDecimal.valueOf(100))).append(" %")
+                    .append("\nSegments : ").append(locomotive.getRoute())
                     .append("\nRecently visited train station: ").append(locomotive.getLastTrainStation())
                     .append("\n");
         }
@@ -37,7 +40,7 @@ public class LocInfo {
         StringBuilder stringBuilder = new StringBuilder().
                 append("_________________________________________________________________").
                 append("\nLocomotive ID : ").append(locomotive.getId()).
-                append(" | Loc name : ").append(locomotive.getLocName()).
+                append(" | Loc name : ").append(locomotive.getName()).
                 append(" | Home station : ").append(locomotive.getHomeStation()).
                 append(" | Current payload : ").append(locomotive.getCurrentPayload()).
                 append(" | Max payload : ").append(locomotive.getMaxPayload()).
@@ -48,7 +51,7 @@ public class LocInfo {
                 append(" | Car limits | ").
                 append(" regular : ").append(locomotive.getCarLimit()).
                 append(" powered : ").append(locomotive.getPoweredCarLimit()).
-                append(" | Passengers carried : ").append(locomotive.passengersOnBoard()).
+                append(" | Passengers carried : ").append(locomotive.getPassengerNumber()).
                 append("\nCurrent status : ").append(locomotive.getStatus()).append("\n");
         return stringBuilder.toString();
     }
