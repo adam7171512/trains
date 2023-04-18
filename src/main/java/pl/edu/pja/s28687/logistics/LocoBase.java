@@ -242,6 +242,14 @@ public class LocoBase {
     }
 
 
+    public Optional<RailroadLink> findLink(Set<TrainStation> stations){
+        return railroadConnections
+                .stream()
+                .filter(connection -> connection.getStations().equals(stations))
+                .findFirst();
+    }
+
+
     public  List<IRailroadCar> findSuitableCars(Locomotive loc){
         return railroadCars
                 .values()
@@ -252,7 +260,7 @@ public class LocoBase {
     }
 
     //todo : move to another class
-    public BigDecimal calcDistance(TrainStation station1, TrainStation station2){
+    public static BigDecimal calcDistance(TrainStation station1, TrainStation station2){
         Coordinates sourceCoords = station1.getCoordinates();
         Coordinates destCoords = station2.getCoordinates();
         double xDist = Math.abs(sourceCoords.getX() - destCoords.getX());
