@@ -1,0 +1,8 @@
+package pl.edu.pja.s28687.logistics;
+
+public enum Heuristics {
+    DISTANCE,
+    DISTANCE_PLUS_DESTINATION_DISTANCE,
+    REVERSE_DISTANCE,
+    REVERSE_DISTANCE_PLUS_DESTINATION_DISTANCE,
+}

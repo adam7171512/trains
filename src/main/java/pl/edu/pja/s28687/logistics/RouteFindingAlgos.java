@@ -1,9 +1,8 @@
 package pl.edu.pja.s28687.logistics;
 
 public enum RouteFindingAlgos {
-    WORST,
-    BAD,
-    NORMAL,
-    NAIVE,
-    BEST;
+    DIJKSTRA,
+    A_STAR,
+    REVERSED_A_STAR,
+    DFS,
 }
