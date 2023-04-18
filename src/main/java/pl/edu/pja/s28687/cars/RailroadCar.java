@@ -7,10 +7,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Logger;
 
 
 public abstract class RailroadCar implements IRailroadCar {
     //todo: find info on weight etc of typical cars and locomotives
+    protected static final Logger logger = Logger.getLogger(RailroadCar.class.getName());
     private final String shipper;
     private final String securityInfo;
     private final BigDecimal netWeight;
@@ -70,4 +72,8 @@ public abstract class RailroadCar implements IRailroadCar {
     public abstract CarType getCarType();
 
     public abstract boolean isPowered();
+
+    public void setLogLevel(java.util.logging.Level level) {
+        logger.setLevel(level);
+    }
 }

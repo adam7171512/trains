@@ -40,12 +40,64 @@ public class PassengerCar extends LoadableRailroadCar<IPassengers> implements IP
     }
 
     @Override
+    public void safetyCheck() {
+        checkFirstAidKit();
+        checkFireExtinguisher();
+    }
+
+    @Override
+    public void emergencyUnloading() {
+        if(isLocked()){
+            safetyUnlock();
+        }
+        System.out.println("Attention! All passengers must evacuate the car immediately!");
+        for (IPassengers load : loads) {
+           unLoad(load);
+        }
+        safetyLock();
+    }
+
+    @Override
+    public String getCargoStats() {
+        return null;
+    }
+
+    @Override
     public CarType getCarType() {
         return CarType.PASSENGERS;
     }
 
     @Override
+    public void emergencyProcedure() {
+        System.out.println(
+                "Attention! Emergy procedure started! in car " +
+                        getId() +
+                        " Please don't panic! " +
+                        "Follow the instructions of the staff!");
+        if (isLocked()) {
+            safetyUnlock();
+        }
+    }
+
+    @Override
+    public void routineProcedure() {
+        checkTickets();
+    }
+
+    @Override
     public boolean isPowered() {
         return true;
+    }
+
+    private void checkTickets() {
+        System.out.println("Checking passenger tickets..");
+    }
+
+    private void checkFirstAidKit() {
+        System.out.println("Checking first aid kit..");
+    }
+
+    private void checkFireExtinguisher() {
+        System.out.println("Checking fire extinguisher..");
     }
 }

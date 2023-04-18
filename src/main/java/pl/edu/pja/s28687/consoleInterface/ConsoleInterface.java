@@ -137,6 +137,10 @@ public class ConsoleInterface {
         menus.add(locomotiveManagement);
         manualFreightManagementSelectMenu.addSubMenu(locomotiveManagement);
 
+        LoadCarrierManagement loadCarrierManagement = new LoadCarrierManagement();
+        menus.add(loadCarrierManagement);
+        manualFreightManagementSelectMenu.addSubMenu(loadCarrierManagement);
+
         RailroadCarManagement railroadCarManagement = new RailroadCarManagement();
         menus.add(railroadCarManagement);
         manualFreightManagementSelectMenu.addSubMenu(railroadCarManagement);

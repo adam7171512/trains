@@ -1,6 +1,7 @@
 package pl.edu.pja.s28687.cars;
 
 import java.math.BigDecimal;
+import java.util.logging.Level;
 
 public class RestaurantCar extends RailroadCar implements IPowered {
     private static final String SHIPPER = "SIEMENS";
@@ -22,6 +23,23 @@ public class RestaurantCar extends RailroadCar implements IPowered {
     @Override
     public CarType getCarType() {
         return CarType.RESTAURANT;
+    }
+
+    @Override
+    public void emergencyProcedure() {
+        logger.log(Level.INFO,
+                "Attention! Emergency in restaurant car!" +
+                        " Please remain calm and follow the instructions of the staff.");
+    }
+
+    @Override
+    public void routineProcedure() {
+        logger.log(Level.INFO, "Cleaning staff is cleaning the car");
+    }
+
+    @Override
+    public void safetyCheck() {
+        logger.log(Level.INFO, "Checking the fire extinguisher");
     }
 
     @Override

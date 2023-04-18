@@ -18,10 +18,13 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.lang.Math.min;
 
 public class Locomotive implements ILocomotive {
+    private static final Logger logger = Logger.getLogger(Locomotive.class.getName());
     private final int id;
     private final String name;
     private final int maxCars;
@@ -51,6 +54,10 @@ public class Locomotive implements ILocomotive {
     private ILocomotiveLoadValidator loadValidator;
 
     private Integer trainSetId;
+
+    static {
+        logger.setLevel(Level.SEVERE);
+    }
 
     public Locomotive(String name,
                       int id,
@@ -178,27 +185,6 @@ public class Locomotive implements ILocomotive {
                         intValue();
     }
 
-    public void randomlyChangeSpeed() {
-        Random random = new Random();
-        int randomValue = random.nextInt(2) == 0 ? -1 : 1;
-        try {
-            currentSpeed = currentSpeed
-                    .add(currentSpeed
-                            .multiply(
-                                    BigDecimal.valueOf(
-                                            randomValue * 0.03)));
-            if (currentSpeed.doubleValue() > 200) {
-                throw new RailroadHazard(
-                        "Train " +
-                                this.name +
-                                " exceeded speed 200 km/h !!!");
-            }
-        } catch (RailroadHazard e) {
-//            System.out.println(e.getMessage())
-            ;
-        }
-    }
-
     public TrainStation getHomeStation() {
         return homeTrainStation;
     }
@@ -243,9 +229,11 @@ public class Locomotive implements ILocomotive {
         this.currentSpeed = speed;
         if (speedBeforeChange.doubleValue() < 200 && speed.doubleValue() > 200) {
             throw new RailroadHazard(
-                    "Train " +
-                            this.name +
-                            " exceeded speed 200 km/h !!!");
+                    "Railroad Hazard !! Train " +
+                            this.name + " , ID : " + this.id +
+                            " exceeded speed 200 km/h" +
+                            " on " + this.getCurrentSegment() +
+                            " !!!");
         }
     }
 
@@ -319,7 +307,6 @@ public class Locomotive implements ILocomotive {
         this.currentSegment = segment;
         x = (int) currentSegment.getStation1().getCoordinates().getX();
         y = (int) currentSegment.getStation1().getCoordinates().getY();
-
     }
 
     public TrainStatus getStatus() {
@@ -387,6 +374,14 @@ public class Locomotive implements ILocomotive {
 
     public List<ILoadCarrier<? extends IDeliverable>> getLoadableCars() {
         return loadCarriers;
+    }
+
+    public Logger getLogger(){
+        return logger;
+    }
+
+    public void raiseAlert(String message){
+        logger.log(Level.SEVERE, message);
     }
 }
 

@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 public abstract class LoadableRailroadCar<T extends IDeliverable> extends RailroadCar implements ILoadCarrier<T> {
+    private boolean locked = false;
 
     protected ICarLoadValidator validator;
     List<T> loads;
@@ -42,6 +44,7 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
                 throw new ValidationException("Locomotive can't handle this much payload!");
             }
         }
+        logger.log(Level.INFO, "Load " + load + " loaded to " + this);
         loads.add(load);
         load.setLoaded();
         currentWeight = currentWeight.add(load.getWeight());
@@ -53,8 +56,12 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
         if (!loads.contains(load)) {
             throw new ValidationException("Load not found in this car!");
         }
+        if (isLocked()) {
+            throw new ValidationException("Car is locked!");
+        }
         loads.remove(load);
         load.setDeloaded();
+        logger.log(Level.INFO, "Load " + load + " unloaded from " + this);
         currentWeight = currentWeight.subtract(load.getWeight());
         return true;
     }
@@ -62,14 +69,6 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
 
     public BigDecimal getCurrentWeight() {
         return currentWeight;
-    }
-
-    public boolean validateWeight(IDeliverable load) {
-        return validator.validateWeight(load, this);
-    }
-
-    public boolean validateFlags(IDeliverable load) {
-        return validator.validateFlags(load, this);
     }
 
     public Set<LoadType> getAllowedLoadFlags() {
@@ -88,7 +87,24 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
 
     @Override
     public boolean validateLoad(IDeliverable load) {
-        return validator.validate(load, this);
+        return ! isLocked() && validator.validate(load, this);
+    }
+
+    @Override
+    public boolean isLocked() {
+        return locked;
+    }
+
+    @Override
+    public void safetyLock() {
+        locked = true;
+        logger.log(Level.INFO, "Car " + this.getCarType() + " " + this.getId() + " locked");
+    }
+
+    @Override
+    public void safetyUnlock() {
+        locked = false;
+        logger.log(Level.INFO, "Car " + this.getCarType() + " " +  this.getId() + " unlocked");
     }
 
 

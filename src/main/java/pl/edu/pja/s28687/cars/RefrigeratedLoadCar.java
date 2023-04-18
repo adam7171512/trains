@@ -27,12 +27,55 @@ public class RefrigeratedLoadCar extends BasicFreightCarABC<IRefrigerated> imple
     }
 
     @Override
+    public void safetyCheck() {
+        checkCoolantLevel();
+        checkChamberTemperature();
+        scanChamberWithThermalVision();
+    }
+
+    @Override
+    public void emergencyUnloading() {
+
+    }
+
+    @Override
+    public String getCargoStats() {
+        return null;
+    }
+
+    @Override
     public CarType getCarType() {
         return CarType.REFRIGERATED;
     }
 
     @Override
+    public void emergencyProcedure() {
+        safetyLock();
+        System.out.println("Emergency procedure in refrigerated car" + getId() + " started");
+        if (getLocomotive().isPresent()){
+            getLocomotive().get().raiseAlert("Refrigerated car " + getId() + " is in emergency mode");
+        }
+    }
+
+    @Override
+    public void routineProcedure() {
+        checkChamberTemperature();
+    }
+
+    @Override
     public boolean isPowered() {
         return true;
+    }
+
+    private void checkCoolantLevel(){
+        System.out.println("Checking the coolant level..");
+    }
+
+    private void checkChamberTemperature(){
+        System.out.println("Checking the chamber temperature..");
+    }
+
+    private void scanChamberWithThermalVision() {
+        System.out.println("Scanning the chamber with thermal vision..");
     }
 }

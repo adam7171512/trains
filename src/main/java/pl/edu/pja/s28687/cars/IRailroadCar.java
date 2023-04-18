@@ -20,4 +20,7 @@ public interface IRailroadCar {
     BigDecimal getCurrentWeight();
 
     BigDecimal getGrossWeight();
+    void emergencyProcedure();
+    void routineProcedure();
+    void safetyCheck();
 }

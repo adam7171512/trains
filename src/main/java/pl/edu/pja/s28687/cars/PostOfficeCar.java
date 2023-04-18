@@ -31,6 +31,22 @@ public class PostOfficeCar extends LoadableRailroadCar<IMail> implements IPowere
     }
 
     @Override
+    public void emergencyProcedure() {
+        System.out.println(
+                "Attention! Emergency in post office car!" +
+                        " Please remain calm and follow the instructions of the staff.");
+        if (getLocomotive().isPresent()){
+            getLocomotive().get().raiseAlert("Emergency in post office car!" +
+                    getId() + "Please send help");
+        }
+    }
+
+    @Override
+    public void routineProcedure() {
+        System.out.println("Sorting mail");
+    }
+
+    @Override
     public boolean isPowered() {
         return true;
     }
@@ -38,5 +54,32 @@ public class PostOfficeCar extends LoadableRailroadCar<IMail> implements IPowere
     @Override
     public Set<LoadType> allowedLoadFlags() {
         return Set.of(LoadType.MAIL);
+    }
+
+    @Override
+    public void safetyCheck() {
+        System.out.println("Scanning selected mail wih xray..");
+    }
+
+    @Override
+    public void emergencyUnloading() {
+        if (loads.isEmpty()) {
+            System.out.println("No loads to unload");
+            return;
+        }
+        System.out.println("Emergency unloading of " + loads.size() + " loads");
+        if (isLocked()) {
+            safetyUnlock();
+        }
+        for (IMail load : loads) {
+            unLoad(load);
+        }
+        safetyLock();
+        System.out.println("Emergency unloading complete");
+    }
+
+    @Override
+    public String getCargoStats() {
+        return null;
     }
 }

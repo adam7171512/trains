@@ -4,4 +4,6 @@ import java.math.BigDecimal;
 
 public interface ILiquidCarrier {
     BigDecimal getVolume();
+    void openValve();
+    void closeValve();
 }

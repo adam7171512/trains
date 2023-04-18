@@ -17,4 +17,9 @@ public interface ILoadCarrier<T extends IDeliverable>  extends IRailroadCar{
 
 
     List<T> getLoads();
+    void emergencyUnloading();
+    boolean isLocked();
+    void safetyLock();
+    void safetyUnlock();
+    String getCargoStats();
 }
