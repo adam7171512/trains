@@ -77,7 +77,6 @@ class RouteFindersTest {
         var route = aStarRouteFinder.findRoute(stations.get(7), stations.get(19));
         assertTrue(route.isPresent());
         assertEquals(4, route.get().size());
-        System.out.println(route.get());
     }
 
     @Test
@@ -85,7 +84,6 @@ class RouteFindersTest {
         var route = dijkstraRouteFinder.findRoute(stations.get(7), stations.get(19));
         assertTrue(route.isPresent());
         assertEquals(4, route.get().size());
-        System.out.println(route.get());
     }
 
     @Test
@@ -93,7 +91,6 @@ class RouteFindersTest {
         var route = reverseDijkstraRouteFinder.findRoute(stations.get(7), stations.get(19));
         assertTrue(route.isPresent());
         assertNotEquals(4, route.get().size());
-        System.out.println(route.get());
     }
 
     @Test
@@ -101,7 +98,6 @@ class RouteFindersTest {
         var route = reverseAStarRouteFinder.findRoute(stations.get(7), stations.get(19));
         assertTrue(route.isPresent());
         assertNotEquals(4, route.get().size());
-        System.out.println(route.get());
     }
 
     @Test
@@ -109,7 +105,6 @@ class RouteFindersTest {
         var route = depthFirstSearchRouteFinder.findRoute(stations.get(7), stations.get(19));
         assertTrue(route.isPresent());
         assertNotEquals(4, route.get().size());
-        System.out.println(route.get());
     }
 
     //todo: get rid of optionals
