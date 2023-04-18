@@ -6,7 +6,7 @@ import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.util.Set;
 
-public class RefrigeratedLoadCar extends BasicFreightCarABC<IRefrigerated> implements IPowered {
+public class RefrigeratedLoadCar extends AbstractBasicFreightCar<IRefrigerated> implements IPowered {
     private static final String SHIPPER = "GENERAL ELECTRIC";
     private static final String SECURITY_INFO =
             """

@@ -7,7 +7,7 @@ import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import java.math.BigDecimal;
 import java.util.Set;
 
-public class PostOfficeCar extends LoadableRailroadCar<IMail> implements IPowered {
+public class PostOfficeCar extends AbstractLoadCarrier<IMail> implements IPowered {
 
     private static final String SHIPPER = "GENERAL ELECTRIC";
     private static final String SECURITY_INFO =

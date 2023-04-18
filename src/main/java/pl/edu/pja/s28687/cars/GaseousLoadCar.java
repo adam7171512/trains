@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 
-public class GaseousLoadCar extends BasicFreightCarABC<IGaseous> implements IGasCarrier{
+public class GaseousLoadCar extends AbstractBasicFreightCar<IGaseous> implements IGasCarrier{
     private static final String SHIPPER = "TOYOTA";
     private static final String SECURITY_INFO =
             """

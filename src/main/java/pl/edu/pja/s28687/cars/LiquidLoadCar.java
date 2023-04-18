@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 
-public class LiquidLoadCar extends BasicFreightCarABC<ILiquid> implements ILiquidCarrier {
+public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements ILiquidCarrier {
     private static final String SHIPPER = "POLMOS";
     private static final String SECURITY_INFO =
             """

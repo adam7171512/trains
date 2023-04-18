@@ -1,7 +1,6 @@
 package pl.edu.pja.s28687.cars;
 
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.load.ILuggage;
 import pl.edu.pja.s28687.load.IToxic;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.misc.TrainStatus;
@@ -10,7 +9,7 @@ import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import java.util.Set;
 
 
-public class ToxicLoadCar extends HeavyFreightCarABC<IToxic> {
+public class ToxicLoadCar extends AbstractHeavyFreightCar<IToxic> {
     private static final String SHIPPER = "POLMOS";
     private static final String SECURITY_INFO =
             """

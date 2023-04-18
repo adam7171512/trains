@@ -7,7 +7,7 @@ import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import java.math.BigDecimal;
 import java.util.Set;
 
-public class MailAndLuggageCar extends LoadableRailroadCar<ILuggage> {
+public class MailAndLuggageCar extends AbstractLoadCarrier<ILuggage> {
     private static final String SHIPPER = "ALSTOM";
     private static final String SECURITY_INFO =
             """

@@ -8,7 +8,7 @@ import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.TrainStation;
 import pl.edu.pja.s28687.cars.CarType;
 import pl.edu.pja.s28687.cars.IRailroadCar;
-import pl.edu.pja.s28687.cars.RailroadCar;
+import pl.edu.pja.s28687.cars.AbstractRailroadCar;
 import pl.edu.pja.s28687.cars.RestaurantCar;
 import pl.edu.pja.s28687.factories.*;
 import pl.edu.pja.s28687.load.IDeliverable;
@@ -16,7 +16,6 @@ import pl.edu.pja.s28687.load.IDeliverable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -155,8 +154,8 @@ class LocoBaseTest {
 
     @Test
     void getLoadCarriers_WhenOneCarrierCarAndOneNotCarrier_ShouldReturnListWithOneCar() {
-        RailroadCar notCarrier = carsFactory.createCarOfType(CarType.RESTAURANT);
-        RailroadCar carrier = carsFactory.createCarOfType(CarType.BASIC_FREIGHT);
+        AbstractRailroadCar notCarrier = carsFactory.createCarOfType(CarType.RESTAURANT);
+        AbstractRailroadCar carrier = carsFactory.createCarOfType(CarType.BASIC_FREIGHT);
         assertEquals(2, locoBase.getRailroadCarsList().size());
         assertEquals(1, locoBase.getLoadCarriers().size());
         assertEquals(carrier, locoBase.getLoadCarriers().get(0));
@@ -164,7 +163,7 @@ class LocoBaseTest {
 
     @Test
     void getLoadCarriers_WhenOneCarrierCar_ShouldReturnListWithOneCar() {
-        RailroadCar carrier = carsFactory.createCarOfType(CarType.BASIC_FREIGHT);
+        AbstractRailroadCar carrier = carsFactory.createCarOfType(CarType.BASIC_FREIGHT);
         assertEquals(1, locoBase.getRailroadCarsList().size());
         assertEquals(1, locoBase.getLoadCarriers().size());
         assertEquals(carrier, locoBase.getLoadCarriers().get(0));
@@ -223,7 +222,7 @@ class LocoBaseTest {
 
     @Test
     void findLoadCarrier_WhenPresent_ShouldReturnOptionalWithLoadCarrier() {
-        RailroadCar l = carsFactory.createCarOfType(CarType.BASIC_FREIGHT);
+        AbstractRailroadCar l = carsFactory.createCarOfType(CarType.BASIC_FREIGHT);
         assertTrue(locoBase.findLoadCarrier(l.getId()).isPresent());
         assertEquals(l, locoBase.findLoadCarrier(l.getId()).get());
     }
@@ -261,7 +260,7 @@ class LocoBaseTest {
 
     @Test
     void unRegisterCar_WhenCarIsRegistered_ShouldRemoveCar() {
-        RailroadCar car = new CarsFactory(locoBase).createRandomCar();
+        AbstractRailroadCar car = new CarsFactory(locoBase).createRandomCar();
         assertTrue(locoBase.getRailroadCarsList().contains(car));
         locoBase.unRegisterCar(car.getId());
         assertFalse(locoBase.getRailroadCarsList().contains(car));
@@ -346,7 +345,7 @@ class LocoBaseTest {
         Locomotive loco = locomotiveFactory.createLocomotiveOfType(LocomotivePurpose.HEAVY_FREIGHT);
         assertEquals(100, locoBase.findSuitableCars(loco).size());
 
-        RailroadCar car = carBuilder.
+        AbstractRailroadCar car = carBuilder.
                 setRandomProperties()
                 .setFlag(CarType.NON_STANDARD)
                 .setMaxWeightForNonStandardCar(100000000)
@@ -359,7 +358,7 @@ class LocoBaseTest {
 
         assertEquals(100, locoBase.findSuitableCars(loco).size());
 
-        RailroadCar car2 = carBuilder.
+        AbstractRailroadCar car2 = carBuilder.
                 setRandomProperties()
                 .setFlag(CarType.NON_STANDARD)
                 .setMaxWeightForNonStandardCar(50)

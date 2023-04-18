@@ -9,7 +9,7 @@ import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import java.util.Set;
 
 
-public class ExplosiveLoadCar extends HeavyFreightCarABC<IExplosive> {
+public class ExplosiveLoadCar extends AbstractHeavyFreightCar<IExplosive> {
     private static final String SHIPPER = "ALSTOM";
     private static final String SECURITY_INFO =
             """

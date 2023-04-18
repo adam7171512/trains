@@ -3,7 +3,7 @@ package pl.edu.pja.s28687.cars;
 import java.math.BigDecimal;
 import java.util.logging.Level;
 
-public class RestaurantCar extends RailroadCar implements IPowered {
+public class RestaurantCar extends AbstractRailroadCar implements IPowered {
     private static final String SHIPPER = "SIEMENS";
     private static final String SECURITY_INFO =
             """

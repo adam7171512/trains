@@ -1,19 +1,17 @@
 package pl.edu.pja.s28687.cars;
 
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.load.LoadType;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public abstract class RailroadCar implements IRailroadCar {
+public abstract class AbstractRailroadCar implements IRailroadCar {
     //todo: find info on weight etc of typical cars and locomotives
-    protected static final Logger logger = Logger.getLogger(RailroadCar.class.getName());
+    protected static final Logger logger = Logger.getLogger(AbstractRailroadCar.class.getName());
     private final String shipper;
     private final String securityInfo;
     private final BigDecimal netWeight;
@@ -28,7 +26,7 @@ public abstract class RailroadCar implements IRailroadCar {
         logger.setLevel(Level.SEVERE);
     }
 
-    public RailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id) {
+    public AbstractRailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id) {
         this.shipper = shipper;
         this.securityInfo = securityInfo;
         this.netWeight = netWeight;

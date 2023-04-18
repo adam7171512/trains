@@ -8,7 +8,7 @@ import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import java.util.Set;
 
 
-public class HeavyFreightCar extends HeavyFreightCarABC<IHeavyFreight> {
+public class HeavyFreightCar extends AbstractHeavyFreightCar<IHeavyFreight> {
     private static final String SHIPPER = "URSUS";
     private static final String SECURITY_INFO =
             """

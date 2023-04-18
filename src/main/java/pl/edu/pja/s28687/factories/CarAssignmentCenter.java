@@ -2,11 +2,9 @@ package pl.edu.pja.s28687.factories;
 import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.cars.CarType;
 import pl.edu.pja.s28687.cars.IRailroadCar;
-import pl.edu.pja.s28687.cars.RailroadCar;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
-import java.util.Collection;
 import java.util.List;
 
 public class CarAssignmentCenter {

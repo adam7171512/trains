@@ -6,7 +6,7 @@ import pl.edu.pja.s28687.ILocomotive;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.cars.CarType;
 import pl.edu.pja.s28687.cars.ILoadCarrier;
-import pl.edu.pja.s28687.cars.RailroadCar;
+import pl.edu.pja.s28687.cars.AbstractRailroadCar;
 import pl.edu.pja.s28687.factories.CarBuilder;
 import pl.edu.pja.s28687.factories.CarsFactory;
 import pl.edu.pja.s28687.factories.LocomotiveBuilder;
@@ -65,7 +65,7 @@ class LocomotiveCarValidatorForMaxCarWeightTest {
                 .build();
     }
 
-    private RailroadCar prepareCar(int netWeight, int maxWeight) {
+    private AbstractRailroadCar prepareCar(int netWeight, int maxWeight) {
         return carBuilder.setFlag(CarType.NON_STANDARD)
                 .setPoweredForNonStandardCar(true).setLoadTypes(Set.of(LoadType.BASIC_FREIGHT)).setShipperForNonStandardCar("test")
                 .setSecurityInfoForNonStandardCar("test").setNumberOfSeatsForNonStandardCar(10)

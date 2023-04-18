@@ -16,14 +16,14 @@ public class CarsFactory {
         this.locoBase = locoBase;
     }
 
-    public RailroadCar createCarOfType(CarType carType){
+    public AbstractRailroadCar createCarOfType(CarType carType){
         CarBuilder carBuilder = new CarBuilder(locoBase);
         return carBuilder
                 .setFlag(carType)
                 .build();
     }
 
-    public RailroadCar createMultiplePurposeSpecialCarForLoadTypes(Set<LoadType> loadTypes){
+    public AbstractRailroadCar createMultiplePurposeSpecialCarForLoadTypes(Set<LoadType> loadTypes){
         CarBuilder carBuilder = new CarBuilder(locoBase);
         return carBuilder
                 .setFlag(CarType.NON_STANDARD)
@@ -31,14 +31,14 @@ public class CarsFactory {
                 .build();
     }
 
-    public RailroadCar createRandomCar(){
+    public AbstractRailroadCar createRandomCar(){
         CarBuilder carBuilder = new CarBuilder(locoBase);
         return carBuilder
                 .setRandomProperties()
                 .build();
     }
 
-    public RailroadCar createRandomNonPoweredCar(){
+    public AbstractRailroadCar createRandomNonPoweredCar(){
         CarBuilder carBuilder = new CarBuilder(locoBase);
         List<CarType> nonPoweredCarTypes = new ArrayList<>(List.of(CarType.values()));
         nonPoweredCarTypes.remove(CarType.NON_STANDARD);

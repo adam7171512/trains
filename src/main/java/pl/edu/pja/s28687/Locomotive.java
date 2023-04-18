@@ -2,7 +2,7 @@ package pl.edu.pja.s28687;
 
 import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.cars.IRailroadCar;
-import pl.edu.pja.s28687.cars.LoadableRailroadCar;
+import pl.edu.pja.s28687.cars.AbstractLoadCarrier;
 import pl.edu.pja.s28687.cars.PassengerCar;
 import pl.edu.pja.s28687.gui.TrainSetRepresentation;
 import pl.edu.pja.s28687.load.IDeliverable;
@@ -117,7 +117,7 @@ public class Locomotive implements ILocomotive {
         cars.add(car);
         car.setAttachedTo(this);
         if (car instanceof ILoadCarrier<?>) {
-            loadCarriers.add((LoadableRailroadCar<? extends IDeliverable>) car);
+            loadCarriers.add((AbstractLoadCarrier<? extends IDeliverable>) car);
         }
         return true;
     }
@@ -129,7 +129,7 @@ public class Locomotive implements ILocomotive {
         cars.remove(car);
         car.setDetached();
         if (car instanceof ILoadCarrier<?>) {
-            loadCarriers.remove((LoadableRailroadCar<? extends IDeliverable>) car);
+            loadCarriers.remove((AbstractLoadCarrier<? extends IDeliverable>) car);
         }
         return true;
     }

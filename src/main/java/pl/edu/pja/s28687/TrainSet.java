@@ -2,7 +2,7 @@ package pl.edu.pja.s28687;
 
 import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.cars.IRailroadCar;
-import pl.edu.pja.s28687.cars.LoadableRailroadCar;
+import pl.edu.pja.s28687.cars.AbstractLoadCarrier;
 import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.logistics.IRouteFinder;
 
@@ -114,9 +114,9 @@ public class TrainSet {
 
         int loadsNumber = 0;
         for (IRailroadCar car : locomotive.getCars()){
-            if (car instanceof LoadableRailroadCar){
-                loadsNumber += ((LoadableRailroadCar<?>) car).getLoads().size();
-                stringBuilder.append(((LoadableRailroadCar<?>) car).getLoads());
+            if (car instanceof AbstractLoadCarrier){
+                loadsNumber += ((AbstractLoadCarrier<?>) car).getLoads().size();
+                stringBuilder.append(((AbstractLoadCarrier<?>) car).getLoads());
             }
         }
         stringBuilder.append("\nloadsNumber = ").append(loadsNumber);

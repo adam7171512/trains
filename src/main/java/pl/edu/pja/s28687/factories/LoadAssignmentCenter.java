@@ -2,9 +2,7 @@ package pl.edu.pja.s28687.factories;
 
 import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.cars.ILoadCarrier;
-import pl.edu.pja.s28687.cars.LoadableRailroadCar;
 import pl.edu.pja.s28687.load.IDeliverable;
-import pl.edu.pja.s28687.load.Load;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.ArrayList;

@@ -7,7 +7,7 @@ import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import java.math.BigDecimal;
 import java.util.Set;
 
-public class PassengerCar extends LoadableRailroadCar<IPassengers> implements IPowered, IPassengerCarrier {
+public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IPowered, IPassengerCarrier {
     private static final String SHIPPER = "SIEMENS";
     private static final String SECURITY_INFO =
             """

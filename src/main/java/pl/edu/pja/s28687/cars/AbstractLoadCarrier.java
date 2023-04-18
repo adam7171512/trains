@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
-public abstract class LoadableRailroadCar<T extends IDeliverable> extends RailroadCar implements ILoadCarrier<T> {
+public abstract class AbstractLoadCarrier<T extends IDeliverable> extends AbstractRailroadCar implements ILoadCarrier<T> {
     private boolean locked = false;
 
     protected ICarLoadValidator validator;
@@ -20,7 +20,7 @@ public abstract class LoadableRailroadCar<T extends IDeliverable> extends Railro
     Set<LoadType> allowedFlags;
     private BigDecimal currentWeight;
 
-    public LoadableRailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id, ICarLoadValidator validator) {
+    public AbstractLoadCarrier(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id, ICarLoadValidator validator) {
         super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, id);
         loads = new ArrayList<>();
         currentWeight = this.getNetWeight();

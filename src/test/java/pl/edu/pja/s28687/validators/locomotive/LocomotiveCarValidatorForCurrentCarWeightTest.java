@@ -6,7 +6,7 @@ import pl.edu.pja.s28687.ILocomotive;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.cars.CarType;
 import pl.edu.pja.s28687.cars.ILoadCarrier;
-import pl.edu.pja.s28687.cars.RailroadCar;
+import pl.edu.pja.s28687.cars.AbstractRailroadCar;
 import pl.edu.pja.s28687.factories.CarBuilder;
 import pl.edu.pja.s28687.factories.LocomotiveBuilder;
 import pl.edu.pja.s28687.load.IDeliverable;
@@ -60,7 +60,7 @@ class LocomotiveCarValidatorForCurrentCarWeightTest {
                 .build();
     }
 
-    private RailroadCar prepareCar(int netWeight, int maxWeight) {
+    private AbstractRailroadCar prepareCar(int netWeight, int maxWeight) {
         return carBuilder.setFlag(CarType.NON_STANDARD)
                 .setPoweredForNonStandardCar(true).setLoadTypes(Set.of(LoadType.TOXIC)).setShipperForNonStandardCar("test")
                 .setSecurityInfoForNonStandardCar("test").setNumberOfSeatsForNonStandardCar(10)
@@ -74,59 +74,59 @@ class LocomotiveCarValidatorForCurrentCarWeightTest {
     @Test
     void validatePayloadLimit_ForCarWeightLowerThanPayloadLimit_ShouldReturnTrue() {
         Locomotive locomotive = prepareLoc(1000, 2, 2);
-        RailroadCar car = prepareCar(100, 1200);
+        AbstractRailroadCar car = prepareCar(100, 1200);
         assertTrue(validator.validatePayloadLimit(car, locomotive));
     }
 
     @Test
     void validatePayloadLimit_ForCarWeightEqualToPayloadLimit_ShouldReturnTrue() {
         Locomotive locomotive = prepareLoc(1000, 2, 2);
-        RailroadCar car = prepareCar(1000, 1200);
+        AbstractRailroadCar car = prepareCar(1000, 1200);
         assertTrue(validator.validatePayloadLimit(car, locomotive));
     }
 
     @Test
     void validatePayloadLimit_ForCarWeightGreaterThanPayloadLimit_ShouldReturnFalse() {
         Locomotive locomotive = prepareLoc(1000, 8, 2);
-        RailroadCar car = prepareCar(1100, 1200);
+        AbstractRailroadCar car = prepareCar(1100, 1200);
         assertFalse(validator.validatePayloadLimit(car, locomotive));
     }
 
     @Test
     void validatePayloadLimit_ForCarWeightLowerThanAvailablePayloadLimitWhenOtherCarIsAttached_ShouldReturnTrue() {
         Locomotive locomotive = prepareLoc(1000, 2, 2);
-        RailroadCar car = prepareCar(100, 1200);
+        AbstractRailroadCar car = prepareCar(100, 1200);
         locomotive.attach(car);
-        RailroadCar car2 = prepareCar(100, 1200);
+        AbstractRailroadCar car2 = prepareCar(100, 1200);
         assertTrue(validator.validatePayloadLimit(car2, locomotive));
     }
 
     @Test
     void validatePayloadLimit_ForCarWeightEqualToAvailablePayloadLimitWhenOtherCarIsAttached_ShouldReturnTrue() {
         Locomotive locomotive = prepareLoc(1000, 2, 2);
-        RailroadCar car = prepareCar(500, 1200);
+        AbstractRailroadCar car = prepareCar(500, 1200);
         locomotive.attach(car);
-        RailroadCar car2 = prepareCar(500, 1200);
+        AbstractRailroadCar car2 = prepareCar(500, 1200);
         assertTrue(validator.validatePayloadLimit(car2, locomotive));
     }
 
     @Test
     void validatePayloadLimit_ForCarWeightGreaterThanAvailablePayloadLimitWhenOtherCarIsAttached_ShouldReturnFalse() {
         Locomotive locomotive = prepareLoc(1000, 2, 2);
-        RailroadCar car = prepareCar(500, 1200);
+        AbstractRailroadCar car = prepareCar(500, 1200);
         locomotive.attach(car);
-        RailroadCar car2 = prepareCar(600, 1200);
+        AbstractRailroadCar car2 = prepareCar(600, 1200);
         assertFalse(validator.validatePayloadLimit(car2, locomotive));
     }
 
     @Test
     void validatePayloadLimit_ForCarWeightLowerThanPayloadLimitWhenCarHasCargo_ShouldReturnTrue() {
         Locomotive locomotive = prepareLoc(1000, 2, 2);
-        RailroadCar car = prepareCar(500, 1200);
+        AbstractRailroadCar car = prepareCar(500, 1200);
         locomotive.attach(car);
         IDeliverable load = prepareLoad(400);
 
-        RailroadCar car2 = prepareCar(50, 1200);
+        AbstractRailroadCar car2 = prepareCar(50, 1200);
         ((ILoadCarrier<IDeliverable>) car2).load(load);
         assertTrue(validator.validatePayloadLimit(car2, locomotive));
     }
@@ -134,11 +134,11 @@ class LocomotiveCarValidatorForCurrentCarWeightTest {
     @Test
     void validatePayloadLimit_ForCarWeightEqualToPayloadLimitWhenCarHasCargo_ShouldReturnTrue() {
         Locomotive locomotive = prepareLoc(1000, 2, 2);
-        RailroadCar car = prepareCar(500, 1200);
+        AbstractRailroadCar car = prepareCar(500, 1200);
         locomotive.attach(car);
         IDeliverable load = prepareLoad(400);
 
-        RailroadCar car2 = prepareCar(100, 1200);
+        AbstractRailroadCar car2 = prepareCar(100, 1200);
         ((ILoadCarrier<IDeliverable>) car2).load(load);
         assertTrue(validator.validatePayloadLimit(car2, locomotive));
     }
@@ -146,11 +146,11 @@ class LocomotiveCarValidatorForCurrentCarWeightTest {
     @Test
     void validatePayloadLimit_ForCarWeightGreaterThanPayloadLimitWhenCarHasCargo_ShouldReturnFalse() {
         Locomotive locomotive = prepareLoc(1000, 2, 2);
-        RailroadCar car = prepareCar(500, 1200);
+        AbstractRailroadCar car = prepareCar(500, 1200);
         locomotive.attach(car);
         IDeliverable load = prepareLoad(400);
 
-        RailroadCar car2 = prepareCar(200, 1200);
+        AbstractRailroadCar car2 = prepareCar(200, 1200);
         ((ILoadCarrier<IDeliverable>) car2).load(load);
         assertFalse(validator.validatePayloadLimit(car2, locomotive));
     }

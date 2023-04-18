@@ -86,7 +86,7 @@ public class CarBuilder {
         return this;
     }
 
-    public <T extends IDeliverable> RailroadCar build() {
+    public <T extends IDeliverable> AbstractRailroadCar build() {
         if (flag == null) {
             flag = CarType.BASIC_FREIGHT;
         }
@@ -98,7 +98,7 @@ public class CarBuilder {
                 loadValidator = new CarFreightValidator();
             }
         }
-        RailroadCar car;
+        AbstractRailroadCar car;
         int id = locoBase.getIdForCar();
 
         car = switch (flag) {
@@ -122,7 +122,7 @@ public class CarBuilder {
                         || nonStdCarNumberOfSeats == 0) {
                     throw new IllegalArgumentException("Non standard car must have all properties set");
                 } else {
-                    yield new LoadableRailroadCar<T>(
+                    yield new AbstractLoadCarrier<T>(
                             nonStdCarShipper,
                             nonStdCarSecurityInfo,
                             nonStdCarNetWeight,
@@ -174,8 +174,8 @@ public class CarBuilder {
             }
             default -> new BasicFreightCar(id, loadValidator);
         };
-        if (car instanceof LoadableRailroadCar<?> && loadTypes != null) {
-            ((LoadableRailroadCar<?>) car).setAllowedFlags(loadTypes);
+        if (car instanceof AbstractLoadCarrier<?> && loadTypes != null) {
+            ((AbstractLoadCarrier<?>) car).setAllowedFlags(loadTypes);
         }
         locoBase.registerCar(car);
         return car;

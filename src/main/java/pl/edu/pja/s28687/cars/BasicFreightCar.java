@@ -8,7 +8,7 @@ import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import java.util.Set;
 import java.util.logging.Level;
 
-public class BasicFreightCar extends BasicFreightCarABC<IBasicFreight> {
+public class BasicFreightCar extends AbstractBasicFreightCar<IBasicFreight> {
     private static final String SHIPPER = "URSUS";
     private static final String SECURITY_INFO =
             """

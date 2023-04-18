@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 
-public class LiquidToxicLoadCar extends HeavyFreightCarABC<ILiquidToxic> implements ILiquidCarrier {
+public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> implements ILiquidCarrier {
     private static final String SHIPPER = "POLMOS";
     private static final String SECURITY_INFO =
             """

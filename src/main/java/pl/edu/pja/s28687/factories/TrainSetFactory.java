@@ -5,7 +5,7 @@ import pl.edu.pja.s28687.LocomotivePurpose;
 import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.cars.CarType;
 import pl.edu.pja.s28687.cars.IRailroadCar;
-import pl.edu.pja.s28687.cars.RailroadCar;
+import pl.edu.pja.s28687.cars.AbstractRailroadCar;
 import pl.edu.pja.s28687.logistics.*;
 
 import java.util.ArrayList;
@@ -101,8 +101,8 @@ public class TrainSetFactory {
         return cars;
         }
 
-    private List<RailroadCar> createRandomCarsForTrainSet(TrainSet trainSet, int maxCount){
-        List<RailroadCar> cars = new ArrayList<>();
+    private List<AbstractRailroadCar> createRandomCarsForTrainSet(TrainSet trainSet, int maxCount){
+        List<AbstractRailroadCar> cars = new ArrayList<>();
         int number = Math.min(maxCount, trainSet.getLocomotive().getCarLimit());
         int count = 0;
         while(trainSet.getLocomotive().getPoweredCarsNumber() < (trainSet.getLocomotive().getPoweredCarLimit()) && count < number){
@@ -118,8 +118,8 @@ public class TrainSetFactory {
 
     public TrainSet createRandomTrainSetWithCars() {
         TrainSet trainSet = createRandomTrainSet();
-        List<RailroadCar> cars = createRandomCarsForTrainSet(trainSet, 99);
-        for (RailroadCar car : cars){
+        List<AbstractRailroadCar> cars = createRandomCarsForTrainSet(trainSet, 99);
+        for (AbstractRailroadCar car : cars){
             trainSet.getLocomotive().attach(car);
         }
         return trainSet;
