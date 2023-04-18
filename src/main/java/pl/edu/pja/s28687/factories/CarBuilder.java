@@ -136,6 +136,16 @@ public class CarBuilder {
                         }
 
                         @Override
+                        public void emergencyProcedure() {
+
+                        }
+
+                        @Override
+                        public void routineProcedure() {
+
+                        }
+
+                        @Override
                         public boolean isPowered() {
                             return isPowered;
                         }
@@ -143,6 +153,21 @@ public class CarBuilder {
                         @Override
                         public Set<LoadType> allowedLoadFlags() {
                             return loadTypes;
+                        }
+
+                        @Override
+                        public void safetyCheck() {
+
+                        }
+
+                        @Override
+                        public void emergencyUnloading() {
+
+                        }
+
+                        @Override
+                        public String getCargoStats() {
+                            return null;
                         }
                     };
                 }
