@@ -8,11 +8,12 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.logging.Level;
 
 
 public class Conductor extends Thread {
     private IRouteFinder routeFinder;
-    private RouteFindingAlgos logisticSkill = RouteFindingAlgos.BEST;
+    private RouteFindingAlgos logisticSkill = RouteFindingAlgos.A_STAR;
     private Locomotive locomotive;
     private List<RailroadLink> route;
     private final LocoBase locoBase;
@@ -38,14 +39,6 @@ public class Conductor extends Thread {
         }
     }
 
-    public void setRoute(List<RailroadLink> route){
-        this.route = route;
-    }
-
-    public void setLocoMap(LocoMap locoMap){
-        this.locoMap = Optional.of(locoMap);
-    }
-
     public List<RailroadLink> findRoute() throws InterruptedException {
         if (this.route != null && locomotive.getLastTrainStation() != locomotive.getDestStation()){
             locomotive.setRoad(this.route);
@@ -54,13 +47,6 @@ public class Conductor extends Thread {
         TrainStation sourceStation = locomotive.getSourceStation();
         TrainStation destStation = locomotive.getDestStation();
         Optional<List<RailroadLink>> route = routeFinder.findRoute(sourceStation, destStation);
-//                switch (logisticSkill) {
-//            case BAD -> BadRouteFinder.findRoute(sourceStation, destStation);
-//            case WORST -> TheWorstFinder.findRoute(sourceStation, destStation, locoBase);
-//            case NORMAL -> RouteFinder.findRoute(sourceStation, destStation);
-//            default -> RouteFinderRefactor.findRoute(sourceStation, destStation, locoBase, locoMap);
-//            default -> NaiveRouteFinder.findRoute(sourceStation, destStation, locoBase);
-//        };
         while (route.isEmpty()) {
             locomotive.setStatus(TrainStatus.UNABLE_TO_FIND_ROUTE);
             String s = "Train " + this.locomotive.getLocName() +
@@ -68,9 +54,8 @@ public class Conductor extends Thread {
                     sourceStation.getName() + " and " +
                     destStation.getName() + " does not exist" +
                     " I will wait..";
-            System.out.println(s);
+            locomotive.getLogger().log(Level.SEVERE, s);
             Thread.sleep(5000);
-//            route = NaiveRouteFinder.findRoute(sourceStation, locomotive.getDestStation(), locoBase);
             route = routeFinder.findRoute(sourceStation, destStation);
         }
         return route.get();
@@ -85,7 +70,7 @@ public class Conductor extends Thread {
                 locomotive.getLastTrainStation() == segment.getStation2()?
                         segment.getStation1() : segment.getStation2(); // change this crap later on
         BigDecimal segmentDistance = segment.getDistance();
-        segment.enterRailway();
+        segment.enterRailway(locomotive);
         locomotive.setCurrentSegment(segment);
         locomotive.setCurrentSegmentDestination(destination);
         announceDeparture(locomotive.getLastTrainStation(), destination);
@@ -93,7 +78,7 @@ public class Conductor extends Thread {
         MachinistJob machinistJob = new MachinistJob(locomotive, segmentDistance);
         machinistJob.start();
         machinistJob.join();
-        segment.leaveRailway();
+        segment.leaveRailway(locomotive);
         locomotive.setLastTrainStation(destination);
         announceArrival(destination);
     }
@@ -124,15 +109,30 @@ public class Conductor extends Thread {
         TrainStation temp = locomotive.getSourceStation();
         locomotive.setSourceStation(locomotive.getDestStation());
         locomotive.setDestStation(temp);
-//        System.out.println(locomotive.getSourceStation() + " " + locomotive.getDestStation());
     }
 
     public void announceDeparture(TrainStation source, TrainStation destination){
-//        System.out.println(locomotive.getLocName() + " leaves  " + source + " , next station " + destination);
+        locomotive
+                .getLogger()
+                .log(Level.INFO, "Train " + locomotive.getLocName()
+                        + " travelling to " + locomotive.getDestStation()
+                        + " leaves  " + source + " , next station " + destination);
     }
 
     public void announceArrival(TrainStation destination){
-//        System.out.println(locomotive.getLocName() + " arrives at " + destination);
+        String message;
+        if (locomotive.getDestStation().equals(destination)) {
+            message = "Train " + locomotive.getLocName()
+                    + " has arrived at its final destination  " + destination;
+        }
+        else {
+            message = "Train " + locomotive.getLocName()
+                    + " travelling to " + locomotive.getDestStation()
+                    + " arrives at " + destination;
+        }
+        locomotive
+                .getLogger()
+                .log(Level.INFO, message);
     }
 
     public void switchDestination(){
