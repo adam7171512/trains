@@ -30,25 +30,29 @@ public abstract class AbstractLoadCarrier<T extends IDeliverable> extends Abstra
     @Override
     public boolean load(T load) {
         if (!validator.validate(load, this)) {
-            if (!validator.validateFlags(load, this)) {
-                Set<LoadType> incompatibleFlags = new HashSet<>(load.flags());
-                incompatibleFlags.removeAll(allowedLoadFlags());
-                throw new ValidationException("Load type incompatible !" + incompatibleFlags);
-            } else if (!validator.validateWeight(load, this)) {
-                throw new ValidationException(
-                        "Load too heavy !" + "\nPayload limit available: "
-                                + getGrossWeight().subtract(getCurrentWeight())
-                                + " Load weight: " + load.getWeight());
-            } else {
-                //todo add more specific exception
-                throw new ValidationException("Locomotive can't handle this much payload!");
-            }
+            handleFailedLoading(load);
         }
         logger.log(Level.INFO, "Load " + load + " loaded to " + this);
         loads.add(load);
         load.setLoaded();
         currentWeight = currentWeight.add(load.getWeight());
         return true;
+    }
+
+    protected void handleFailedLoading(T load) {
+        if (!validator.validateFlags(load, this)) {
+            Set<LoadType> incompatibleFlags = new HashSet<>(load.flags());
+            incompatibleFlags.removeAll(allowedLoadFlags());
+            throw new ValidationException("Load type incompatible !" + incompatibleFlags);
+        } else if (!validator.validateWeight(load, this)) {
+            throw new ValidationException(
+                    "Load too heavy !" + "\nPayload limit available: "
+                            + getGrossWeight().subtract(getCurrentWeight())
+                            + " Load weight: " + load.getWeight());
+        } else {
+            //todo add more specific exception
+            throw new ValidationException("Locomotive can't handle this much payload!");
+        }
     }
 
     @Override
@@ -66,6 +70,13 @@ public abstract class AbstractLoadCarrier<T extends IDeliverable> extends Abstra
         return true;
     }
 
+    @Override
+    public BigDecimal getCargoWeight(){
+        return loads
+                .stream()
+                .map(IDeliverable::getWeight)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
     public BigDecimal getCurrentWeight() {
         return currentWeight;
