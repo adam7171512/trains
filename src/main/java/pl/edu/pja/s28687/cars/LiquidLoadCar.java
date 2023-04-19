@@ -4,10 +4,13 @@ import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.load.ILiquid;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
-import pl.edu.pja.s28687.validators.ILiquidCarrier;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Set;
+
+import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.SEVERE;
 
 
 public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements ILiquidCarrier {
@@ -19,6 +22,8 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
                     In case of a spill or leak, follow proper procedures for containment
                     and contact trained personnel immediately.
                     """;
+
+    private static final BigDecimal VOLUME = BigDecimal.valueOf(110);
 
     public LiquidLoadCar(int id, ICarLoadValidator validator) {
         super(id, SHIPPER, SECURITY_INFO, validator);
@@ -36,16 +41,16 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
     }
 
     private void checkValves() {
-        System.out.println("Checking valves");
+        logger.log(INFO,"Checking valves");
     }
 
     private void lookForLeaks() {
-        System.out.println("Looking for leaks");
+        logger.log(INFO,"Looking for leaks");
     }
 
     @Override
     public void emergencyUnloading() {
-        System.out.println("Starting emergency spillage procedure");
+        logger.log(SEVERE, "Starting emergency spillage procedure");
         openValve();
         for (ILiquid liquid : getLoads()) {
             unLoad(liquid);
@@ -55,7 +60,17 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
 
     @Override
     public String getCargoStats() {
-        return null;
+        return new StringBuilder()
+                .append("\n Liquid load total volume: ")
+                .append(getLiquidLoadVolume())
+                .append(" m3 (tank capacity: ")
+                .append(VOLUME)
+                .append(" m3)")
+                .append("\n Liquid load total weight: ")
+                .append(getCargoWeight())
+                .append(" tons")
+                .append("\n units loaded: ")
+                .append(getLoads().size()).toString();
     }
 
     @Override
@@ -65,14 +80,13 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
 
     @Override
     public void emergencyProcedure() {
-        System.out.println("Starting emergency procedure in liquid load car! " + getId());
+        logger.log(SEVERE, "Starting emergency procedure in liquid load car! " + getId());
         closeValve();
         if (getLocomotive().isPresent()){
             Locomotive loco = getLocomotive().get();
             loco.raiseAlert("Emergency in liquid car !! " + getId() + "!"
             + " Please send help to examine the car immediately!");
         }
-
     }
 
     @Override
@@ -81,8 +95,8 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
     }
 
     private void checkVolumeLevel() {
-        System.out.println("Checking volume level");
-        System.out.println("\nVolume: " + getVolume());
+        logger.log(INFO, "Checking volume level");
+        logger.log(INFO, "\nVolume: " + getLiquidLoadVolume() + " m3");
     }
 
     @Override
@@ -92,18 +106,30 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
 
     @Override
     public BigDecimal getVolume() {
-        return null;
+        return VOLUME.setScale(2, RoundingMode.FLOOR);
+    }
+
+    @Override
+    public BigDecimal getAvailableVolume() {
+        return getVolume().subtract(getLiquidLoadVolume());
+    }
+
+    public BigDecimal getLiquidLoadVolume() {
+        return loads
+                .stream()
+                .map(ILiquid::getVolume)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public void openValve() {
-        System.out.println("Opening the valve!");
+        logger.log(INFO, "Opening the valve!");
         safetyUnlock();
     }
 
     @Override
     public void closeValve() {
-        System.out.println("Closing the valve!");
+        logger.log(INFO,"Closing the valve!");
         safetyLock();
     }
 }

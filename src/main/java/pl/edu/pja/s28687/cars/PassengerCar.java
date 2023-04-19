@@ -1,11 +1,15 @@
 package pl.edu.pja.s28687.cars;
 
+import pl.edu.pja.s28687.ValidationException;
 import pl.edu.pja.s28687.load.IPassengers;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
+import pl.edu.pja.s28687.validators.ICarPassengerValidator;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IPowered, IPassengerCarrier {
     private static final String SHIPPER = "SIEMENS";
@@ -19,9 +23,9 @@ public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IP
     private static final BigDecimal NET_WEIGHT = BigDecimal.valueOf(15);
     private static final BigDecimal GROSS_WEIGHT = BigDecimal.valueOf(40);
     private static final int NUMBER_OF_SEATS = 82;
-    private final ICarLoadValidator validator;
+    private final ICarPassengerValidator validator;
 
-    public PassengerCar(int id, ICarLoadValidator validator) {
+    public PassengerCar(int id, ICarPassengerValidator validator) {
         super(SHIPPER, SECURITY_INFO, NET_WEIGHT, GROSS_WEIGHT, NUMBER_OF_SEATS, id, validator);
         this.validator = validator;
     }
@@ -32,6 +36,22 @@ public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IP
 
     public int getNumberOfSeats() {
         return NUMBER_OF_SEATS;
+    }
+
+    @Override
+    protected void handleFailedLoading(IPassengers load) {
+        if (!validator.validateFlags(load, this)) {
+            Set<LoadType> incompatibleFlags = new HashSet<>(load.flags());
+            incompatibleFlags.removeAll(allowedLoadFlags());
+            throw new ValidationException("Load type incompatible !" + incompatibleFlags);
+        } else if (!validator.validateWeight(load, this)) {
+            throw new ValidationException(
+                    "Load too heavy !" + "\nPayload limit available: "
+                            + getGrossWeight().subtract(getCurrentWeight())
+                            + " Load weight: " + load.getWeight());
+        } else if (!validator.validateSeats(load, this)) {
+            throw new ValidationException("Not enough passenger seats!");
+        }
     }
 
     @Override
@@ -90,14 +110,14 @@ public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IP
     }
 
     private void checkTickets() {
-        System.out.println("Checking passenger tickets..");
+        logger.log(Level.WARNING,"Checking tickets..");
     }
 
     private void checkFirstAidKit() {
-        System.out.println("Checking first aid kit..");
+        logger.log(Level.INFO,"Checking first aid kit..");
     }
 
     private void checkFireExtinguisher() {
-        System.out.println("Checking fire extinguisher..");
+        logger.log(Level.INFO,"Checking fire extinguisher..");
     }
 }

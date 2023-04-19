@@ -19,7 +19,6 @@ public abstract class AbstractRailroadCar implements IRailroadCar {
     private final int numberOfSeats;
     private final int id;
     private BigDecimal currentWeight;
-    private String name;
     private Optional<Locomotive> locomotive = Optional.empty();
 
     static {
@@ -76,7 +75,7 @@ public abstract class AbstractRailroadCar implements IRailroadCar {
 
     public abstract boolean isPowered();
 
-    public void setLogLevel(java.util.logging.Level level) {
+    public static void setLogLevel(java.util.logging.Level level) {
         logger.setLevel(level);
     }
 }
