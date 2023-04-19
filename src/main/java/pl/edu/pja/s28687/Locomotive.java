@@ -123,7 +123,7 @@ public class Locomotive implements ILocomotive {
     }
 
     public BigDecimal getCurrentSegmentProgress() {
-        if (currentSegment == null) {
+        if (currentSegment == null || currentSegment.getDistance().compareTo(BigDecimal.ZERO) == 0) {
             return BigDecimal.ZERO;
         }
         return currentSegmentDistanceCovered
@@ -137,8 +137,6 @@ public class Locomotive implements ILocomotive {
 
     public void setCurrentSegmentDistanceCovered(BigDecimal distance) {
         this.currentSegmentDistanceCovered = distance;
-        //todo: separate this
-//        updateVisualRepresentation();
         if (view != null){
             notifyView();
         }
