@@ -139,13 +139,20 @@ public class LoadFactory {
         return switch (loadType) {
             case HEAVY_FREIGHT -> createHeavyFreightLoad(random.nextDouble() * 70 + 1);
             case LIQUID -> {
-                int weight = random.nextInt(80) + 1; // volume in cubic meters around same value as weight in tonnes
-                yield createLiquidLoad(weight, weight);
+                double weight = random.nextDouble(80) + 1;
+                double volume = Math.random() < 0.5 ?
+                        weight - weight * random.nextDouble(0.2)
+                        : weight + weight * random.nextDouble(0.2);
+                // volume in cubic m
+                yield createLiquidLoad(weight, volume);
             }
             case LIQUID_TOXIC -> {
-                int weight = random.nextInt(80) + 1;
+                double weight = random.nextInt(80) + 1;
+                double volume = Math.random() < 0.5 ?
+                        weight - weight * random.nextDouble(0.2)
+                        : weight + weight * random.nextDouble(0.2);
                 int combustion_temp = random.nextInt(100) + 200;
-                yield createLiquidToxicLoad(weight, weight, combustion_temp);
+                yield createLiquidToxicLoad(weight, volume, combustion_temp);
             }
             case TOXIC -> createToxicLoad(random.nextDouble() * 10 + 1);
             case EXPLOSIVE -> createExplosiveLoad(random.nextDouble() * 10 + 1);
