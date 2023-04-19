@@ -3,7 +3,9 @@ package pl.edu.pja.s28687;
 import org.junit.jupiter.api.Test;
 import pl.edu.pja.s28687.cars.*;
 import pl.edu.pja.s28687.validators.CarFreightValidator;
+import pl.edu.pja.s28687.validators.CarPassengerValidator;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
+import pl.edu.pja.s28687.validators.ICarPassengerValidator;
 import pl.edu.pja.s28687.validators.locomotive.*;
 
 import java.math.BigDecimal;
@@ -14,7 +16,7 @@ class LocomotiveCarAttachmentTest {
 
     private static final ILocomotiveCarValidator validator = new LocomotiveCarValidatorForCurrentCarWeight();
     private static final ILocomotiveLoadValidator loadValidator = new LocomotiveLoadValidator();
-    private static final ICarLoadValidator carValidator = new CarFreightValidator();
+    private static final ICarPassengerValidator carValidator = new CarPassengerValidator();
 
     private Locomotive locomotive;
 

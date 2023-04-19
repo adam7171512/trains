@@ -13,6 +13,7 @@ public class LoadBuilder{
     private int quantity;
     private LocoBase locoBase;
     private double volume;
+    private double density;
 
 
     public LoadBuilder(double weight, int quantity, LocoBase locoBase){
@@ -70,6 +71,11 @@ public class LoadBuilder{
         return this;
     }
 
+    public LoadBuilder setGasDensityAtAtmosphericPressure(double density){
+        this.density = density;
+        return this;
+    }
+
     public IDeliverable build(){
         if (flags.isEmpty()) {
             flags = Set.of(LoadType.BASIC_FREIGHT);
@@ -80,11 +86,12 @@ public class LoadBuilder{
                 case HEAVY_FREIGHT -> new HeavyFreightLoad(weight);
                 case LIQUID -> new LiquidLoad(weight, volume);
                 case LUGGAGE -> new Mail(weight);
-                case GASEOUS -> new GaseousLoad(weight);
+                case GASEOUS -> new GaseousLoad(weight, density);
                 case TOXIC -> new ToxicLoad(weight);
                 case REFRIGERATED -> new RefrigeratedLoad(weight);
                 case EXPLOSIVE -> new Explosives(weight);
                 case PASSENGERS -> new Passengers(quantity);
+                case LIQUID_TOXIC -> new LiquidToxicLoad(weight, volume);
                 default -> new BasicFreightLoad(weight);
             };
             }

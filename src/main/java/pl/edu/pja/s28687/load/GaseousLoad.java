@@ -1,9 +1,11 @@
 package pl.edu.pja.s28687.load;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 public class GaseousLoad extends Load implements IGaseous {
-    public GaseousLoad(double weight) {
+    private BigDecimal densityAtAtmosphericPressure;
+    public GaseousLoad(double weight, double density) {
         super(weight);
     }
 
@@ -12,4 +14,8 @@ public class GaseousLoad extends Load implements IGaseous {
         return Set.of(LoadType.GASEOUS);
     }
 
+    @Override
+    public BigDecimal getGetDensityAtAtmosphericPressure() {
+        return densityAtAtmosphericPressure;
+    }
 }

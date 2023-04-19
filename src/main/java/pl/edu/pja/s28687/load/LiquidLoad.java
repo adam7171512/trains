@@ -15,4 +15,8 @@ public class LiquidLoad extends Load implements ILiquid {
         return Set.of(LoadType.LIQUID);
     }
 
+    @Override
+    public BigDecimal getVolume() {
+        return volume;
+    }
 }
