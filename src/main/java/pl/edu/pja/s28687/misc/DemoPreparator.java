@@ -2,7 +2,7 @@ package pl.edu.pja.s28687.misc;
 
 import pl.edu.pja.s28687.LocomotivePurpose;
 import pl.edu.pja.s28687.factories.*;
-import pl.edu.pja.s28687.gui.Canvas;
+import pl.edu.pja.s28687.gui.Canvas2;
 import pl.edu.pja.s28687.info.AggregateLogger;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.logistics.AStarRouteFinder;
@@ -12,7 +12,6 @@ import pl.edu.pja.s28687.logistics.RouteFindingAlgos;
 public class DemoPreparator {
 
     private LocoBase locoBase;
-    private Canvas canvas;
     private AggregateLogger log;
     private LocomotiveFactory locomotiveFactory;
     private CarsFactory carsFactory;
@@ -45,8 +44,8 @@ public class DemoPreparator {
         CarAssignmentCenter.assignCars(locoBase);
         railroadsFactory.createOrderedConnectionsBetweenStations(3);
         dispatchingCenter.dispatchAllTrainSets();
-        Canvas canvas= new Canvas(locoBase);
-        canvas.start();
+        Canvas2 canvas= Canvas2.getInstance(locoBase);
+        canvas.show();
 
         AggregateLogger log= new AggregateLogger(locoBase);
         log.startLogging();
@@ -66,8 +65,8 @@ public class DemoPreparator {
         railroadsFactory.createOrderedConnectionsBetweenStations(3);
         dispatchingCenter.dispatchAllTrainSets();
 //        LoadAssignmentCenter.assignLoadsToTrainSets(locoBase);
-        Canvas canvas= new Canvas(locoBase);
-        canvas.start();
+        Canvas2 canvas= Canvas2.getInstance(locoBase);
+        canvas.show();
 
         AggregateLogger log= new AggregateLogger(locoBase);
         log.startLogging();
