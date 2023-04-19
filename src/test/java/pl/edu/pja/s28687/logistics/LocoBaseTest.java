@@ -252,8 +252,8 @@ class LocoBaseTest {
     }
 
     @Test
-    void unRegisterCar_WhenCarIsNotRegistered_ShouldThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> locoBase.unRegisterCar(1));
+    void unRegisterCar_WhenCarIsNotRegistered_ShouldReturnFalse() {
+        assertFalse(locoBase.unRegisterCar(1));
     }
 
     @Test
@@ -265,8 +265,8 @@ class LocoBaseTest {
     }
 
     @Test
-    void unRegisterLoc_WhenLocIsNotRegistered_ShouldThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> locoBase.unregisterLoc(1));
+    void unRegisterLoc_WhenLocIsNotRegistered_ShouldReturnFalse() {
+        assertFalse(locoBase.unregisterLoc(1));
     }
 
     @Test
@@ -322,18 +322,18 @@ class LocoBaseTest {
         railroadsFactory.createRailroadLink("B", "C");
         railroadsFactory.createRailroadLink("C", "A");
 
-        assertNotNull(locoBase.getLink(a, b));
-        assertNotNull(locoBase.getLink(b, c));
-        assertNotNull(locoBase.getLink(c, a));
-        assertNotNull(locoBase.getLink(a, c));
+        assertNotNull(locoBase.findLink(a, b));
+        assertNotNull(locoBase.findLink(b, c));
+        assertNotNull(locoBase.findLink(c, a));
+        assertNotNull(locoBase.findLink(a, c));
 
-        assertTrue(locoBase.getLink(a, b).getDistance()
+        assertTrue(locoBase.findLink(a, b).getDistance()
                 .subtract(BigDecimal.valueOf(141))
                 .compareTo(BigDecimal.ONE) < 0);
 
-        assertEquals(locoBase.getLink(b, c).getDistance(), locoBase.getLink(c, b).getDistance());
-        assertEquals(locoBase.getLink(a, c).getDistance(), locoBase.getLink(c, a).getDistance());
-        assertEquals(locoBase.getLink(a, b).getDistance(), locoBase.getLink(b, c).getDistance());
+        assertEquals(locoBase.findLink(b, c).getDistance(), locoBase.findLink(c, b).getDistance());
+        assertEquals(locoBase.findLink(a, c).getDistance(), locoBase.findLink(c, a).getDistance());
+        assertEquals(locoBase.findLink(a, b).getDistance(), locoBase.findLink(b, c).getDistance());
 
     }
 
