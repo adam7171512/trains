@@ -18,7 +18,6 @@ public class DemoPreparator {
     private LoadFactory loadFactory;
     private RailroadsFactory railroadsFactory;
     private TrainStationFactory trainStationFactory;
-    private RouteFindingAlgos routeFindingAlgos;
     private TrainSetFactory trainSetFactory;
     private DispatchingCenter dispatchingCenter;
 
