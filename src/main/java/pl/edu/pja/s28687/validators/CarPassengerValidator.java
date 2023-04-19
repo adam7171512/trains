@@ -41,7 +41,7 @@ public class CarPassengerValidator implements ICarPassengerValidator {
 
 
     public boolean validateSeats(IPassengers load, IPassengerCarrier receiver) {
-        return receiver.getNumberOfPassengers() + load.getPassengersCount().intValue()
+        return receiver.getNumberOfPassengers() + load.getCount()
                 <= receiver.getNumberOfSeats();
     }
 }
