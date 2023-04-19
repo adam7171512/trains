@@ -119,7 +119,7 @@ public class MachinistJob extends Thread {
 
     public void emergencyStop() {
         setLocomotiveSpeed(BigDecimal.ZERO);
-        locomotive.getLogger().log(Level.SEVERE,
+        locomotive.raiseAlert(
                 "\nLocomotive " + locomotive.getName() + " , ID : " + locomotive.getId()
                         + " had an emergency at : " + locomotive.getCurrentSegment() + " and had to stop."
                         + " Help is on the way!");
@@ -127,7 +127,7 @@ public class MachinistJob extends Thread {
 
     public void restartAfterEmergencyStop(){
         locomotive.setStatus(TrainStatus.RUNNING);
-        locomotive.getLogger().log(Level.SEVERE,
+        locomotive.raiseAlert(
                 "\nLocomotive " + locomotive.getName() + " , ID : " + locomotive.getId()
                         + " is back on track!");
     }
@@ -156,7 +156,7 @@ public class MachinistJob extends Thread {
         try {
             locomotive.setCurrentSpeed(speed);
         } catch (RailroadHazard e) {
-            locomotive.getLogger().log(Level.SEVERE, e.getMessage());
+            locomotive.raiseAlert(e.getMessage());
         }
     }
 }
