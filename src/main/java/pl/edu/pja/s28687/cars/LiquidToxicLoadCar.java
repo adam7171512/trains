@@ -9,6 +9,7 @@ import pl.edu.pja.s28687.misc.TrainStatus;
 import pl.edu.pja.s28687.validators.ICarLiquidFreightValidator;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -88,7 +89,8 @@ public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> im
     private BigDecimal getLiquidLoadVolume() {
         return getLoads().stream()
                 .map(ILiquidToxic::getVolume)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.FLOOR);
     }
 
     @Override

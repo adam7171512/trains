@@ -152,7 +152,8 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
         return loads
                 .stream()
                 .map(ILiquid::getVolume)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.FLOOR);
     }
 
     @Override
