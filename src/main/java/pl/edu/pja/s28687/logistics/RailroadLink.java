@@ -22,12 +22,12 @@ public class RailroadLink {
         this.stations = Set.of(station1, station2);
         this.distance = BigDecimal.valueOf(
                 Coordinates.getDistance(station1.getCoordinates(), station2.getCoordinates()));
-        addConnections();
+        addNeighbors();
     }
 
-    private void addConnections() {
-        station1.addTrainDirectConnection(this);
-        station2.addTrainDirectConnection(this);
+    private void addNeighbors(){
+        station1.addNeighbor(station2);
+        station2.addNeighbor(station1);
     }
 
     public TrainStation getStation1() {
@@ -51,7 +51,7 @@ public class RailroadLink {
     }
 
     public BigDecimal getDistance() {
-        return distance;
+        return distance.setScale(2, RoundingMode.FLOOR);
     }
 
     @Override

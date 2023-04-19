@@ -5,12 +5,10 @@ import pl.edu.pja.s28687.logistics.RailroadLink;
 
 import java.util.*;
 
-public class TrainStation implements Comparable<TrainStation>{
+public class TrainStation {
     private final Coordinates coordinates;
     private final String name;
-
-    private List<RailroadLink> railroadLinkList = new ArrayList<>();
-    private Set<TrainStation> neighbors = new HashSet<>();
+    private final Set<TrainStation> neighbors = new HashSet<>();
     public TrainStation(String name, Coordinates coordinates){
         this.name = name;
         this.coordinates = coordinates;
@@ -31,24 +29,6 @@ public class TrainStation implements Comparable<TrainStation>{
 
     public Set<TrainStation> getNeighbors(){
         return neighbors;
-    }
-
-
-
-    public void addTrainDirectConnection(RailroadLink connection){
-        railroadLinkList.add(connection);
-        neighbors.add(getConnectionDest(connection));
-    }
-
-
-    public List<RailroadLink> getTrainDirectConnectionList(){
-        return railroadLinkList;
-    }
-
-    public TrainStation getConnectionDest(RailroadLink connection){
-        return connection.getStation1() == this
-                ? connection.getStation2()
-                : connection.getStation1();
     }
 
     @Override
@@ -75,9 +55,4 @@ public class TrainStation implements Comparable<TrainStation>{
         return name;
     }
 
-
-    @Override
-    public int compareTo(TrainStation o) {
-        return this.getCoordinates().compareTo(o.getCoordinates());
-    }
 }

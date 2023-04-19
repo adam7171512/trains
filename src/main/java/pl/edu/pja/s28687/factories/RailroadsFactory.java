@@ -1,9 +1,9 @@
 package pl.edu.pja.s28687.factories;
 
+import pl.edu.pja.s28687.TrainStation;
 import pl.edu.pja.s28687.logistics.Coordinates;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.RailroadLink;
-import pl.edu.pja.s28687.TrainStation;
 
 import java.util.*;
 
@@ -22,8 +22,6 @@ public class RailroadsFactory {
     public RailroadLink createRailroadLink(TrainStation station1, TrainStation station2) {
         RailroadLink railroadLink = new RailroadLink(station1, station2);
         locoBase.registerRailroadConnection(railroadLink);
-        station1.addNeighbor(station2);
-        station2.addNeighbor(station1);
         return railroadLink;
     }
 
@@ -39,7 +37,7 @@ public class RailroadsFactory {
     public RailroadLink createRandomRailroadLink() throws IllegalArgumentException {
         Random random = new Random();
         List<TrainStation> stations = locoBase.getTrainStations().stream().toList();
-        if (stations.size() < 2){
+        if (stations.size() < 2) {
             throw new IllegalArgumentException("Not enough stations to create a link");
         }
         TrainStation station1 = stations.get(random.nextInt(stations.size()));
@@ -97,13 +95,13 @@ public class RailroadsFactory {
                             ((TrainStation ts)
                                     ->
                                     Coordinates.getDistance
-                                                    (ts.getCoordinates(), stations.get(finalI1).getCoordinates())
-                                            )))
+                                            (ts.getCoordinates(), stations.get(finalI1).getCoordinates())
+                            )))
                     .toList();
 
             int h = 0;
             while (stations.get(finalI1).getNeighbors().size() < numberPerStation) {
-                if (sortedPotantialNeighbours.size() <= h){
+                if (sortedPotantialNeighbours.size() <= h) {
                     break;
                 }
                 if (stations.get(i).getNeighbors().contains(sortedPotantialNeighbours.get(h)))
@@ -117,7 +115,7 @@ public class RailroadsFactory {
     private void createOrderedConnectionsSlowAlgo(int numberPerStation, List<TrainStation> stations) {
         for (int i = 0; i < stations.size(); i++) {
             int h = 0;
-            while (stations.get(i).getTrainDirectConnectionList().size() < numberPerStation) {
+            while (stations.get(i).getNeighbors().size() < numberPerStation) {
                 int k = i;
                 int finalI = i;
                 List<TrainStation> sortedTs = locoBase
@@ -129,8 +127,8 @@ public class RailroadsFactory {
                                 ((TrainStation ts)
                                         ->
                                         Coordinates.getDistance
-                                                        (ts.getCoordinates(), stations.get(k).getCoordinates())
-                                                ))
+                                                (ts.getCoordinates(), stations.get(k).getCoordinates())
+                                ))
                         .toList();
                 createRailroadLink(stations.get(i), sortedTs.get(h++));
             }
