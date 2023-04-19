@@ -1,6 +1,4 @@
 package pl.edu.pja.s28687.factories;
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -73,20 +71,20 @@ public class TrainStationFactory {
 
     public TrainStation createTrainStation(String name, int x, int y){
         TrainStation trainStation = new TrainStation(name, new Coordinates(x, y));
-        locoBase.addTrainStation(trainStation);
+        locoBase.registerTrainStation(trainStation);
         return trainStation;
     }
 
     public TrainStation createTrainStation(String name, Coordinates coordinates){
         TrainStation trainStation = new TrainStation(name, coordinates);
-        locoBase.addTrainStation(trainStation);
+        locoBase.registerTrainStation(trainStation);
         return trainStation;
     }
 
     public List<TrainStation> createTrainStationsPolishCoords()  {
         List<TrainStation> trainStations = new ArrayList<>();
         for (TrainStation ts : new PLCoordReader().prepareTrainStations()){
-            locoBase.addTrainStation(ts);
+            locoBase.registerTrainStation(ts);
             trainStations.add(ts);
         }
         return trainStations;
