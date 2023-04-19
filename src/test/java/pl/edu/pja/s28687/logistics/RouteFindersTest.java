@@ -2,6 +2,7 @@ package pl.edu.pja.s28687.logistics;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import pl.edu.pja.s28687.TrainStation;
 import pl.edu.pja.s28687.factories.RailroadsFactory;
@@ -72,45 +73,40 @@ class RouteFindersTest {
         railroadsFactory.createRailroadLink(stations.get(13), stations.get(18));
     }
 
-    @Test
+    @RepeatedTest(10)
     void findRoute_AStarRouteFinder_Station7to19_ShouldCreate4SegmentRoute() {
         var route = aStarRouteFinder.findRoute(stations.get(7), stations.get(19));
-        assertTrue(route.isPresent());
-        assertEquals(4, route.get().size());
+        assertEquals(4, route.size());
     }
 
-    @Test
+    @RepeatedTest(10)
     void findRoute_DijkstraRouteFinder_Station7to19_ShouldCreate4SegmentRoute() {
         var route = dijkstraRouteFinder.findRoute(stations.get(7), stations.get(19));
-        assertTrue(route.isPresent());
-        assertEquals(4, route.get().size());
+        assertEquals(4, route.size());
     }
 
-    @Test
-    void findRoute_ReversedDijkstraRouteFinder_Station7to19_ShouldNotCreate4SegmentRoute() {
+    @RepeatedTest(10)
+    void findRoute_ReversedDijkstraRouteFinder_Station7to19_ShouldCreate6SegmentRoute() {
         var route = reverseDijkstraRouteFinder.findRoute(stations.get(7), stations.get(19));
-        assertTrue(route.isPresent());
-        assertNotEquals(4, route.get().size());
+        assertEquals(6, route.size());
+
     }
 
-    @Test
-    void findRoute_ReversedAStarRouteFinder_Station7to19_ShouldNotCreate4SegmentRoute() {
+    @RepeatedTest(10)
+    void findRoute_ReversedAStarRouteFinder_Station7to19_ShouldCreate8SegmentRoute() {
         var route = reverseAStarRouteFinder.findRoute(stations.get(7), stations.get(19));
-        assertTrue(route.isPresent());
-        assertNotEquals(4, route.get().size());
+        assertEquals(8, route.size());
     }
 
-    @Test
-    void findRoute_DepthFirstSearchRouteFinder_Station7to19_ShouldNotCreate4SegmentRoute() {
+    @RepeatedTest(10)
+    void findRoute_DepthFirstSearchRouteFinder_Station7to19_ShouldCreate8SegmentRoute() {
         var route = depthFirstSearchRouteFinder.findRoute(stations.get(7), stations.get(19));
-        assertTrue(route.isPresent());
-        assertNotEquals(4, route.get().size());
+        assertEquals(8, route.size());
     }
 
-    //todo: get rid of optionals
-    @Test
+    @RepeatedTest(10)
     void findRoute_AStarRouteFinder_WhenThereIsNoLink_ShouldReturnEmptyList() {
         var route = aStarRouteFinder.findRoute(stations.get(7), stations.get(20));
-        assertTrue(route.get().isEmpty());
+        assertTrue(route.isEmpty());
     }
 }

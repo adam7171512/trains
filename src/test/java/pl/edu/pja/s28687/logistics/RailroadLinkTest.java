@@ -30,7 +30,7 @@ class RailroadLinkTest {
     private List<Locomotive> locomotives = new ArrayList<>();
     private List<MockTrain> mockTrains = new ArrayList<>();
 
-    class MockTrain extends Thread{
+    static class MockTrain extends Thread{
         private final int id;
         private final RailroadLink link;
         private final Locomotive locomotive;

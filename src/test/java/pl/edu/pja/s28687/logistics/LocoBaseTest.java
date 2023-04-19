@@ -25,7 +25,6 @@ class LocoBaseTest {
     //todo: rewrite everything here
 
     private LocoBase locoBase;
-    private LoadBuilder loadBuilder;
     private TrainSetBuilder trainSetBuilder;
     private LocomotiveBuilder locomotiveBuilder;
     private CarBuilder carBuilder;
@@ -39,7 +38,6 @@ class LocoBaseTest {
     @BeforeEach
     void setUp() {
         locoBase = new LocoBase();
-        loadBuilder = new LoadBuilder(locoBase);
         trainSetBuilder = new TrainSetBuilder(locoBase);
         locomotiveBuilder = new LocomotiveBuilder(locoBase);
         carBuilder = new CarBuilder(locoBase);
@@ -289,12 +287,12 @@ class LocoBaseTest {
     }
 
     @Test
-    void registerRailroadConnection_WhenConnectionAlreadyExist_ShouldThrowException() {
+    void registerRailroadConnection_WhenConnectionAlreadyExist_ShouldReturnFalse() {
         TrainStation station1 = new TrainStation("test1", 0, 0);
         TrainStation station2 = new TrainStation("test2", 1, 1);
         RailroadLink connection = new RailroadLink(station1, station2);
         locoBase.registerRailroadConnection(connection);
-        assertThrows(IllegalArgumentException.class, () -> locoBase.registerRailroadConnection(connection));
+        assertFalse(locoBase.registerRailroadConnection(connection));
     }
 
     @Test

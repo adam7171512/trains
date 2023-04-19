@@ -169,7 +169,7 @@ class LocomotiveCarValidatorForMaxCarWeightTest {
     void validatePayloadLimit_ForCarMaxWeightLowerThanPayloadLimitWhenOtherCarWithCargoLoaded_ShouldReturnTrue() {
         Locomotive locomotive = prepareLocomotive(1000, 1, 1);
         ILoadCarrier<IBasicFreight> loadCarrier = (ILoadCarrier<IBasicFreight>) prepareCar(100, 700);
-        loadCarrier.load(new BasicFreightLoad(600));
+        loadCarrier.load(new BasicFreightLoad(1, 600));
         locomotive.attach(loadCarrier);
         assertTrue(validator.validatePayloadLimit(prepareCar(100, 300), locomotive));
     }
@@ -178,7 +178,7 @@ class LocomotiveCarValidatorForMaxCarWeightTest {
     void validatePayloadLimit_ForCarMaxWeightGreaterThanPayloadLimitWhenOtherCarWithCargoLoaded_ShouldReturnTrue() {
         Locomotive locomotive = prepareLocomotive(1000, 1, 1);
         ILoadCarrier<IBasicFreight> loadCarrier = (ILoadCarrier<IBasicFreight>) prepareCar(100, 700);
-        loadCarrier.load(new BasicFreightLoad(600));
+        loadCarrier.load(new BasicFreightLoad(1, 600));
         locomotive.attach(loadCarrier);
         assertFalse(validator.validatePayloadLimit(prepareCar(100, 700), locomotive));
     }

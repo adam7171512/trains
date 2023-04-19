@@ -68,7 +68,7 @@ class LocomotiveCarValidatorForCurrentCarWeightTest {
     }
 
     private IDeliverable prepareLoad(int weight) {
-        return new ToxicLoad(weight);
+        return new ToxicLoad(1, weight);
     }
 
     @Test
