@@ -35,7 +35,7 @@ public class DispatchingCenter{
     }
 
     public void dispatchAllTrainSets(){
-        List<TrainSet> trainSets = locoBase.getTrainSets().stream().toList();
+        List<TrainSet> trainSets = locoBase.getTrainSets().stream().filter(ts -> ! ts.hasStarted()).toList();
         for (TrainSet trainSet : trainSets){
             dispatchTrainSet(trainSet);
         }
@@ -60,6 +60,7 @@ public class DispatchingCenter{
         List<TrainSet> trainSets = locoBase.getTrainSets()
                 .stream()
                 .filter(trainSet -> trainSet.getCars().size() > 0)
+                .filter(trainSet -> ! trainSet.hasStarted())
                 .toList();
         for (TrainSet trainSet : trainSets){
             dispatchTrainSet(trainSet);
