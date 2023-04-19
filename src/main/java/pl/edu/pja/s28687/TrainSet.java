@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class TrainSet {
-    private int id;
-    private Locomotive locomotive;
-    private Conductor conductor;
+    private final int id;
+    private final Locomotive locomotive;
+    private final Conductor conductor;
     boolean started = false;
 
     public TrainSet(Locomotive locomotive, Conductor conductor, int id)  {
@@ -78,7 +78,6 @@ public class TrainSet {
                         .findFirst()
                         .orElseThrow(() -> new ValidationException("No car could load this load"));
         ((ILoadCarrier<IDeliverable>) carToLoad).load(load);
-        System.out.println("Loaded " + load + " to " + carToLoad);
         return carToLoad;
     }
 

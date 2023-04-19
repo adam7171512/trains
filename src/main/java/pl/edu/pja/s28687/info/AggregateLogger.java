@@ -13,7 +13,7 @@ public class AggregateLogger implements Runnable{
     private volatile boolean isLogging = false;
     private static final String LOG_FILE_PATH = "Appstate.txt";
     private PrintWriter logger;
-    private LocoBase locoBase;
+    private final LocoBase locoBase;
     private Thread loggingThread;
     public AggregateLogger(LocoBase locoBase) {
         this.locoBase = locoBase;
