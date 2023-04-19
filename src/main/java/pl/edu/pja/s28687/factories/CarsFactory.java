@@ -23,14 +23,6 @@ public class CarsFactory {
                 .build();
     }
 
-    public AbstractRailroadCar createMultiplePurposeSpecialCarForLoadTypes(Set<LoadType> loadTypes){
-        CarBuilder carBuilder = new CarBuilder(locoBase);
-        return carBuilder
-                .setFlag(CarType.NON_STANDARD)
-                .setLoadTypes(loadTypes)
-                .build();
-    }
-
     public AbstractRailroadCar createRandomCar(){
         CarBuilder carBuilder = new CarBuilder(locoBase);
         return carBuilder
