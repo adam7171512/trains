@@ -19,8 +19,6 @@ public class RailroadsFactory {
     }
 
     public RailroadLink createRailroadLink(TrainStation station1, TrainStation station2) {
-        if (station1.getNeighbors().contains(station2))
-            throw new IllegalArgumentException("Railroad link already exists between these stations");
         RailroadLink railroadLink = new RailroadLink(station1, station2);
         locoBase.registerRailroadConnection(railroadLink);
         station1.addNeighbor(station2);
@@ -97,7 +95,7 @@ public class RailroadsFactory {
                     .sorted(Comparator.comparingDouble(
                             ((TrainStation ts)
                                     ->
-                                    locoBase.calcDistance
+                                    LocoBase.calcDistance
                                                     (ts, stations.get(finalI1))
                                             .doubleValue())))
                     .toList();
@@ -129,7 +127,7 @@ public class RailroadsFactory {
                         .sorted(Comparator.comparingDouble
                                 ((TrainStation ts)
                                         ->
-                                        locoBase.calcDistance
+                                        LocoBase.calcDistance
                                                         (ts, stations.get(k))
                                                 .doubleValue()))
                         .toList();
