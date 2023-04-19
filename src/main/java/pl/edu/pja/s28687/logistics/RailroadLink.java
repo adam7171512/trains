@@ -13,13 +13,15 @@ public class RailroadLink {
     private final TrainStation station1;
     private final TrainStation station2;
     private final Set<TrainStation> stations;
-    private BigDecimal distance;
-    private RailroadLock lock = new RailroadLock();
+    private final BigDecimal distance;
+    private final RailroadLock lock = new RailroadLock();
 
     public RailroadLink(TrainStation station1, TrainStation station2) {
         this.station1 = station1;
         this.station2 = station2;
         this.stations = Set.of(station1, station2);
+        this.distance = BigDecimal.valueOf(
+                Coordinates.getDistance(station1.getCoordinates(), station2.getCoordinates()));
         addConnections();
     }
 
@@ -36,16 +38,8 @@ public class RailroadLink {
         return station2;
     }
 
-    public void enterRailway() {
-        lock.lock();
-    }
-
     public void enterRailway(Locomotive locomotive) {
         lock.lock(locomotive);
-    }
-
-    public void leaveRailway() {
-        lock.unlock();
     }
 
     public void leaveRailway(Locomotive locomotive) {
@@ -56,22 +50,8 @@ public class RailroadLink {
         return lock.getWaitingLocomotives();
     }
 
-    public boolean isBusy() {
-        return lock.isLocked();
-    }
-
     public BigDecimal getDistance() {
-        if (distance == null) calcDistance();
         return distance;
-    }
-
-    private void calcDistance() {
-        Coordinates sourceCoords = station1.getCoordinates();
-        Coordinates destCoords = station2.getCoordinates();
-        double xDist = Math.abs(sourceCoords.getX() - destCoords.getX());
-        double yDist = Math.abs(sourceCoords.getY() - destCoords.getY());
-        double dist = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
-        distance = BigDecimal.valueOf(dist).setScale(2, RoundingMode.CEILING);
     }
 
     @Override
