@@ -13,17 +13,14 @@ import java.util.Set;
 import java.util.logging.Level;
 
 public abstract class AbstractLoadCarrier<T extends IDeliverable> extends AbstractRailroadCar implements ILoadCarrier<T> {
-    private boolean locked = false;
-
     protected ICarLoadValidator validator;
     List<T> loads;
     Set<LoadType> allowedFlags;
-    private BigDecimal currentWeight;
+    private boolean locked = false;
 
     public AbstractLoadCarrier(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id, ICarLoadValidator validator) {
         super(shipper, securityInfo, netWeight, grossWeight, numberOfSeats, id);
         loads = new ArrayList<>();
-        currentWeight = this.getNetWeight();
         this.validator = validator;
     }
 
@@ -35,11 +32,10 @@ public abstract class AbstractLoadCarrier<T extends IDeliverable> extends Abstra
         logger.log(Level.INFO, "Load " + load + " loaded to " + this);
         loads.add(load);
         load.setLoaded();
-        currentWeight = currentWeight.add(load.getWeight());
         return true;
     }
 
-    protected void handleFailedLoading(T load) {
+    protected void handleFailedLoading(IDeliverable load) {
         if (!validator.validateFlags(load, this)) {
             Set<LoadType> incompatibleFlags = new HashSet<>(load.flags());
             incompatibleFlags.removeAll(allowedLoadFlags());
@@ -66,20 +62,33 @@ public abstract class AbstractLoadCarrier<T extends IDeliverable> extends Abstra
         loads.remove(load);
         load.setDeloaded();
         logger.log(Level.INFO, "Load " + load + " unloaded from " + this);
-        currentWeight = currentWeight.subtract(load.getWeight());
         return true;
     }
 
     @Override
-    public BigDecimal getCargoWeight(){
+    public BigDecimal getCargoWeight() {
         return loads
                 .stream()
                 .map(IDeliverable::getWeight)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    @Override
+    public BigDecimal getAvailablePayload() {
+        return getGrossWeight().subtract(getCurrentWeight());
+    }
+
     public BigDecimal getCurrentWeight() {
-        return currentWeight;
+        return loads
+                .stream()
+                .map(IDeliverable::getWeight)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .add(getNetWeight());
+    }
+
+    @Override
+    public BigDecimal getMaxPayload() {
+        return getGrossWeight().subtract(getNetWeight());
     }
 
     public Set<LoadType> getAllowedLoadFlags() {
@@ -97,8 +106,34 @@ public abstract class AbstractLoadCarrier<T extends IDeliverable> extends Abstra
     }
 
     @Override
+    public String getBasicInfo() {
+        return this + "\nPayload :  " + getCargoWeight()
+                + "  / " + getMaxPayload() + " tonnes , compatible load types : " + getAllowedLoadFlags();
+    }
+
+    @Override
+    public String getFullInfo() {
+        return getBasicInfo() + getManufacturerInfo() + getCargoStats();
+    }
+
+    @Override
+    public String getCargoStats() {
+        StringBuilder stats = new StringBuilder()
+                .append("\nTotal cargo weight: ")
+                .append(getCargoWeight())
+                .append(" tonnes")
+                .append("\nUnits loaded: ")
+                .append(getLoads().size());
+        getLoads()
+                .stream()
+                .map(IDeliverable::getBasicInfo)
+                .forEach(s -> stats.append(s).append("\n"));
+        return stats.toString();
+    }
+
+    @Override
     public boolean validateLoad(IDeliverable load) {
-        return ! isLocked() && validator.validate(load, this);
+        return !isLocked() && validator.validate(load, this);
     }
 
     @Override
@@ -115,7 +150,7 @@ public abstract class AbstractLoadCarrier<T extends IDeliverable> extends Abstra
     @Override
     public void safetyUnlock() {
         locked = false;
-        logger.log(Level.INFO, "Car " + this.getCarType() + " " +  this.getId() + " unlocked");
+        logger.log(Level.INFO, "Car " + this.getCarType() + " " + this.getId() + " unlocked");
     }
 
 

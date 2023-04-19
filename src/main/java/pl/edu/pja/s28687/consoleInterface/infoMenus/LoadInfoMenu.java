@@ -16,7 +16,7 @@ public class LoadInfoMenu extends AbstractLeafMenu implements IBrowsable<IDelive
         do {
             load = preProcessInput(scan, message);
             load.ifPresentOrElse(
-                    rLoad -> System.out.println(LoadInfo.getBasicInfo(rLoad)),
+                    rLoad -> System.out.println(rLoad.getFullInfo()),
                     () -> System.out.println("No load with this ID "));
         } while (load.isPresent());
     }

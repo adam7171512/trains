@@ -6,23 +6,20 @@ import java.util.*;
 
 public abstract class Load implements IDeliverable {
 
-
-    BigDecimal quantity;
     private BigDecimal weight;
-    private String name;
+    private String description;
     private int id;
     private boolean loaded;
 
-    public Load(double weight){
+    public Load(int id, double weight){
+        this.id = id;
         this.weight = BigDecimal.valueOf(weight);
     }
 
-    public Load(int quantity, double weight){
-        this.quantity = BigDecimal.valueOf(quantity);
-        this.weight = BigDecimal.valueOf(weight).setScale(2, RoundingMode.CEILING);
-        this.loaded = false;
+    public Load(int id, double weight, String description){
+        this(id, weight);
+        this.description = description;
     }
-
 
     public abstract Set<LoadType> flags();
 
@@ -38,33 +35,30 @@ public abstract class Load implements IDeliverable {
         this.loaded = false;
     }
 
-    public String getName() {
-        return this.name;
+    public String getDescription() {
+        return description == null? "No description" : description;
     }
-    public BigDecimal getQuantity(){
-        return Objects.requireNonNullElse(this.quantity, BigDecimal.ONE);
-    }
-
     public boolean isLoaded(){
         return this.loaded;
-    }
-    public void setId(int id){
-        this.id = id;
     }
 
     public BigDecimal getWeight() {
         return this.weight.setScale(2, RoundingMode.CEILING);
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Load load)) return false;
-        return this.id == ((Load) load).id;
+        return this.id == load.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(quantity, weight, name, id, flags());
+        return Objects.hash(weight, description, id, flags());
     }
 }

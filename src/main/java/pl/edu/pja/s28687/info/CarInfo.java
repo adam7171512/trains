@@ -10,33 +10,36 @@ import java.util.List;
 
 public class CarInfo {
     public static String getBasicInfo(IRailroadCar car){
-        StringBuilder stringBuilder = new StringBuilder().
-                append("Car ID : ").append(car.getId()).
-                append(" | Car type : ").append(car.getCarType()).
-                append(" | Payload : ").
-                append(car.getCurrentWeight()).
-                append(" out of ").
-                append(car.getGrossWeight()).append(" tonnes");
 
-        if (car instanceof PassengerCar) {
-            stringBuilder
-                    .append(" | Passengers : ")
-                    .append(((PassengerCar) car)
-                            .getNumberOfPassengers())
-                    .append(" / ")
-                    .append(((PassengerCar) car)
-                            .getNumberOfSeats());
-        }
-
-        car.getLocomotive().ifPresent(locomotive -> stringBuilder
-                .append(" | Attached to locomotive ID : ")
-                .append(locomotive.getId()));
-
-
-        return stringBuilder.toString();
+//        StringBuilder stringBuilder = new StringBuilder().
+//                append("Car ID : ").append(car.getId()).
+//                append(" | Car type : ").append(car.getCarType()).
+//                append(" | Payload : ").
+//                append(car.getCurrentWeight()).
+//                append(" out of ").
+//                append(car.getGrossWeight()).append(" tonnes");
+//
+//        if (car instanceof PassengerCar) {
+//            stringBuilder
+//                    .append(" | Passengers : ")
+//                    .append(((PassengerCar) car)
+//                            .getNumberOfPassengers())
+//                    .append(" / ")
+//                    .append(((PassengerCar) car)
+//                            .getNumberOfSeats());
+//        }
+//
+//        car.getLocomotive().ifPresent(locomotive -> stringBuilder
+//                .append(" | Attached to locomotive ID : ")
+//                .append(locomotive.getId()));
+//
+//
+//        return stringBuilder.toString();
+        return car.getBasicInfo();
     }
 
     public static String getFullInfo(IRailroadCar car){
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getBasicInfo(car));
         if (car instanceof ILoadCarrier<? extends IDeliverable>) {

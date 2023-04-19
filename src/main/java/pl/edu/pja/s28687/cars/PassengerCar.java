@@ -1,9 +1,9 @@
 package pl.edu.pja.s28687.cars;
 
 import pl.edu.pja.s28687.ValidationException;
+import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.load.IPassengers;
 import pl.edu.pja.s28687.load.LoadType;
-import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import pl.edu.pja.s28687.validators.ICarPassengerValidator;
 
 import java.math.BigDecimal;
@@ -31,7 +31,7 @@ public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IP
     }
 
     public int getNumberOfPassengers() {
-        return loads.stream().map(IPassengers::getPassengersCount).reduce(BigDecimal::add).orElse(BigDecimal.ZERO).intValue();
+        return loads.stream().map(IPassengers::getCount).reduce(Integer::sum).orElse(0);
     }
 
     public int getNumberOfSeats() {
@@ -39,7 +39,7 @@ public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IP
     }
 
     @Override
-    protected void handleFailedLoading(IPassengers load) {
+    protected void handleFailedLoading(IDeliverable load) {
         if (!validator.validateFlags(load, this)) {
             Set<LoadType> incompatibleFlags = new HashSet<>(load.flags());
             incompatibleFlags.removeAll(allowedLoadFlags());
@@ -49,7 +49,7 @@ public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IP
                     "Load too heavy !" + "\nPayload limit available: "
                             + getGrossWeight().subtract(getCurrentWeight())
                             + " Load weight: " + load.getWeight());
-        } else if (!validator.validateSeats(load, this)) {
+        } else {
             throw new ValidationException("Not enough passenger seats!");
         }
     }
@@ -67,19 +67,30 @@ public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IP
 
     @Override
     public void emergencyUnloading() {
-        if(isLocked()){
+        if (isLocked()) {
             safetyUnlock();
         }
         System.out.println("Attention! All passengers must evacuate the car immediately!");
         for (IPassengers load : loads) {
-           unLoad(load);
+            unLoad(load);
         }
         safetyLock();
     }
 
     @Override
     public String getCargoStats() {
-        return null;
+        StringBuilder stats = new StringBuilder()
+                .append("\nPassenger loads estimated total weight: ")
+                .append(getCargoWeight())
+                .append(" tonnes")
+                .append("\nPassengers carried: ")
+                .append(getNumberOfPassengers())
+                .append("\n");
+        getLoads()
+                .stream()
+                .map(IPassengers::getBasicInfo)
+                .forEach(s -> stats.append(s).append("\n"));
+        return stats.toString();
     }
 
     @Override
@@ -90,7 +101,7 @@ public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IP
     @Override
     public void emergencyProcedure() {
         System.out.println(
-                "Attention! Emergy procedure started! in car " +
+                "Attention! Emergency procedure started! in car " +
                         getId() +
                         " Please don't panic! " +
                         "Follow the instructions of the staff!");
@@ -109,15 +120,22 @@ public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IP
         return true;
     }
 
+    @Override
+    public String getBasicInfo() {
+        return this.toString() + "\nPassengers :  " + getNumberOfPassengers() + " / " + getNumberOfSeats() +
+                " compatible load types : " + getAllowedLoadFlags();
+    }
+
+
     private void checkTickets() {
-        logger.log(Level.WARNING,"Checking tickets..");
+        logger.log(Level.WARNING, "Checking tickets..");
     }
 
     private void checkFirstAidKit() {
-        logger.log(Level.INFO,"Checking first aid kit..");
+        logger.log(Level.INFO, "Checking first aid kit..");
     }
 
     private void checkFireExtinguisher() {
-        logger.log(Level.INFO,"Checking fire extinguisher..");
+        logger.log(Level.INFO, "Checking fire extinguisher..");
     }
 }

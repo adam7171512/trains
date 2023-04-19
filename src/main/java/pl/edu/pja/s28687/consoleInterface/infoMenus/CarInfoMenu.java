@@ -15,7 +15,7 @@ public class CarInfoMenu extends AbstractLeafMenu implements IBrowsable<IRailroa
         do {
             car = preProcessInput(scan, message);
             car.ifPresentOrElse(
-                    rCar -> System.out.println(CarInfo.getFullInfo(rCar)),
+                    rCar -> System.out.println(rCar.getFullInfo()),
                     () -> System.out.println("No car with this ID "));
         } while (car.isPresent());
         }

@@ -7,11 +7,12 @@ public interface IDeliverable {
     public Set<LoadType> flags();
     public BigDecimal getWeight();
 
-    void setLoaded();
+    public void setLoaded();
+    public void setDeloaded();
 
-    void setDeloaded();
-
-    void setId(int id);
     int getId();
     boolean isLoaded();
+    public String getBasicInfo();
+
+    public String getFullInfo();
 }

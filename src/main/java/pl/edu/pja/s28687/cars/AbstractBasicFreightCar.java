@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import pl.edu.pja.s28687.load.IDeliverable;
+import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.math.BigDecimal;
 

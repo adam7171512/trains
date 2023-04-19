@@ -5,6 +5,7 @@ import pl.edu.pja.s28687.load.IBasicFreight;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -52,11 +53,6 @@ public class BasicFreightCar extends AbstractBasicFreightCar<IBasicFreight> {
     }
 
     @Override
-    public String getCargoStats() {
-        return null;
-    }
-
-    @Override
     public CarType getCarType() {
         return CarType.BASIC_FREIGHT;
     }
@@ -81,4 +77,5 @@ public class BasicFreightCar extends AbstractBasicFreightCar<IBasicFreight> {
     public boolean isPowered() {
         return false;
     }
+
 }

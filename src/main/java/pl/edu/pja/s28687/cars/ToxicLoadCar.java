@@ -29,6 +29,10 @@ public class ToxicLoadCar extends AbstractHeavyFreightCar<IToxic> {
 
     @Override
     public void safetyCheck() {
+        if (loads.isEmpty()) {
+            System.out.println("No loads to check in safety procedure!");
+            return;
+        }
         for (IToxic load : loads) {
             System.out.println("Carefully examining toxic load: " + load);
         }
@@ -83,4 +87,5 @@ public class ToxicLoadCar extends AbstractHeavyFreightCar<IToxic> {
     public boolean isPowered() {
         return true;
     }
+
 }

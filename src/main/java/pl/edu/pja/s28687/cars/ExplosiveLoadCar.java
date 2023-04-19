@@ -44,11 +44,6 @@ public class ExplosiveLoadCar extends AbstractHeavyFreightCar<IExplosive> {
     }
 
     @Override
-    public String getCargoStats() {
-        return null;
-    }
-
-    @Override
     public CarType getCarType() {
         return CarType.EXPLOSIVE;
     }

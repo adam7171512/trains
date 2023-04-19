@@ -51,11 +51,6 @@ public class HeavyFreightCar extends AbstractHeavyFreightCar<IHeavyFreight> {
     }
 
     @Override
-    public String getCargoStats() {
-        return null;
-    }
-
-    @Override
     public CarType getCarType() {
         return CarType.HEAVY_FREIGHT;
     }
@@ -69,7 +64,6 @@ public class HeavyFreightCar extends AbstractHeavyFreightCar<IHeavyFreight> {
             loco.raiseAlert("Heavy freight car " + getId() + " is in emergency mode" +
                     "+ please send staff to help");
         }
-
     }
 
     @Override
@@ -81,4 +75,5 @@ public class HeavyFreightCar extends AbstractHeavyFreightCar<IHeavyFreight> {
     public boolean isPowered() {
         return false;
     }
+
 }

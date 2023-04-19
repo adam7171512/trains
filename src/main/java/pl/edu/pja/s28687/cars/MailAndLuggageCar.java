@@ -26,7 +26,7 @@ public class MailAndLuggageCar extends AbstractLoadCarrier<ILuggage> {
 
     @Override
     public Set<LoadType> allowedLoadFlags() {
-        return Set.of(LoadType.LUGGAGE);
+        return Set.of(LoadType.LUGGAGE, LoadType.MAIL);
     }
 
     @Override
@@ -58,11 +58,6 @@ public class MailAndLuggageCar extends AbstractLoadCarrier<ILuggage> {
     }
 
     @Override
-    public String getCargoStats() {
-        return null;
-    }
-
-    @Override
     public CarType getCarType() {
         return CarType.LUGGAGE;
     }
@@ -70,11 +65,11 @@ public class MailAndLuggageCar extends AbstractLoadCarrier<ILuggage> {
     @Override
     public void emergencyProcedure() {
         System.out.println("Emergency situation in luggage car !!" + getId());
-        if (getLocomotive().isPresent()){
+        if (getLocomotive().isPresent()) {
             getLocomotive()
                     .get()
                     .raiseAlert("Emergency situation in luggage car !!" + getId()
-                    + " Please send help immediately");
+                            + " Please send help immediately");
         }
     }
 
@@ -87,4 +82,5 @@ public class MailAndLuggageCar extends AbstractLoadCarrier<ILuggage> {
     public boolean isPowered() {
         return false;
     }
+
 }

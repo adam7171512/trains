@@ -35,7 +35,7 @@ public class PostOfficeCar extends AbstractLoadCarrier<IMail> implements IPowere
         System.out.println(
                 "Attention! Emergency in post office car!" +
                         " Please remain calm and follow the instructions of the staff.");
-        if (getLocomotive().isPresent()){
+        if (getLocomotive().isPresent()) {
             getLocomotive().get().raiseAlert("Emergency in post office car!" +
                     getId() + "Please send help");
         }
@@ -50,6 +50,7 @@ public class PostOfficeCar extends AbstractLoadCarrier<IMail> implements IPowere
     public boolean isPowered() {
         return true;
     }
+
 
     @Override
     public Set<LoadType> allowedLoadFlags() {
@@ -80,6 +81,19 @@ public class PostOfficeCar extends AbstractLoadCarrier<IMail> implements IPowere
 
     @Override
     public String getCargoStats() {
-        return null;
+        int letters = loads.stream()
+                .mapToInt(IMail::getCount)
+                .sum();
+        StringBuilder stats = new StringBuilder()
+                .append("\nTotal Mail estimated weight: ")
+                .append(getCargoWeight())
+                .append(" tonnes")
+                .append("\nLetters carried : ")
+                .append(letters);
+        getLoads()
+                .stream()
+                .map(IMail::getBasicInfo)
+                .forEach(stats::append);
+        return stats.toString();
     }
 }

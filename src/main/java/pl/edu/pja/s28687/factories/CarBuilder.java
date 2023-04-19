@@ -5,6 +5,7 @@ import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.validators.CarFreightValidator;
+import pl.edu.pja.s28687.validators.CarLiquidFreightValidator;
 import pl.edu.pja.s28687.validators.CarPassengerValidator;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
@@ -94,7 +95,10 @@ public class CarBuilder {
         if (loadValidator == null) {
             if (flag == CarType.PASSENGERS) {
                 loadValidator = new CarPassengerValidator();
-            } else {
+            } else if (flag == CarType.LIQUID || flag == CarType.LIQUID_TOXIC) {
+                loadValidator = new CarLiquidFreightValidator();
+            }
+            else {
                 loadValidator = new CarFreightValidator();
             }
         }
@@ -104,7 +108,7 @@ public class CarBuilder {
         car = switch (flag) {
             //todo : reshape this builder and think about validators
             case HEAVY_FREIGHT -> new HeavyFreightCar(id, loadValidator);
-            case LIQUID -> new LiquidLoadCar(id, loadValidator);
+            case LIQUID -> new LiquidLoadCar(id, (CarLiquidFreightValidator) loadValidator);
             case LUGGAGE -> new MailAndLuggageCar(id, loadValidator);
             case GASEOUS -> new GaseousLoadCar(id, loadValidator);
             case TOXIC -> new ToxicLoadCar(id, loadValidator);
@@ -113,7 +117,7 @@ public class CarBuilder {
             case PASSENGERS -> new PassengerCar(id, (CarPassengerValidator) loadValidator);
             case POST_OFFICE -> new PostOfficeCar(id, loadValidator);
             case RESTAURANT -> new RestaurantCar(id);
-            case LIQUID_TOXIC -> new LiquidToxicLoadCar(id, loadValidator);
+            case LIQUID_TOXIC -> new LiquidToxicLoadCar(id, (CarLiquidFreightValidator) loadValidator);
             case NON_STANDARD -> {
                 if (nonStdCarShipper == null
                         || nonStdCarSecurityInfo == null
@@ -151,6 +155,11 @@ public class CarBuilder {
                         }
 
                         @Override
+                        public String getFullInfo() {
+                            return getBasicInfo();
+                        }
+
+                        @Override
                         public Set<LoadType> allowedLoadFlags() {
                             return loadTypes;
                         }
@@ -163,6 +172,11 @@ public class CarBuilder {
                         @Override
                         public void emergencyUnloading() {
 
+                        }
+
+                        @Override
+                        public BigDecimal getMaxPayload() {
+                            return null;
                         }
 
                         @Override

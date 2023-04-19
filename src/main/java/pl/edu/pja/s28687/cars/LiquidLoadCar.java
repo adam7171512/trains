@@ -1,12 +1,15 @@
 package pl.edu.pja.s28687.cars;
 
 import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.ValidationException;
+import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.load.ILiquid;
 import pl.edu.pja.s28687.load.LoadType;
-import pl.edu.pja.s28687.validators.ICarLoadValidator;
+import pl.edu.pja.s28687.validators.ICarLiquidFreightValidator;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashSet;
 import java.util.Set;
 
 import static java.util.logging.Level.INFO;
@@ -23,10 +26,28 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
                     and contact trained personnel immediately.
                     """;
 
-    private static final BigDecimal VOLUME = BigDecimal.valueOf(110);
+    private static final BigDecimal VOLUME = BigDecimal.valueOf(80);
+    private final ICarLiquidFreightValidator validator;
 
-    public LiquidLoadCar(int id, ICarLoadValidator validator) {
+    public LiquidLoadCar(int id, ICarLiquidFreightValidator validator) {
         super(id, SHIPPER, SECURITY_INFO, validator);
+        this.validator = validator;
+    }
+
+    @Override
+    protected void handleFailedLoading(IDeliverable load) {
+        if (!validator.validateFlags(load, this)) {
+            Set<LoadType> incompatibleFlags = new HashSet<>(load.flags());
+            incompatibleFlags.removeAll(allowedLoadFlags());
+            throw new ValidationException("Load type incompatible !" + incompatibleFlags);
+        } else if (!validator.validateWeight(load, this)) {
+            throw new ValidationException(
+                    "Load too heavy !" + "\nPayload limit available: "
+                            + getGrossWeight().subtract(getCurrentWeight())
+                            + " Load weight: " + load.getWeight());
+        } else {
+            throw new ValidationException("Volume too high!");
+        }
     }
 
     @Override
@@ -41,11 +62,11 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
     }
 
     private void checkValves() {
-        logger.log(INFO,"Checking valves");
+        logger.log(INFO, "Checking valves");
     }
 
     private void lookForLeaks() {
-        logger.log(INFO,"Looking for leaks");
+        logger.log(INFO, "Looking for leaks");
     }
 
     @Override
@@ -60,17 +81,23 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
 
     @Override
     public String getCargoStats() {
-        return new StringBuilder()
-                .append("\n Liquid load total volume: ")
+        StringBuilder stats = new StringBuilder()
+                .append("\nLiquid load total volume: ")
                 .append(getLiquidLoadVolume())
                 .append(" m3 (tank capacity: ")
                 .append(VOLUME)
                 .append(" m3)")
-                .append("\n Liquid load total weight: ")
+                .append("\nLiquid load total weight: ")
                 .append(getCargoWeight())
-                .append(" tons")
-                .append("\n units loaded: ")
-                .append(getLoads().size()).toString();
+                .append(" tonnes")
+                .append("\nunits loaded: ")
+                .append(getLoads().size())
+                .append("\n");
+        getLoads()
+                .stream()
+                .map(ILiquid::getBasicInfo)
+                .forEach(s -> stats.append(s).append("\n"));
+        return stats.toString();
     }
 
     @Override
@@ -82,10 +109,10 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
     public void emergencyProcedure() {
         logger.log(SEVERE, "Starting emergency procedure in liquid load car! " + getId());
         closeValve();
-        if (getLocomotive().isPresent()){
+        if (getLocomotive().isPresent()) {
             Locomotive loco = getLocomotive().get();
             loco.raiseAlert("Emergency in liquid car !! " + getId() + "!"
-            + " Please send help to examine the car immediately!");
+                    + " Please send help to examine the car immediately!");
         }
     }
 
@@ -102,6 +129,13 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
     @Override
     public boolean isPowered() {
         return false;
+    }
+
+    @Override
+    public String getBasicInfo() {
+        return this + "\nPayload :  " + getCargoWeight()
+                + "  / " + getMaxPayload() + " tonnes, " + getLiquidLoadVolume()
+                + " / " + getVolume() + " m3 used," + " compatible load types : " + getAllowedLoadFlags();
     }
 
     @Override
@@ -129,7 +163,7 @@ public class LiquidLoadCar extends AbstractBasicFreightCar<ILiquid> implements I
 
     @Override
     public void closeValve() {
-        logger.log(INFO,"Closing the valve!");
+        logger.log(INFO, "Closing the valve!");
         safetyLock();
     }
 }

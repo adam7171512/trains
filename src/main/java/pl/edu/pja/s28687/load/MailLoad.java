@@ -1,25 +1,23 @@
 package pl.edu.pja.s28687.load;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Set;
 
-public class Passengers extends Load implements IPassengers {
+public class MailLoad extends Load implements ICountable {
+    private final int count;
 
-    private int count;
-
-    public Passengers(int id, int count) {
-        super(id, count * 0.08); //80 kg per passenger
+    public MailLoad(int id, int count) {
+        super(id, count * 0.0001); // 100g per item
         this.count = count;
     }
+
     @Override
     public Set<LoadType> flags() {
-        return Set.of(LoadType.PASSENGERS);
+        return Set.of(LoadType.MAIL);
     }
 
     @Override
     public String getBasicInfo() {
-        return "ID : " + getId() + " Passengers load,  Count: " + count;
+        return "ID : " + getId() + " Mail load,  Count: " + count;
     }
 
     @Override

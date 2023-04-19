@@ -12,5 +12,4 @@ public enum LoadType {
     LUGGAGE,
     LIQUID_TOXIC,
     MAIL,
-    //todo: add liquid toxic etc
 }

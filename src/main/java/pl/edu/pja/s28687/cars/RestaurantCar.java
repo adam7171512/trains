@@ -46,4 +46,10 @@ public class RestaurantCar extends AbstractRailroadCar implements IPowered {
     public boolean isPowered() {
         return true;
     }
+
+    @Override
+    public String getBasicInfo() {
+        return this.toString();
+    }
+
 }

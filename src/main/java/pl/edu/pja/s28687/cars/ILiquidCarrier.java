@@ -4,7 +4,7 @@ import pl.edu.pja.s28687.load.ILiquid;
 
 import java.math.BigDecimal;
 
-public interface ILiquidCarrier extends ILoadCarrier<ILiquid> {
+public interface ILiquidCarrier {
     BigDecimal getVolume();
     BigDecimal getAvailableVolume();
     void openValve();

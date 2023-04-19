@@ -35,12 +35,11 @@ public class RefrigeratedLoadCar extends AbstractBasicFreightCar<IRefrigerated> 
 
     @Override
     public void emergencyUnloading() {
-
-    }
-
-    @Override
-    public String getCargoStats() {
-        return null;
+        safetyLock();
+        System.out.println("Emergency unloading in refrigerated car" + getId() + " started");
+        if (getLocomotive().isPresent()) {
+            getLocomotive().get().raiseAlert("Refrigerated car " + getId() + " is in emergency mode");
+        }
     }
 
     @Override
@@ -52,7 +51,7 @@ public class RefrigeratedLoadCar extends AbstractBasicFreightCar<IRefrigerated> 
     public void emergencyProcedure() {
         safetyLock();
         System.out.println("Emergency procedure in refrigerated car" + getId() + " started");
-        if (getLocomotive().isPresent()){
+        if (getLocomotive().isPresent()) {
             getLocomotive().get().raiseAlert("Refrigerated car " + getId() + " is in emergency mode");
         }
     }
@@ -67,11 +66,12 @@ public class RefrigeratedLoadCar extends AbstractBasicFreightCar<IRefrigerated> 
         return true;
     }
 
-    private void checkCoolantLevel(){
+
+    private void checkCoolantLevel() {
         System.out.println("Checking the coolant level..");
     }
 
-    private void checkChamberTemperature(){
+    private void checkChamberTemperature() {
         System.out.println("Checking the chamber temperature..");
     }
 

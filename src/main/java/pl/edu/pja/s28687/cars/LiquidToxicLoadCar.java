@@ -1,17 +1,19 @@
 package pl.edu.pja.s28687.cars;
 
 import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.load.ILiquid;
+import pl.edu.pja.s28687.ValidationException;
+import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.load.ILiquidToxic;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.misc.TrainStatus;
-import pl.edu.pja.s28687.validators.ICarLoadValidator;
+import pl.edu.pja.s28687.validators.ICarLiquidFreightValidator;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 
-public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> implements ILiquidToxicCarrier {
+public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> implements ILiquidCarrier {
     private static final String SHIPPER = "POLMOS";
     private static final String SECURITY_INFO =
             """
@@ -22,9 +24,27 @@ public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> im
                     """;
 
     private static final BigDecimal VOLUME = BigDecimal.valueOf(80);
+    private final ICarLiquidFreightValidator validator;
 
-    public LiquidToxicLoadCar(int id, ICarLoadValidator validator) {
+    public LiquidToxicLoadCar(int id, ICarLiquidFreightValidator validator) {
         super(id, SHIPPER, SECURITY_INFO, validator);
+        this.validator = validator;
+    }
+
+    @Override
+    protected void handleFailedLoading(IDeliverable load) {
+        if (!validator.validateFlags(load, this)) {
+            Set<LoadType> incompatibleFlags = new HashSet<>(load.flags());
+            incompatibleFlags.removeAll(allowedLoadFlags());
+            throw new ValidationException("Load type incompatible !" + incompatibleFlags);
+        } else if (!validator.validateWeight(load, this)) {
+            throw new ValidationException(
+                    "Load too heavy !" + "\nPayload limit available: "
+                            + getGrossWeight().subtract(getCurrentWeight())
+                            + " Load weight: " + load.getWeight());
+        } else {
+            throw new ValidationException("Volume too high!");
+        }
     }
 
     @Override
@@ -35,7 +55,8 @@ public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> im
     @Override
     public void safetyCheck() {
         routineProcedure();
-        performResidueCleaning();
+        lookForLeaks();
+        checkValves();
     }
 
     @Override
@@ -45,17 +66,23 @@ public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> im
 
     @Override
     public String getCargoStats() {
-        return new StringBuilder()
-                .append("\n Liquid load total volume: ")
+        StringBuilder stats = new StringBuilder()
+                .append("\nLiquid toxic load total volume: ")
                 .append(getLiquidLoadVolume())
                 .append(" m3 (tank capacity: ")
                 .append(VOLUME)
                 .append(" m3)")
-                .append("\n Liquid load total weight: ")
+                .append("\nLiquid load total weight: ")
                 .append(getCargoWeight())
-                .append(" tons")
-                .append("\n units loaded: ")
-                .append(getLoads().size()).toString();
+                .append(" tonnes")
+                .append("\nunits loaded: ")
+                .append(getLoads().size())
+                .append("\n");
+        getLoads()
+                .stream()
+                .map(IDeliverable::getBasicInfo)
+                .forEach(s -> stats.append(s).append("\n"));
+        return stats.toString();
     }
 
     private BigDecimal getLiquidLoadVolume() {
@@ -72,7 +99,7 @@ public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> im
     @Override
     public void emergencyProcedure() {
         closeValve();
-        if (getLocomotive().isPresent()){
+        if (getLocomotive().isPresent()) {
             Locomotive loco = getLocomotive().get();
             loco.raiseAlert("Emergency in liquid toxic car !! " + getId() + "!");
             loco.setStatus(TrainStatus.EMERGENCY);
@@ -84,12 +111,18 @@ public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> im
     @Override
     public void routineProcedure() {
         checkVolumeLevel();
-        lookForLeaks();
     }
 
     @Override
     public boolean isPowered() {
         return false;
+    }
+
+    @Override
+    public String getBasicInfo() {
+        return this.toString() + "\nPayload :  " + getCargoWeight()
+                + "  / " + getMaxPayload() + " tonnes, " + getLiquidLoadVolume()
+                + " / " + getVolume() + " m3 used," + " compatible load types : " + getAllowedLoadFlags();
     }
 
     @Override
@@ -99,7 +132,7 @@ public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> im
 
     @Override
     public BigDecimal getAvailableVolume() {
-        return VOLUME.subtract(getLiquidLoadVolume());
+        return getVolume().subtract(getLiquidLoadVolume());
     }
 
     @Override
@@ -114,21 +147,16 @@ public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> im
         safetyLock();
     }
 
-    @Override
-    public void performResidueCleaning() {
-        System.out.println("Cleaning the toxic residue");
-    }
-
-    private void checkVolumeLevel(){
+    private void checkVolumeLevel() {
         System.out.println("Checking volume level");
         System.out.println(getVolume());
     }
 
-    private void lookForLeaks(){
+    private void lookForLeaks() {
         System.out.println("Looking for leaks");
     }
 
-    private void checkValves(){
+    private void checkValves() {
         System.out.println("Checking valves...");
     }
 }

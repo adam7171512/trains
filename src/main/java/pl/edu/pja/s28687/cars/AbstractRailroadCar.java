@@ -12,6 +12,11 @@ import java.util.logging.Logger;
 public abstract class AbstractRailroadCar implements IRailroadCar {
     //todo: find info on weight etc of typical cars and locomotives
     protected static final Logger logger = Logger.getLogger(AbstractRailroadCar.class.getName());
+
+    static {
+        logger.setLevel(Level.SEVERE);
+    }
+
     private final String shipper;
     private final String securityInfo;
     private final BigDecimal netWeight;
@@ -21,10 +26,6 @@ public abstract class AbstractRailroadCar implements IRailroadCar {
     private BigDecimal currentWeight;
     private Optional<Locomotive> locomotive = Optional.empty();
 
-    static {
-        logger.setLevel(Level.SEVERE);
-    }
-
     public AbstractRailroadCar(String shipper, String securityInfo, BigDecimal netWeight, BigDecimal grossWeight, int numberOfSeats, int id) {
         this.shipper = shipper;
         this.securityInfo = securityInfo;
@@ -33,6 +34,10 @@ public abstract class AbstractRailroadCar implements IRailroadCar {
         this.grossWeight = grossWeight;
         this.numberOfSeats = numberOfSeats;
         this.id = id;
+    }
+
+    public static void setLogLevel(java.util.logging.Level level) {
+        logger.setLevel(level);
     }
 
     @Override
@@ -75,7 +80,38 @@ public abstract class AbstractRailroadCar implements IRailroadCar {
 
     public abstract boolean isPowered();
 
-    public static void setLogLevel(java.util.logging.Level level) {
-        logger.setLevel(level);
+    public String getShipper() {
+        return shipper == null ? "Unknown" : shipper;
+    }
+
+    public String getSecurityInfo() {
+        return securityInfo == null ? "No security info" : securityInfo;
+    }
+
+    public abstract String getBasicInfo();
+
+    public String getFullInfo() {
+        return getBasicInfo() + getManufacturerInfo();
+    }
+
+    public String getManufacturerInfo() {
+        return String.format(
+                "\nShipper: %s\nSecurity info: \n%s",
+                getShipper(), getSecurityInfo());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder().
+                append("Car ID : ").append(getId()).
+                append(" | Car type : ").append(getCarType());
+        if (isPowered()) {
+            stringBuilder.append(" | Powered");
+        } else {
+            stringBuilder.append(" | Not powered");
+        }
+        locomotive.ifPresent(value -> stringBuilder.append(" | Attached to locomotive ID : ")
+                .append(value.getId()));
+        return stringBuilder.toString();
     }
 }

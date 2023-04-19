@@ -1,7 +1,9 @@
 package pl.edu.pja.s28687.cars;
 
 import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.load.IGaseous;
+import pl.edu.pja.s28687.load.ILiquid;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.misc.TrainStatus;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
@@ -53,7 +55,18 @@ public class GaseousLoadCar extends AbstractBasicFreightCar<IGaseous> implements
 
     @Override
     public String getCargoStats() {
-        return null;
+        StringBuilder stats = new StringBuilder()
+                .append("\nGas load total weight: ")
+                .append(getCargoWeight())
+                .append(" tonnes")
+                .append("\nunits loaded: ")
+                .append(getLoads().size())
+                .append("\n");
+        getLoads()
+                .stream()
+                .map(IDeliverable::getBasicInfo)
+                .forEach( s -> stats.append(s).append("\n"));
+        return stats.toString();
     }
 
     @Override
@@ -85,6 +98,13 @@ public class GaseousLoadCar extends AbstractBasicFreightCar<IGaseous> implements
     }
 
     @Override
+    public String getBasicInfo() {
+        return this.toString() + "\nPayload :  " + getCargoWeight()
+                + "  / " + getMaxPayload() + " tonnes, " + getPressure() + " bar,  temp: " + getTemperature() + " C in"
+                + " / " + getVolume() + " m3 chamber," + " compatible load types : " + getAllowedLoadFlags();
+    }
+
+    @Override
     public void openValve() {
         safetyUnlock();
     }
@@ -105,7 +125,7 @@ public class GaseousLoadCar extends AbstractBasicFreightCar<IGaseous> implements
     @Override
     public BigDecimal getTemperature() {
         return BigDecimal.valueOf(Math.random() * 20)
-                .add(BigDecimal.valueOf(40));
+                .add(BigDecimal.valueOf(40)).setScale(2, RoundingMode.FLOOR);
     }
 
     @Override
