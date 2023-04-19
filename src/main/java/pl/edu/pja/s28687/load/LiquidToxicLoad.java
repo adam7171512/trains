@@ -36,7 +36,7 @@ public class LiquidToxicLoad extends Load implements ILiquidToxic{
 
     @Override
     public BigDecimal getVolume() {
-        return volume;
+        return volume.setScale(2, BigDecimal.ROUND_FLOOR);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package pl.edu.pja.s28687.load;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Set;
 
 public class LiquidLoad extends Load implements ILiquid {
@@ -27,6 +28,6 @@ public class LiquidLoad extends Load implements ILiquid {
 
     @Override
     public BigDecimal getVolume() {
-        return volume;
+        return volume.setScale(2, RoundingMode.FLOOR);
     }
 }
