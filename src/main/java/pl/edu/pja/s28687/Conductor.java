@@ -1,52 +1,48 @@
 package pl.edu.pja.s28687;
 
-import pl.edu.pja.s28687.logistics.*;
+import pl.edu.pja.s28687.logistics.IRouteFinder;
+import pl.edu.pja.s28687.logistics.RouteSegment;
 import pl.edu.pja.s28687.misc.TrainStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 public class Conductor extends Thread {
     private static final Logger LOGGER = Logger.getLogger(Conductor.class.getName());
+
     static {
         LOGGER.setLevel(Level.SEVERE);
     }
-    private IRouteFinder routeFinder;
-    private RouteFindingAlgos logisticSkill = RouteFindingAlgos.A_STAR;
-    private Locomotive locomotive;
-    private List<RouteSegment> route;
-    private final LocoBase locoBase;
-    //temporary for testing
 
-    public Conductor(Locomotive locomotive, LocoBase locoBase){
-        this.routeFinder = new AStarRouteFinder(locoBase);
-        this.locoBase = locoBase;
+    private IRouteFinder routeFinder;
+    private Locomotive locomotive;
+
+    public Conductor(Locomotive locomotive, IRouteFinder routeFinder) {
+        this.routeFinder = routeFinder;
         this.locomotive = locomotive;
     }
 
+    public static void setLogLevel(Level level) {
+        LOGGER.setLevel(level);
+    }
+
     @Override
-    public void run(){
-        while (true){
+    public void run() {
+        while (true) {
             try {
                 directRoute(findRoute());
             } catch (InterruptedException e) {
 
-            throw new RuntimeException(e);
-          }
+                throw new RuntimeException(e);
+            }
             reverseTrip();
         }
     }
 
     public List<RouteSegment> findRoute() throws InterruptedException {
-        if (this.route != null && locomotive.getLastTrainStation() != locomotive.getDestinationStation()){
-            locomotive.setRoute(this.route);
-            return this.route;
-        }
         TrainStation sourceStation = locomotive.getSourceStation();
         TrainStation destStation = locomotive.getDestinationStation();
         List<RouteSegment> route = routeFinder.findRoute(sourceStation, destStation);
@@ -64,12 +60,12 @@ public class Conductor extends Thread {
         return route;
     }
 
-    public void setRouteFindingAlgorithm(IRouteFinder routeFinder){
+    public void setRouteFindingAlgorithm(IRouteFinder routeFinder) {
         this.routeFinder = routeFinder;
     }
 
     public void directSegment(RouteSegment segment) throws InterruptedException {
-        TrainStation destination = segment.getDestination();
+        TrainStation destination = segment.destination();
         BigDecimal segmentDistance = segment.getDistance();
         segment.enterRailway(locomotive);
         locomotive.setCurrentSegment(segment);
@@ -81,10 +77,10 @@ public class Conductor extends Thread {
         announceArrival(destination);
     }
 
-    public void directRoute(List<RouteSegment> route){
+    public void directRoute(List<RouteSegment> route) {
         locomotive.setRoute(route);
         locomotive.setCurrentTripDistanceCovered(BigDecimal.valueOf(0));
-        for (RouteSegment tdc : route){
+        for (RouteSegment tdc : route) {
             try {
                 directSegment(tdc);
             } catch (InterruptedException e) {
@@ -97,31 +93,30 @@ public class Conductor extends Thread {
             }
         }
         try {
-            Thread.sleep(3010);
+            Thread.sleep(28000); // 30 seconds total wait time on the last station
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void reverseTrip(){
+    public void reverseTrip() {
         TrainStation temp = locomotive.getSourceStation();
         locomotive.setSourceStation(locomotive.getDestinationStation());
         locomotive.setDestinationStation(temp);
     }
 
-    public void announceDeparture(TrainStation source, TrainStation destination){
+    public void announceDeparture(TrainStation source, TrainStation destination) {
         LOGGER.log(Level.INFO, "Train " + locomotive.getName()
-                        + " travelling to " + locomotive.getDestinationStation()
-                        + " leaves  " + source + " , next station " + destination);
+                + " travelling to " + locomotive.getDestinationStation()
+                + " leaves  " + source + " , next station " + destination);
     }
 
-    public void announceArrival(TrainStation destination){
+    public void announceArrival(TrainStation destination) {
         String message;
         if (locomotive.getDestinationStation().equals(destination)) {
             message = "Train " + locomotive.getName()
                     + " has arrived at its final destination  " + destination;
-        }
-        else {
+        } else {
             message = "Train " + locomotive.getName()
                     + " travelling to " + locomotive.getDestinationStation()
                     + " arrives at " + destination;
@@ -129,20 +124,9 @@ public class Conductor extends Thread {
         LOGGER.log(Level.INFO, message);
     }
 
-    public void switchDestination(){
-        int i = new Random().nextInt(locoBase.getTrainStations().size() - 1);
-        TrainStation newDestination = locoBase.getTrainStations().stream().toList().get(i);
-        locomotive.setDestinationStation(newDestination);
-
-    }
-
     @Override
     public String toString() {
         return "Conductor " +
                 "routeFinder=" + routeFinder;
-    }
-
-    public static void setLogLevel(Level level){
-        LOGGER.setLevel(level);
     }
 }

@@ -1,6 +1,7 @@
 package pl.edu.pja.s28687.factories;
 
 import pl.edu.pja.s28687.*;
+import pl.edu.pja.s28687.logistics.AStarRouteFinder;
 import pl.edu.pja.s28687.logistics.IRouteFinder;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.validators.locomotive.ILocomotiveLoadValidator;
@@ -33,11 +34,11 @@ public class TrainSetBuilder {
         if (locomotive == null){
             locomotive = new LocomotiveFactory(locoBase).createRandomLocomotive();
         }
-        if (conductor == null) {
-            conductor = new Conductor(locomotive, locoBase);
+        if (algorithm == null){
+            algorithm = new AStarRouteFinder(locoBase);
         }
-        if (algorithm != null){
-            conductor.setRouteFindingAlgorithm(algorithm);
+        if (conductor == null) {
+            conductor = new Conductor(locomotive, algorithm);
         }
 
         int id = locoBase.getIdForTrainSet();
