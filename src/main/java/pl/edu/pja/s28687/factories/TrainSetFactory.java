@@ -120,7 +120,9 @@ public class TrainSetFactory {
         TrainSet trainSet = createRandomTrainSet();
         List<AbstractRailroadCar> cars = createRandomCarsForTrainSet(trainSet, 99);
         for (AbstractRailroadCar car : cars){
+            if (trainSet.getLocomotive().validateCar(car)){
             trainSet.getLocomotive().attach(car);
+            }
         }
         return trainSet;
     }
