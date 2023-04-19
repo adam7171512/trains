@@ -1,5 +1,6 @@
 package pl.edu.pja.s28687.factories;
 
+import pl.edu.pja.s28687.logistics.Coordinates;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.RailroadLink;
 import pl.edu.pja.s28687.TrainStation;
@@ -95,9 +96,9 @@ public class RailroadsFactory {
                     .sorted(Comparator.comparingDouble(
                             ((TrainStation ts)
                                     ->
-                                    LocoBase.calcDistance
-                                                    (ts, stations.get(finalI1))
-                                            .doubleValue())))
+                                    Coordinates.getDistance
+                                                    (ts.getCoordinates(), stations.get(finalI1).getCoordinates())
+                                            )))
                     .toList();
 
             int h = 0;
@@ -127,9 +128,9 @@ public class RailroadsFactory {
                         .sorted(Comparator.comparingDouble
                                 ((TrainStation ts)
                                         ->
-                                        LocoBase.calcDistance
-                                                        (ts, stations.get(k))
-                                                .doubleValue()))
+                                        Coordinates.getDistance
+                                                        (ts.getCoordinates(), stations.get(k).getCoordinates())
+                                                ))
                         .toList();
                 createRailroadLink(stations.get(i), sortedTs.get(h++));
             }

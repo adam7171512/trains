@@ -371,7 +371,7 @@ class LocoBaseTest {
     }
 
     @Test
-    void calcDistance() {
+    void calcDistance_ShouldProperlyCalculateDistance() {
         TrainStation a = trainStationFactory.createTrainStation("A", 0, 0);
         TrainStation b = trainStationFactory.createTrainStation("B", 100, 100);
         TrainStation c = trainStationFactory.createTrainStation("C", 200, 200);
@@ -379,9 +379,12 @@ class LocoBaseTest {
         railroadsFactory.createRailroadLink("A", "B");
         railroadsFactory.createRailroadLink("B", "C");
         railroadsFactory.createRailroadLink("C", "A");
+        Coordinates aCoordinates = a.getCoordinates();
+        Coordinates bCoordinates = b.getCoordinates();
+        Coordinates cCoordinates = c.getCoordinates();
 
-        assertEquals(BigDecimal.valueOf(141), locoBase.calcDistance(a, b).setScale(0, RoundingMode.FLOOR));
-        assertEquals(BigDecimal.valueOf(282), locoBase.calcDistance(a, c).setScale(0, RoundingMode.FLOOR));
-        assertEquals(BigDecimal.valueOf(141), locoBase.calcDistance(b, c).setScale(0, RoundingMode.FLOOR));
+        assertEquals(141.42, Coordinates.getDistance(aCoordinates, bCoordinates), 0.01);
+        assertEquals(141.42 * 2, Coordinates.getDistance(aCoordinates, cCoordinates), 0.01);
+        assertEquals(141.42, Coordinates.getDistance(bCoordinates, cCoordinates), 0.01);
     }
 }

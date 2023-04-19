@@ -106,8 +106,13 @@ class RouteFinder {
                 break;
             }
             for (TrainStation trainStation : current.getStationNeighbours()) {
-                double segmentDistance = LocoBase.calcDistance(current.getStation(), trainStation).doubleValue();  //todo: move from locobase
-                double straightLineDistanceToDestination = LocoBase.calcDistance(trainStation, destination).doubleValue();
+                Coordinates currentCoordinates = current.getStation().getCoordinates();
+                Coordinates trainStationCoordinates = trainStation.getCoordinates();
+                Coordinates destinationStationCoordinates = destination.getCoordinates();
+                double segmentDistance = Coordinates.getDistance
+                        (currentCoordinates, trainStationCoordinates);
+                double straightLineDistanceToDestination =
+                        Coordinates.getDistance(trainStationCoordinates, destinationStationCoordinates);
                 StationNode child =
                         new StationNode(
                                 trainStation,

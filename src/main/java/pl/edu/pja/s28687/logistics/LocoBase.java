@@ -9,7 +9,6 @@ import pl.edu.pja.s28687.gui.RailroadsView;
 import pl.edu.pja.s28687.gui.TrainSetView;
 import pl.edu.pja.s28687.load.IDeliverable;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
@@ -48,16 +47,6 @@ public class LocoBase {
         loadCarriers = new HashMap<>();
         trainSets = new HashMap<>();
         loads = new HashMap<>();
-    }
-
-    //todo : move to another class
-    public static BigDecimal calcDistance(TrainStation station1, TrainStation station2) {
-        Coordinates sourceCoords = station1.getCoordinates();
-        Coordinates destCoords = station2.getCoordinates();
-        double xDist = Math.abs(sourceCoords.getX() - destCoords.getX());
-        double yDist = Math.abs(sourceCoords.getY() - destCoords.getY());
-        double dist = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
-        return BigDecimal.valueOf(dist);
     }
 
     public static void setLogLevel(Level level) {

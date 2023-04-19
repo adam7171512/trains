@@ -1,6 +1,5 @@
 package pl.edu.pja.s28687.gui;
 
-import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.ResourceContainer;
 import pl.edu.pja.s28687.TrainStation;
 import pl.edu.pja.s28687.factories.*;
@@ -12,8 +11,6 @@ import java.awt.event.*;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -94,8 +91,8 @@ public class RailroadsView extends JPanel implements KeyListener {
         Coordinates coordinates = new Coordinates(x, y);
         List<TrainStation> closestTrainStations = locoBase.getTrainStations().stream().sorted(
                 (ts1, ts2) -> {
-            double distance1 = Coordinates.distance(ts1.getCoordinates(), coordinates);
-            double distance2 = Coordinates.distance(ts2.getCoordinates(), coordinates);
+            double distance1 = Coordinates.getDistance(ts1.getCoordinates(), coordinates);
+            double distance2 = Coordinates.getDistance(ts2.getCoordinates(), coordinates);
             return Double.compare(distance1, distance2);
         }).toList();
         if (closestTrainStations.size() >= 2){
