@@ -168,16 +168,17 @@ public class LocoBase {
     public Set<RailroadLink> getRailroadConnections(){
         return railroadConnections;
     }
-    public void registerRailroadConnection(RailroadLink connection){
+    public boolean registerRailroadConnection(RailroadLink connection){
         if (railroadConnections.contains(connection)) {
             System.err.println("Railroad connection already exists !");
-            return;
+            return false;
         }
         railroadConnections.add(connection);
         logger.log(java.util.logging.Level.INFO,
                 "Railroad connection registered ! Total number of connections registered : "
                         + railroadConnections.size());
         railroadsView.ifPresent(v -> v.addRailroadLink(connection));
+        return true;
     }
 
     public Optional<TrainStation> findTrainStation(String name){
