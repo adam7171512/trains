@@ -45,8 +45,6 @@ public class TrainSetInfo {
                 .append(" | Trip distance  : ").append(locomotive.getCurrentTripDistance()).append(" km")
                 .append(" | Stops  : ").append(locomotive.getRoute().size())
                 .append(" | Trip progress : ").append(locomotive.getCurrentTripProgress().multiply(BigDecimal.valueOf(100))).append(" %");
-//                .append("\nTrip segments : ").append(locomotive.getRoad())
-
 
         List<IRailroadCar> cars = locomotive.getCars();
         if (cars.size() == 0) {
@@ -62,7 +60,7 @@ public class TrainSetInfo {
                                     (Comparator.comparingDouble
                                             (car -> car.getCurrentWeight().
                                                     doubleValue())).
-                            map(CarInfo::getBasicInfo).collect(Collectors.joining("\n")));
+                            map(IRailroadCar::getBasicInfo).collect(Collectors.joining("\n")));
             loco.append("\n").append("_".repeat(140));
         }
         return loco.toString();
@@ -118,28 +116,10 @@ public class TrainSetInfo {
 
         for (TrainSet trainSet : trainSets){
             stringBuilder.append(getTrainSetInfo(trainSet));
-            stringBuilder.append("\n").append("_".repeat(140));
-            stringBuilder.append("\n").append("_".repeat(140));
-            stringBuilder.append("\n").append("_".repeat(140));
+            stringBuilder.append("\n").append("_".repeat(200));
+            stringBuilder.append("\n").append("_".repeat(200));
+            stringBuilder.append("\n").append("_".repeat(200));
         }
-
-//
-//        List<Locomotive> locs = new ArrayList<>(locoBase.
-//                getLocomotiveList().
-//                stream().
-//                sorted(Comparator.comparingDouble
-//                        (loc -> loc.getCurrentTripDistance()
-//                                .doubleValue()))
-//                .toList());
-//        Collections.reverse(locs);
-//
-//        StringBuilder stringBuilder = new StringBuilder();
-//        for (Locomotive locomotive : locs){
-//            stringBuilder.append(getTrainSetInfo(locomotive));
-//            stringBuilder.append("\n").append("_".repeat(140));
-//            stringBuilder.append("\n").append("_".repeat(140));
-//            stringBuilder.append("\n").append("_".repeat(140));
-//        }
         return stringBuilder.toString();
     }
 
