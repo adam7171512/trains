@@ -9,7 +9,7 @@ import pl.edu.pja.s28687.validators.locomotive.LocomotiveLoadValidator;
 
 public class TrainSetBuilder {
     private Conductor conductor;
-    private LocoBase locoBase;
+    private final LocoBase locoBase;
     private Locomotive locomotive;
     private IRouteFinder algorithm;
 
