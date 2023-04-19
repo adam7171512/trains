@@ -3,9 +3,11 @@ package pl.edu.pja.s28687.cars;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.load.IGaseous;
 import pl.edu.pja.s28687.load.LoadType;
+import pl.edu.pja.s28687.misc.TrainStatus;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Set;
 
 
@@ -20,6 +22,8 @@ public class GaseousLoadCar extends AbstractBasicFreightCar<IGaseous> implements
                     In case of an emergency, follow the evacuation procedures
                     and contact trained personnel immediately.
                     """;
+
+    private static final BigDecimal VOLUME = BigDecimal.valueOf(112);
 
     public GaseousLoadCar(int id, ICarLoadValidator validator) {
         super(id, SHIPPER, SECURITY_INFO, validator);
@@ -65,6 +69,7 @@ public class GaseousLoadCar extends AbstractBasicFreightCar<IGaseous> implements
             Locomotive loco = getLocomotive().get();
             loco.raiseAlert("Emergency in car " + getId() +
                     "!! Please send staff to check the situation immediately!");
+            loco.setStatus(TrainStatus.EMERGENCY);
         }
 
     }
@@ -91,12 +96,21 @@ public class GaseousLoadCar extends AbstractBasicFreightCar<IGaseous> implements
 
     @Override
     public BigDecimal getPressure() {
-        return null;
+        BigDecimal fillRatio =
+                getCurrentWeight().divide(getGrossWeight(), RoundingMode.FLOOR);
+        return BigDecimal.ONE.add(fillRatio)
+                .multiply(BigDecimal.valueOf(20));
     }
 
     @Override
     public BigDecimal getTemperature() {
-        return null;
+        return BigDecimal.valueOf(Math.random() * 20)
+                .add(BigDecimal.valueOf(40));
+    }
+
+    @Override
+    public BigDecimal getVolume() {
+        return VOLUME;
     }
 
     private void checkValves() {

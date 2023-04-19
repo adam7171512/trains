@@ -110,7 +110,7 @@ public class CarBuilder {
             case TOXIC -> new ToxicLoadCar(id, loadValidator);
             case REFRIGERATED -> new RefrigeratedLoadCar(id, loadValidator);
             case EXPLOSIVE -> new ExplosiveLoadCar(id, loadValidator);
-            case PASSENGERS -> new PassengerCar(id, loadValidator);
+            case PASSENGERS -> new PassengerCar(id, (CarPassengerValidator) loadValidator);
             case POST_OFFICE -> new PostOfficeCar(id, loadValidator);
             case RESTAURANT -> new RestaurantCar(id);
             case LIQUID_TOXIC -> new LiquidToxicLoadCar(id, loadValidator);

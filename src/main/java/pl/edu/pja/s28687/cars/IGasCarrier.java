@@ -7,4 +7,5 @@ public interface IGasCarrier {
     void closeValve();
     BigDecimal getPressure();
     BigDecimal getTemperature();
+    BigDecimal getVolume();
 }
