@@ -236,7 +236,7 @@ class LocoBaseTest {
     void findTrainStation_WhenPresent_ShouldReturnOptionalWithTrainStation() {
         TrainStation t = trainStationFactory.createRandomTrainStations(1).get(0);
         final String NAME = t.getName();
-        locoBase.addTrainStation(t);
+        locoBase.registerTrainStation(t);
         assertTrue(locoBase.findTrainStation(NAME).isPresent());
         assertEquals(t, locoBase.findTrainStation(NAME).get());
     }

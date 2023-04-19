@@ -64,7 +64,7 @@ public class TrainSet {
     }
 
     public List<ILoadCarrier<? extends IDeliverable>> getLoadCarriers(){
-        return locomotive.getLoadableCars();
+        return locomotive.getLoadCarriers();
     }
 
     public ILoadCarrier<? extends IDeliverable> load(IDeliverable load){
