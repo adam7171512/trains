@@ -1,12 +1,10 @@
 package pl.edu.pja.s28687.consoleInterface.dispatchMenu;
 
 import pl.edu.pja.s28687.TrainSet;
-import pl.edu.pja.s28687.TrainStation;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.consoleInterface.IBrowsable;
 import pl.edu.pja.s28687.info.TrainSetInfo;
-import pl.edu.pja.s28687.logistics.AStarRouteFinder;
-import pl.edu.pja.s28687.logistics.LocoBase;
+import pl.edu.pja.s28687.logistics.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +29,10 @@ public class ManualDispatchMenu extends AbstractLeafMenu implements IBrowsable<T
         }
         TrainSet ts = trainSett.get();
 
-        String s = "1. Set route\n" +
-                "2. Set route finding algorithm\n";
+        String s = """
+                1. Set route
+                2. Set route finding algorithm
+                """;
         System.out.println(s);
 
         int selection = resourceContainer.parseToInt(scan.nextLine());
@@ -42,8 +42,6 @@ public class ManualDispatchMenu extends AbstractLeafMenu implements IBrowsable<T
             case 2 -> setRouteAlgorithmMenu(ts);
         }
     }
-
-
 
     @Override
     public String getTitle() {
@@ -55,40 +53,27 @@ public class ManualDispatchMenu extends AbstractLeafMenu implements IBrowsable<T
         return "";
     }
 
-    private void setRouteAlgorithmMenu(TrainSet trainSet){
+    private void setRouteAlgorithmMenu(TrainSet trainSet) {
         String s = new StringBuilder().append("1. A*\n")
                 .append("2. Dijkstra\n")
                 .append("3. DFS (bad)\n")
+                .append("4. A* reversed (bad)\n")
                 .toString();
         System.out.println(s);
         int selection = resourceContainer.parseToInt(scan.nextLine());
         switch (selection) {
-            case 3 -> trainSet.setAlgorithm(new AStarRouteFinder(resourceContainer.getLocoBase()));
-            default -> trainSet.setAlgorithm(new AStarRouteFinder(resourceContainer.getLocoBase()));
+            case 1 -> trainSet.setAlgorithm(new AStarRouteFinder(resourceContainer.getLocoBase()));
+            case 2 -> trainSet.setAlgorithm(new DijkstraRouteFinder(resourceContainer.getLocoBase()));
+            case 3 -> trainSet.setAlgorithm(new DepthFirstSearchRouteFinder(resourceContainer.getLocoBase()));
+            case 4 -> trainSet.setAlgorithm(new ReverseAStarRouteFinder(resourceContainer.getLocoBase()));
+            default -> System.out.println("Invalid input!");
         }
-    }
-
-    private Optional<TrainStation> readInput(String s){
-        System.out.println(s);
-        String input;
-        do {
-            input = scan.nextLine();
-            if (input.equals("ls")) {
-                listAllStations();
-            }
-        } while (input.equals("ls"));
-        return resourceContainer.getLocoBase().findTrainStation(input);
-    }
-
-    private void listAllStations() {
-        resourceContainer.getLocoBase().getTrainStations().forEach(System.out::println);
     }
 
     @Override
     public void listElements() {
         System.out.println(TrainSetInfo.getAggregatedBasicTrainSetsInfo(resourceContainer.getLocoBase()));
     }
-
 
     @Override
     public Optional<TrainSet> matchElement(String input) {
