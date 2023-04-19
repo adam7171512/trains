@@ -10,14 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class LoadAssignmentCenter {
-    public static <T extends IDeliverable> void assignLoads(LocoBase locoBase) {
+    public static void assignLoads(LocoBase locoBase) {
         List<ILoadCarrier<IDeliverable>> cars = new ArrayList<>(locoBase.getLoadCarriers());
-
         for (ILoadCarrier<IDeliverable> car : cars) {
             while (true) {
                 List<IDeliverable> loads = locoBase.findSuitableLoads(car);
                 if (loads.isEmpty()) break;
-                car.load((IDeliverable) loads.get(0));
+                car.load(loads.get(0));
                 loads.get(0).setLoaded();
             }
         }
@@ -32,7 +31,6 @@ public class LoadAssignmentCenter {
         }
     }
 
-
     public static void assignLoadsToTrainSets(LocoBase locoBase){
        List<? extends IDeliverable> loads = locoBase.getLoadList();
        List<TrainSet> trainSets = locoBase.getTrainSets();
@@ -45,10 +43,8 @@ public class LoadAssignmentCenter {
                                   .filter(trainSet -> trainSet.validateLoad(load))
                                   .findFirst();
                   tS.ifPresent(trainSet -> trainSet.load(load));
-                  if (tS.isEmpty()) System.out.println("No train set found for load " + load);
               }
          }
-        System.out.println(trainSets);
     }
 }
 
