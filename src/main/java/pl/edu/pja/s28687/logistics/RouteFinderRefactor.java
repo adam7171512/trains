@@ -1,7 +1,6 @@
 package pl.edu.pja.s28687.logistics;
 
 import pl.edu.pja.s28687.TrainStation;
-import pl.edu.pja.s28687.gui.LocoMap;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -57,40 +56,39 @@ public class RouteFinderRefactor {
         public int hashCode() {
             return Objects.hash(station);
         }
+
+        @Override
+        public String toString() {
+            return "StationNode{" +
+                    "station=" + station +
+                    ", parent=" + parent ;
+        }
     }
 
-    public static List<RailroadLink> findRoute(TrainStation source, TrainStation destination, LocoBase locoBase){
+    public static List<RouteSegment> findRoute(TrainStation source, TrainStation destination, LocoBase locoBase){
         Comparator<StationNode> pathComparator = getStationNodeComparator(Heuristics.DISTANCE_PLUS_DESTINATION_DISTANCE);
         LinkedList<StationNode> path = getNodePath(source, destination, pathComparator);
         return convertStationNodeListToRoute(path, locoBase);
     }
 
-    public static List<RailroadLink> findRoute(TrainStation source, TrainStation destination, Comparator<StationNode> comparator, LocoBase locoBase){
+    public static List<RouteSegment> findRoute(TrainStation source, TrainStation destination, Comparator<StationNode> comparator, LocoBase locoBase){
         LinkedList<StationNode> path = getNodePath(source, destination, comparator);
         return convertStationNodeListToRoute(path, locoBase);
     }
 
-    public static List<RailroadLink> findRouteDFS(TrainStation source, TrainStation destination, LocoBase locoBase){
+    public static List<RouteSegment> findRouteDFS(TrainStation source, TrainStation destination, LocoBase locoBase){
         LinkedList<StationNode> path = getNodePathDFS(source, destination);
         return convertStationNodeListToRoute(path, locoBase);
     }
 
-    public static List<RailroadLink> convertStationNodeListToRoute(List<StationNode> path, LocoBase locoBase){
-        LinkedList<RailroadLink> route = new LinkedList<>();
-        path.forEach(node  -> {
-            if (node.getParent() != null) {
-                locoBase.findLink(
-                        Set.of(node.getStation(), node.getParent().getStation()))
-                        .ifPresentOrElse(
-                        route::addFirst,
-                        () -> {
-                            throw new IllegalStateException(
-                                    "No link found between "
-                                            + node.getStation() + " and "
-                                            + node.getParent().getStation());
-                        });
-            }
-        });
+    public static List<RouteSegment> convertStationNodeListToRoute(List<StationNode> path, LocoBase locoBase){
+        LinkedList<RouteSegment> route = new LinkedList<>();
+        for (int i = 0; i < path.size() - 1; i++) {
+            TrainStation source = path.get(i).getStation();
+            TrainStation destination = path.get(i + 1).getStation();
+            RailroadLink link = locoBase.findLink(Set.of(source, destination)).orElseThrow();
+            route.add(new RouteSegment(link, source, destination));
+        }
         return route;
     }
 
@@ -123,10 +121,10 @@ public class RouteFinderRefactor {
             visited.add(current);
 
             if (current.getStation() == destination){
-                path.add(current);
+                path.addFirst(current);
                 while (current.getParent() != null){
                     current = current.getParent();
-                    path.add(current);
+                    path.addFirst(current);
                 }
                 break;
             }
@@ -159,10 +157,10 @@ public class RouteFinderRefactor {
             visited.add(current);
 
             if (current.getStation() == destination){
-                path.add(current);
+                path.addFirst(current);
                 while (current.getParent() != null){
                     current = current.getParent();
-                    path.add(current);
+                    path.addFirst(current);
                 }
                 break;
             }
