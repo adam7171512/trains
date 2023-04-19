@@ -1,11 +1,16 @@
 package pl.edu.pja.s28687.logistics;
 import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.cars.*;
+import pl.edu.pja.s28687.gui.RailroadsView;
+import pl.edu.pja.s28687.gui.TrainSetView;
 import pl.edu.pja.s28687.load.*;
 import pl.edu.pja.s28687.Locomotive;
 import pl.edu.pja.s28687.TrainStation;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LocoBase {
 
@@ -20,14 +25,19 @@ public class LocoBase {
     private final Map<Integer, TrainSet> trainSets;
     private final Map<Integer, ILoadCarrier<IDeliverable>> loadCarriers;
     private final  Map<Integer, IDeliverable> loads;
-    private static final LocoLogger logger = new LocoLogger("LocoBase", "locoLogs.log");
+    private static final Logger logger = Logger.getLogger(LocoBase.class.getName());
+    static {
+        logger.setLevel(java.util.logging.Level.SEVERE);
+    }
+    private Optional<TrainSetView> trainSetView = Optional.empty();
+    private Optional<RailroadsView> railroadsView = Optional.empty();
 
 
     public LocoBase() {
         locomotives = new HashMap<>();
         railroadCars = new HashMap<>();
-        trainStations = new HashSet<>();
-        railroadConnections = new HashSet<>();
+        trainStations = new CopyOnWriteArraySet<>();
+        railroadConnections = new CopyOnWriteArraySet<>();
         loadCarriers = new HashMap<>();
         trainSets = new HashMap<>();
         loads = new HashMap<>();
@@ -113,6 +123,12 @@ public class LocoBase {
                     ("Locomotive with id " + id + " already exists");
         }
         locomotives.put(locomotive.getId(), locomotive);
+        logger.log(java.util.logging.Level.INFO,
+                "Locomotive " + locomotive.getName() + " with ID: "
+                        + locomotive.getId()
+                        + " has been registered. Total number of locomotives registered : "
+                        + locCount);
+        trainSetView.ifPresent(locomotive::setView);
     }
 
     public void unregisterLoc(int id){
@@ -120,10 +136,6 @@ public class LocoBase {
             throw new IllegalArgumentException("LocBase : Locomotive with id " + id + " does not exist !");
         }
         locomotives.remove(id);
-    }
-
-    public void unregisterLoc(Locomotive locomotive){
-        locomotives.remove(locomotive.getId());
     }
 
     public  Optional<Locomotive> findLoc(int id){
@@ -138,12 +150,16 @@ public class LocoBase {
         return Optional.ofNullable(loadCarriers.get(id));
     }
 
-    public void addTrainStation(TrainStation trainStation){
+    public void registerTrainStation(TrainStation trainStation){
+        if (trainStations.contains(trainStation)) {
+            System.err.println("Train station already exists !");
+            return;
+        }
         trainStations.add(trainStation);
         logger.log(java.util.logging.Level.INFO,
                 "Train station registered ! Total number of train stations registered : "
                         + trainStations.size());
-
+        railroadsView.ifPresent(v -> v.addTrainStation(trainStation));
     }
 
     public Set<TrainStation> getTrainStations(){
@@ -154,12 +170,14 @@ public class LocoBase {
     }
     public void registerRailroadConnection(RailroadLink connection){
         if (railroadConnections.contains(connection)) {
-            throw new IllegalArgumentException("Railroad connection already exists !");
+            System.err.println("Railroad connection already exists !");
+            return;
         }
         railroadConnections.add(connection);
         logger.log(java.util.logging.Level.INFO,
                 "Railroad connection registered ! Total number of connections registered : "
                         + railroadConnections.size());
+        railroadsView.ifPresent(v -> v.addRailroadLink(connection));
     }
 
     public Optional<TrainStation> findTrainStation(String name){
@@ -269,6 +287,16 @@ public class LocoBase {
         return BigDecimal.valueOf(dist);
     }
 
+    public void setRailroadsView(RailroadsView view){
+        this.railroadsView = Optional.of(view);
+    }
 
+    public void setTrainSetView(TrainSetView view){
+        this.trainSetView = Optional.of(view);
+    }
+
+    public static void setLogLevel(Level level){
+        logger.setLevel(level);
+    }
 }
 

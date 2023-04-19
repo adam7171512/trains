@@ -2,7 +2,7 @@ package pl.edu.pja.s28687.consoleInterface;
 
 import pl.edu.pja.s28687.LocomotivePurpose;
 import pl.edu.pja.s28687.factories.*;
-import pl.edu.pja.s28687.gui.Canvas;
+import pl.edu.pja.s28687.gui.Canvas2;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.AStarRouteFinder;
@@ -34,8 +34,8 @@ public class Presentation extends AbstractLeafMenu{
 
         dispatchingCenter.dispatchAllTrainSets();
 
-        Canvas canvas= new Canvas(locoBase);
-        canvas.start();
+        Canvas2 canvas= Canvas2.getInstance(locoBase);
+        canvas.show();
     }
 
     @Override
@@ -45,6 +45,6 @@ public class Presentation extends AbstractLeafMenu{
 
     @Override
     public String getDescription() {
-        return null;
+        return "Creating objects.. please wait..";
     }
 }
