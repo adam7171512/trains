@@ -104,7 +104,9 @@ public abstract class AbstractRailroadCar implements IRailroadCar {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder().
                 append("Car ID : ").append(getId()).
-                append(" | Car type : ").append(getCarType());
+                append(" | Car type : ").append(getCarType())
+                .append(" | Current Weight : ").append(getCurrentWeight())
+                .append(" tonnes");
         if (isPowered()) {
             stringBuilder.append(" | Powered");
         } else {
