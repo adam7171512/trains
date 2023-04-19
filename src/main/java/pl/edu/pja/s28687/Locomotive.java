@@ -76,7 +76,7 @@ public class Locomotive implements ILocomotive {
     }
 
     public BigDecimal getNominalSpeed() {
-        return nominalSpeed;
+        return nominalSpeed.setScale(2, RoundingMode.FLOOR);
     }
 
     public List<ILoadCarrier<? extends IDeliverable>> getLoadCarriers() {
@@ -92,7 +92,8 @@ public class Locomotive implements ILocomotive {
             } else if (!carValidator.validatePayloadLimit(car, this)) {
                 throw new ValidationException("Can't attach this car ! Maximum payload reached !");
             } else {
-                throw new ValidationException("Can't attach this car ! This train does not support cars of type ! " + car.getCarType());
+                throw new ValidationException("Can't attach this car ! This train does not support cars of type ! "
+                        + car.getCarType());
             }
         }
         cars.add(car);
@@ -147,11 +148,12 @@ public class Locomotive implements ILocomotive {
                 .stream()
                 .map(RouteSegment::getDistance)
                 .reduce(BigDecimal::add)
-                .orElse(BigDecimal.valueOf(0));
+                .orElse(BigDecimal.valueOf(0))
+                .setScale(2, RoundingMode.FLOOR);
     }
 
     public BigDecimal getCurrentTripDistanceCovered() {
-        return currentTripDistanceCovered;
+        return currentTripDistanceCovered.setScale(2, RoundingMode.FLOOR);
     }
 
     public void setCurrentTripDistanceCovered(BigDecimal distance) {
@@ -165,7 +167,8 @@ public class Locomotive implements ILocomotive {
                 BigDecimal.ZERO
                 :
                 currentTripDistanceCovered.
-                        divide(currentTripDistance, RoundingMode.FLOOR);
+                        divide(currentTripDistance, RoundingMode.FLOOR)
+                        .setScale(2, RoundingMode.FLOOR);
     }
 
     public TrainStation getHomeStation() {
