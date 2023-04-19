@@ -34,7 +34,6 @@ public class LoadAssignmentCenter {
     public static void assignLoadsToTrainSets(LocoBase locoBase){
        List<? extends IDeliverable> loads = locoBase.getLoadList();
        List<TrainSet> trainSets = locoBase.getTrainSets();
-        System.out.println(trainSets);
          for (IDeliverable load : loads){
               if (! load.isLoaded()) {
                   Optional<TrainSet> tS =

@@ -53,9 +53,8 @@ public abstract class AbstractSelectMenu implements ISelectMenu {
         StringBuilder menuBuilder = new StringBuilder();
         for (Map.Entry<Integer, IMenu> entry : subMenus.entrySet()) {
             menuBuilder.append(entry.getKey()).append(". ").append(entry.getValue().getTitle()).append("\n");
-//            System.out.println(entry.getKey() + ". " + entry.getValue().getTitle());
         }
-        System.out.println(menuBuilder.toString());
+        System.out.println(menuBuilder);
     }
 
     public void setParentMenu(IMenu parentMenu) {
