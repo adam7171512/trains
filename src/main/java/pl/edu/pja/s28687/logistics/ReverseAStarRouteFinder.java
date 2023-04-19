@@ -4,7 +4,6 @@ import pl.edu.pja.s28687.TrainStation;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 public class ReverseAStarRouteFinder implements IRouteFinder{
 
@@ -15,9 +14,9 @@ public class ReverseAStarRouteFinder implements IRouteFinder{
         }
 
         public List<RouteSegment> findRoute(TrainStation source, TrainStation destination) {
-            Comparator<RouteFinderRefactor.StationNode> comparator
-                    = RouteFinderRefactor.getStationNodeComparator(Heuristics.REVERSE_DISTANCE_PLUS_DESTINATION_DISTANCE);
-            return RouteFinderRefactor.findRoute(source, destination, comparator, locobase);
+            Comparator<RouteFinder.StationNode> comparator
+                    = RouteFinder.getStationNodeComparator(Heuristics.REVERSE_DISTANCE_PLUS_DESTINATION_DISTANCE);
+            return RouteFinder.findRoute(source, destination, comparator, locobase);
         }
     }
 

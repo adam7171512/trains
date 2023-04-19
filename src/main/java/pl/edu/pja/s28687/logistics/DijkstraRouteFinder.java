@@ -4,7 +4,6 @@ import pl.edu.pja.s28687.TrainStation;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 public class DijkstraRouteFinder implements IRouteFinder{
 
@@ -15,8 +14,8 @@ public class DijkstraRouteFinder implements IRouteFinder{
     }
 
     public List<RouteSegment> findRoute(TrainStation source, TrainStation destination) {
-        Comparator<RouteFinderRefactor.StationNode> comparator
-                = RouteFinderRefactor.getStationNodeComparator(Heuristics.DISTANCE);
-        return RouteFinderRefactor.findRoute(source, destination, comparator, locobase);
+        Comparator<RouteFinder.StationNode> comparator
+                = RouteFinder.getStationNodeComparator(Heuristics.DISTANCE);
+        return RouteFinder.findRoute(source, destination, comparator, locobase);
     }
 }

@@ -11,6 +11,6 @@ public class DepthFirstSearchRouteFinder implements IRouteFinder{
     }
     @Override
     public List<RouteSegment> findRoute(TrainStation source, TrainStation destination) {
-            return RouteFinderRefactor.findRouteDFS(source, destination, locobase);
+            return RouteFinder.findRouteDFS(source, destination, locobase);
     }
 }
