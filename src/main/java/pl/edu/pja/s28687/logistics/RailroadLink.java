@@ -87,12 +87,12 @@ public class RailroadLink {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof RailroadLink that)) return false;
-        return Set.of(station1, station2).equals(Set.of(that.station1, that.station2));
+        return stations.equals(that.stations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(station1, station2);
+        return Objects.hash(stations);
     }
 
     public Set<TrainStation> getStations() {
