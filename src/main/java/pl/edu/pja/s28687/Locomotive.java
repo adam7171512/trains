@@ -304,7 +304,7 @@ public class Locomotive implements ILocomotive {
     }
 
     public TrainStation getNextTrainStation() {
-        return getCurrentSegment().getDestination();
+        return getCurrentSegment().destination();
     }
 
     public ILocomotiveLoadValidator getLoadValidator() {
@@ -316,10 +316,10 @@ public class Locomotive implements ILocomotive {
         if (currentSegment == null) {
             return new Coordinates(0, 0);
         }
-        Coordinates source = currentSegment.getSource().getCoordinates();
+        Coordinates source = currentSegment.source().getCoordinates();
         BigDecimal sourceX = BigDecimal.valueOf(source.getX());
         BigDecimal sourceY = BigDecimal.valueOf(source.getY());
-        Coordinates dest = currentSegment.getDestination().getCoordinates();
+        Coordinates dest = currentSegment.destination().getCoordinates();
         BigDecimal destX = BigDecimal.valueOf(dest.getX());
         BigDecimal destY = BigDecimal.valueOf(dest.getY());
 
