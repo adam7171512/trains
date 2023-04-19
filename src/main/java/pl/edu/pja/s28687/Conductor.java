@@ -17,8 +17,13 @@ public class Conductor extends Thread {
         LOGGER.setLevel(Level.SEVERE);
     }
 
+    private final Locomotive locomotive;
+    private double distanceMultiplier = 1;
+    private int timeUpdateInterval = 1000;
+    private int stationStoppageTime = 2000;
+    private int destinationStoppageTime = 28000;
     private IRouteFinder routeFinder;
-    private Locomotive locomotive;
+    private MachinistJob machinistJob;
 
     public Conductor(Locomotive locomotive, IRouteFinder routeFinder) {
         this.routeFinder = routeFinder;
@@ -70,7 +75,7 @@ public class Conductor extends Thread {
         segment.enterRailway(locomotive);
         locomotive.setCurrentSegment(segment);
         announceDeparture(locomotive.getLastTrainStation(), destination);
-        MachinistJob machinistJob = new MachinistJob(locomotive, segmentDistance);
+        machinistJob = new MachinistJob(locomotive, segmentDistance, timeUpdateInterval, distanceMultiplier);
         machinistJob.start();
         machinistJob.join();
         segment.leaveRailway(locomotive);
@@ -87,13 +92,13 @@ public class Conductor extends Thread {
                 throw new RuntimeException(e);
             }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(stationStoppageTime);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
         try {
-            Thread.sleep(28000); // 30 seconds total wait time on the last station
+            Thread.sleep(destinationStoppageTime); // 30 seconds total wait time on the last station
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -128,5 +133,23 @@ public class Conductor extends Thread {
     public String toString() {
         return "Conductor " +
                 "routeFinder=" + routeFinder;
+    }
+
+    public void setDistanceMultiplier(double distanceMultiplier) {
+        this.distanceMultiplier = distanceMultiplier;
+        machinistJob.setDistanceMultiplier(distanceMultiplier);
+    }
+
+    public void setTimeUpdateInterval(int timeUpdateInterval) {
+        this.timeUpdateInterval = timeUpdateInterval;
+        machinistJob.setTimeUpdateInterval(timeUpdateInterval);
+    }
+
+    public void setStationStoppageTime(int stationStoppageTime) {
+        this.stationStoppageTime = stationStoppageTime;
+    }
+
+    public void setDestinationStoppageTime(int destinationStoppageTime) {
+        this.destinationStoppageTime = destinationStoppageTime;
     }
 }

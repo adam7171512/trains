@@ -32,6 +32,7 @@ public class ManualDispatchMenu extends AbstractLeafMenu implements IBrowsable<T
         String s = """
                 1. Set route
                 2. Set route finding algorithm
+                3. Set conductor parameters (time interval, distance multiplier etc)
                 """;
         System.out.println(s);
 
@@ -40,7 +41,25 @@ public class ManualDispatchMenu extends AbstractLeafMenu implements IBrowsable<T
         switch (selection) {
             case 1 -> new SetRouteProcess(locoBase, ts).run();
             case 2 -> setRouteAlgorithmMenu(ts);
+            case 3 -> setTimeIntervalAndDistanceMultiplier(ts);
         }
+    }
+
+    private void setTimeIntervalAndDistanceMultiplier(TrainSet ts) {
+        System.out.println("Enter time interval in milliseconds");
+        int timeInterval = resourceContainer.parseToInt(scan.nextLine());
+        System.out.println("Enter distance multiplier");
+        int distanceMultiplier = resourceContainer.parseToInt(scan.nextLine());
+        ts.setTimeUpdateInterval(timeInterval);
+        ts.setDistanceMultiplier(distanceMultiplier);
+
+        System.out.println("Enter station stoppage time in milliseconds");
+        int selection = resourceContainer.parseToInt(scan.nextLine());
+        ts.setStationStoppageTime(selection);
+        System.out.println("Enter destination station stoppage time in milliseconds");
+        selection = resourceContainer.parseToInt(scan.nextLine());
+        ts.setDestinationStoppageTime(selection);
+
     }
 
     @Override

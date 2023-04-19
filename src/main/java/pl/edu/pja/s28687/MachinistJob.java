@@ -5,29 +5,28 @@ import pl.edu.pja.s28687.misc.TrainStatus;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.logging.Level;
 
 public class MachinistJob extends Thread {
+    private double distanceMultiplier;
     private final Locomotive locomotive;
     private final BigDecimal distanceToTravel;
-    private final int timeUpdateInterval;
-    final double timeWarp;
-    private final BigDecimal slowDownProcedureDistance = BigDecimal.valueOf(1000);
+    private int timeUpdateInterval;
+    private final BigDecimal slowDownProcedureDistance = BigDecimal.valueOf(3);
     private final BigDecimal stationApproachingSpeed;
 
     public MachinistJob(Locomotive locomotive, BigDecimal distanceToTravel) {
-        this(locomotive, distanceToTravel, 1, 1);
+        this(locomotive, distanceToTravel, 1000, 1);
     }
 
-    public MachinistJob(Locomotive locomotive, BigDecimal distanceToTravel, int timeUpdateInterval, double timeWarp) {
+    public MachinistJob(Locomotive locomotive, BigDecimal distanceToTravel, int timeUpdateInterval, double distanceMultiplier) {
         this.distanceToTravel = distanceToTravel;
         this.locomotive = locomotive;
         this.timeUpdateInterval = timeUpdateInterval;
-        this.timeWarp = timeWarp;
+        this.distanceMultiplier = distanceMultiplier;
         stationApproachingSpeed = locomotive.getNominalSpeed().multiply(BigDecimal.valueOf(0.3));
     }
 
-    public void directSegment(BigDecimal distanceToTravel){
+    public void directSegment(BigDecimal distanceToTravel) {
         locomotive.setCurrentSegmentDistanceCovered(BigDecimal.ZERO);
         locomotive.setStatus(TrainStatus.RUNNING);
 
@@ -94,8 +93,7 @@ public class MachinistJob extends Thread {
     private BigDecimal calculateDistanceInterval(BigDecimal distanceLeft, BigDecimal currentSpeed) {
         BigDecimal distanceInterval =
                 currentSpeed
-                        .multiply(BigDecimal.valueOf(timeWarp)
-                                .multiply(BigDecimal.valueOf(timeUpdateInterval)))
+                        .multiply(BigDecimal.valueOf(distanceMultiplier))
                         .divide(BigDecimal.valueOf(3_600), RoundingMode.FLOOR);
 
         distanceInterval = distanceInterval.min(distanceLeft);
@@ -125,7 +123,7 @@ public class MachinistJob extends Thread {
                         + " Help is on the way!");
     }
 
-    public void restartAfterEmergencyStop(){
+    public void restartAfterEmergencyStop() {
         locomotive.setStatus(TrainStatus.RUNNING);
         locomotive.raiseAlert(
                 "\nLocomotive " + locomotive.getName() + " , ID : " + locomotive.getId()
@@ -134,15 +132,15 @@ public class MachinistJob extends Thread {
 
     public BigDecimal randomlyChangeSpeed(BigDecimal newSpeed) {
         int direction = Math.random() < 0.5 ? -1 : 1;
-        newSpeed = newSpeed
-                .add(newSpeed
-                        .multiply(
-                                BigDecimal.valueOf(direction * 0.03)));
+        BigDecimal change = newSpeed
+                .multiply(BigDecimal.valueOf(0.03))
+                .multiply(BigDecimal.valueOf(direction));
+        newSpeed = newSpeed.add(change);
         return newSpeed;
     }
 
     public BigDecimal speedUp(BigDecimal currentSpeed, BigDecimal nominalSpeed) {
-        return currentSpeed.add(nominalSpeed.multiply(BigDecimal.valueOf(0.04)));
+        return currentSpeed.add(nominalSpeed.multiply(BigDecimal.valueOf(0.05))).min(nominalSpeed);
     }
 
     public BigDecimal slowDown(BigDecimal currentSpeed, BigDecimal nominalSpeed) {
@@ -159,4 +157,13 @@ public class MachinistJob extends Thread {
             locomotive.raiseAlert(e.getMessage());
         }
     }
+
+    public void setTimeUpdateInterval(int timeUpdateInterval) {
+        this.timeUpdateInterval = timeUpdateInterval;
+    }
+
+    public void setDistanceMultiplier(double distanceMultiplier) {
+        this.distanceMultiplier = distanceMultiplier;
+    }
+
 }

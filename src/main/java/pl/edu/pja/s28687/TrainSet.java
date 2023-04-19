@@ -129,4 +129,20 @@ public class TrainSet {
     public BigDecimal getCurrentPayload() {
         return locomotive.getCurrentPayload();
     }
+
+    public void setTimeUpdateInterval(int timeUpdateInterval) {
+        conductor.setTimeUpdateInterval(timeUpdateInterval);
+    }
+
+    public void setDistanceMultiplier(double distanceMultiplier) {
+        conductor.setDistanceMultiplier(distanceMultiplier);
+    }
+
+    public void setStationStoppageTime(int milliseconds) {
+        conductor.setStationStoppageTime(milliseconds);
+    }
+
+    public void setDestinationStoppageTime(int milliseconds){
+        conductor.setDestinationStoppageTime(milliseconds);
+    }
 }
