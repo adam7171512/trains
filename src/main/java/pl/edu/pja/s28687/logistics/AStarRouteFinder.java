@@ -14,9 +14,9 @@ public class AStarRouteFinder implements IRouteFinder {
         this.locobase = locobase;
     }
 
-    public Optional<List<RailroadLink>> findRoute(TrainStation source, TrainStation destination) {
+    public List<RouteSegment> findRoute(TrainStation source, TrainStation destination) {
         Comparator<RouteFinderRefactor.StationNode> comparator
                 = RouteFinderRefactor.getStationNodeComparator(Heuristics.DISTANCE_PLUS_DESTINATION_DISTANCE);
-        return Optional.of(RouteFinderRefactor.findRoute(source, destination, comparator, locobase));
+        return RouteFinderRefactor.findRoute(source, destination, comparator, locobase);
     }
 }

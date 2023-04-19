@@ -10,7 +10,7 @@ public class DepthFirstSearchRouteFinder implements IRouteFinder{
         this.locobase = locobase;
     }
     @Override
-    public Optional<List<RailroadLink>> findRoute(TrainStation source, TrainStation destination) {
-            return Optional.of(RouteFinderRefactor.findRouteDFS(source, destination, locobase));
+    public List<RouteSegment> findRoute(TrainStation source, TrainStation destination) {
+            return RouteFinderRefactor.findRouteDFS(source, destination, locobase);
     }
 }
