@@ -27,7 +27,7 @@ public class RailroadCarManagement extends AbstractLeafMenu implements IBrowsabl
             car = preProcessInput(scan, message);
             car.ifPresentOrElse(
                     rCar -> {
-                        System.out.println(CarInfo.getBasicInfo(rCar));
+                        System.out.println(rCar.getBasicInfo());
                         System.out.println("""
                                 Enter
                                 1 to perform routine procedure

@@ -26,7 +26,7 @@ public class LoadCarrierManagement extends AbstractLeafMenu implements IBrowsabl
             car = preProcessInput(scan, message);
             car.ifPresentOrElse(
                     rCar -> {
-                        System.out.println(CarInfo.getBasicInfo(rCar));
+                        System.out.println(rCar.getBasicInfo());
                         System.out.println("Enter" +
                                 "\n1 to see loads loaded to this carrier" +
                                 "\n2 to see all validated loads available for this carrier" +

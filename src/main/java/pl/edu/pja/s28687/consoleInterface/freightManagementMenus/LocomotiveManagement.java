@@ -85,7 +85,7 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
         }
         int n = 1;
         for (IRailroadCar loaded : loadedCars.values()){
-            System.out.println(n + ". " + CarInfo.getBasicInfo(loaded));
+            System.out.println(n + ". " + loaded.getBasicInfo());
             n++;
         }
     }
@@ -167,7 +167,7 @@ public class LocomotiveManagement extends AbstractLeafMenu implements IBrowsable
         }
         int n = 1;
         for (IRailroadCar ava : cars.values()){
-            System.out.println(n + ". " + CarInfo.getBasicInfo(ava));
+            System.out.println(n + ". " + ava.getBasicInfo());
             n++;
         }
     }
