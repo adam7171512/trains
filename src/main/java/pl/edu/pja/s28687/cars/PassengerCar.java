@@ -100,7 +100,7 @@ public class PassengerCar extends AbstractLoadCarrier<IPassengers> implements IP
 
     @Override
     public void emergencyProcedure() {
-        System.out.println(
+        logger.log(Level.SEVERE,
                 "Attention! Emergency procedure started! in car " +
                         getId() +
                         " Please don't panic! " +

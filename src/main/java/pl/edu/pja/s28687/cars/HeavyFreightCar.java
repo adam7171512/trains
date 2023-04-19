@@ -6,6 +6,7 @@ import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.util.Set;
+import java.util.logging.Level;
 
 
 public class HeavyFreightCar extends AbstractHeavyFreightCar<IHeavyFreight> {
@@ -57,7 +58,7 @@ public class HeavyFreightCar extends AbstractHeavyFreightCar<IHeavyFreight> {
 
     @Override
     public void emergencyProcedure() {
-        System.out.println("Emergency procedure in heavy freight car !");
+        logger.log(Level.SEVERE, "Emergency procedure in heavy freight car !");
         safetyLock();
         if (getLocomotive().isPresent()){
             Locomotive loco = getLocomotive().get();

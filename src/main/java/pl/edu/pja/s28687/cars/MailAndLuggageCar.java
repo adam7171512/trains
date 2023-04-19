@@ -6,6 +6,7 @@ import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.math.BigDecimal;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class MailAndLuggageCar extends AbstractLoadCarrier<ILuggage> {
     private static final String SHIPPER = "ALSTOM";
@@ -64,7 +65,7 @@ public class MailAndLuggageCar extends AbstractLoadCarrier<ILuggage> {
 
     @Override
     public void emergencyProcedure() {
-        System.out.println("Emergency situation in luggage car !!" + getId());
+        logger.log(Level.SEVERE, "Emergency situation in luggage car !!" + getId());
         if (getLocomotive().isPresent()) {
             getLocomotive()
                     .get()

@@ -7,6 +7,7 @@ import pl.edu.pja.s28687.misc.TrainStatus;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.util.Set;
+import java.util.logging.Level;
 
 
 public class ExplosiveLoadCar extends AbstractHeavyFreightCar<IExplosive> {
@@ -34,13 +35,13 @@ public class ExplosiveLoadCar extends AbstractHeavyFreightCar<IExplosive> {
     @Override
     public void safetyCheck() {
         for (IExplosive load : loads) {
-            System.out.println("Carefully examining explosive load: " + load);
+            logger.log(Level.INFO, "Carefully examining explosive load: " + load);
         }
     }
 
     @Override
     public void emergencyUnloading() {
-        System.out.println("Can't start emergency unloading! Calling fire department for help!");
+        logger.log(Level.SEVERE, "Can't start emergency unloading! Calling fire department for help!");
     }
 
     @Override

@@ -27,7 +27,7 @@ public class RestaurantCar extends AbstractRailroadCar implements IPowered {
 
     @Override
     public void emergencyProcedure() {
-        logger.log(Level.INFO,
+        logger.log(Level.SEVERE,
                 "Attention! Emergency in restaurant car!" +
                         " Please remain calm and follow the instructions of the staff.");
     }

@@ -5,6 +5,7 @@ import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.util.Set;
+import java.util.logging.Level;
 
 public class RefrigeratedLoadCar extends AbstractBasicFreightCar<IRefrigerated> implements IPowered {
     private static final String SHIPPER = "GENERAL ELECTRIC";
@@ -50,7 +51,7 @@ public class RefrigeratedLoadCar extends AbstractBasicFreightCar<IRefrigerated> 
     @Override
     public void emergencyProcedure() {
         safetyLock();
-        System.out.println("Emergency procedure in refrigerated car" + getId() + " started");
+        logger.log(Level.SEVERE, "Emergency procedure in refrigerated car" + getId() + " started");
         if (getLocomotive().isPresent()) {
             getLocomotive().get().raiseAlert("Refrigerated car " + getId() + " is in emergency mode");
         }

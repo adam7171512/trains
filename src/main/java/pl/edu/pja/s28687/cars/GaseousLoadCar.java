@@ -11,6 +11,7 @@ import pl.edu.pja.s28687.validators.ICarLoadValidator;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Set;
+import java.util.logging.Level;
 
 
 public class GaseousLoadCar extends AbstractBasicFreightCar<IGaseous> implements IGasCarrier{
@@ -45,7 +46,7 @@ public class GaseousLoadCar extends AbstractBasicFreightCar<IGaseous> implements
 
     @Override
     public void emergencyUnloading() {
-        System.out.println("Starting emergency unloading procedure");
+        logger.log(Level.SEVERE, "Starting emergency unloading procedure");
         openValve();
         for (IGaseous gaseous : getLoads()) {
             unLoad(gaseous);
@@ -77,7 +78,7 @@ public class GaseousLoadCar extends AbstractBasicFreightCar<IGaseous> implements
     @Override
     public void emergencyProcedure() {
         closeValve();
-        System.out.println("Starting emergency procedure in car " + getId());
+        logger.log(Level.SEVERE, "Starting emergency procedure in car " + getId());
         if (getLocomotive().isPresent()){
             Locomotive loco = getLocomotive().get();
             loco.raiseAlert("Emergency in car " + getId() +

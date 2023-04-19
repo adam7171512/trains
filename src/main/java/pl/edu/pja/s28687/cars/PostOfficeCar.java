@@ -6,6 +6,7 @@ import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.math.BigDecimal;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class PostOfficeCar extends AbstractLoadCarrier<IMail> implements IPowered {
 
@@ -32,7 +33,7 @@ public class PostOfficeCar extends AbstractLoadCarrier<IMail> implements IPowere
 
     @Override
     public void emergencyProcedure() {
-        System.out.println(
+        logger.log(Level.SEVERE,
                 "Attention! Emergency in post office car!" +
                         " Please remain calm and follow the instructions of the staff.");
         if (getLocomotive().isPresent()) {

@@ -7,6 +7,7 @@ import pl.edu.pja.s28687.misc.TrainStatus;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
 import java.util.Set;
+import java.util.logging.Level;
 
 
 public class ToxicLoadCar extends AbstractHeavyFreightCar<IToxic> {
@@ -67,6 +68,7 @@ public class ToxicLoadCar extends AbstractHeavyFreightCar<IToxic> {
 
     @Override
     public void emergencyProcedure() {
+        logger.log(Level.SEVERE, "Emergency situation in toxic load car !!" + getId());
         safetyLock();
         if (getLocomotive().isPresent()) {
             Locomotive loco = getLocomotive().get();

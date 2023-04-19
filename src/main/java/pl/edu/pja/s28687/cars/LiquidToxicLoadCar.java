@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 
 public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> implements ILiquidCarrier {
@@ -100,6 +101,7 @@ public class LiquidToxicLoadCar extends AbstractHeavyFreightCar<ILiquidToxic> im
 
     @Override
     public void emergencyProcedure() {
+        logger.log(Level.SEVERE, "Emergency situation in liquid toxic car !!" + getId());
         closeValve();
         if (getLocomotive().isPresent()) {
             Locomotive loco = getLocomotive().get();
