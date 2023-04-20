@@ -42,7 +42,7 @@ public class Presentation extends AbstractLeafMenu{
 
     @Override
     public String getTitle() {
-        return "Just prepare and launch the whole thing..";
+        return "Presentation";
     }
 
     @Override
