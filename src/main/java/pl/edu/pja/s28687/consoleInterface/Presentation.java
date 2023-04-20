@@ -1,12 +1,15 @@
 package pl.edu.pja.s28687.consoleInterface;
 
 import pl.edu.pja.s28687.LocomotivePurpose;
+import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.factories.*;
-import pl.edu.pja.s28687.gui.Canvas2;
+import pl.edu.pja.s28687.gui.LocoMap;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.AStarRouteFinder;
-import pl.edu.pja.s28687.logistics.ReverseDijkstraRouteFinder;
+
+import java.util.List;
+import java.util.Random;
 
 public class Presentation extends AbstractLeafMenu{
     @Override
@@ -20,21 +23,20 @@ public class Presentation extends AbstractLeafMenu{
         DispatchingCenter dispatchingCenter = resourceContainer.getDispatchingCenter();
 
         trainStationFactory.createTrainStationsPolishCoords();
-        railroadsFactory.createOrderedConnectionsBetweenStations(3);
+        railroadsFactory.createOrderedConnectionsBetweenStations(4);
 
-        trainSetFactory.createTrainSetsOfType(7, LocomotivePurpose.PASSENGER, new AStarRouteFinder(locoBase));
-        trainSetFactory.createTrainSetsOfType(7, LocomotivePurpose.BASIC_FREIGHT, new AStarRouteFinder(locoBase));
-        trainSetFactory.createRandomTrainSets(16);
-        carsFactory.createRandomCars(400);
+        Random random = new Random();
+        for (int i = 0; i < 25; i++) {
+            int cars = random.nextInt(5) + 5;
+            trainSetFactory.createRandomTrainSetWithCars(cars);
+        }
+
+        carsFactory.createRandomCars(100); // extra 100 cars for future use
         loadFactory.createRandomLoads(2000);
-        loadFactory.createRandomLoadsOfType(100, LoadType.PASSENGERS);
 
-        CarAssignmentCenter.assignCars(locoBase);
         LoadAssignmentCenter.assignLoadsToTrainSets(locoBase);
-
         dispatchingCenter.dispatchAllTrainSets();
-
-        Canvas2 canvas= Canvas2.getInstance(locoBase);
+        LocoMap canvas= LocoMap.getInstance(locoBase);
         canvas.show();
     }
 
