@@ -1,6 +1,6 @@
 package pl.edu.pja.s28687.consoleInterface.infoMenus;
 
-import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.train.Locomotive;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.consoleInterface.IBrowsable;
 import pl.edu.pja.s28687.info.LocInfo;

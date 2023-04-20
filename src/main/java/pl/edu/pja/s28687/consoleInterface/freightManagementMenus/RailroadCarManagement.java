@@ -1,21 +1,13 @@
 package pl.edu.pja.s28687.consoleInterface.freightManagementMenus;
 
-import pl.edu.pja.s28687.ValidationException;
-import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.consoleInterface.IBrowsable;
-import pl.edu.pja.s28687.factories.LoadAssignmentCenter;
 import pl.edu.pja.s28687.info.CarInfo;
-import pl.edu.pja.s28687.info.LoadInfo;
-import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.logistics.LocoBase;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class RailroadCarManagement extends AbstractLeafMenu implements IBrowsable<IRailroadCar> {
     @Override

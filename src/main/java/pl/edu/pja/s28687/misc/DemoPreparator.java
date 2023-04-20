@@ -1,6 +1,6 @@
 package pl.edu.pja.s28687.misc;
 
-import pl.edu.pja.s28687.LocomotivePurpose;
+import pl.edu.pja.s28687.train.LocomotivePurpose;
 import pl.edu.pja.s28687.factories.*;
 import pl.edu.pja.s28687.gui.LocoMap;
 import pl.edu.pja.s28687.info.AggregateLogger;

@@ -1,11 +1,11 @@
 package pl.edu.pja.s28687.factories;
 
-import pl.edu.pja.s28687.*;
 import pl.edu.pja.s28687.logistics.AStarRouteFinder;
 import pl.edu.pja.s28687.logistics.IRouteFinder;
 import pl.edu.pja.s28687.logistics.LocoBase;
-import pl.edu.pja.s28687.validators.locomotive.ILocomotiveLoadValidator;
-import pl.edu.pja.s28687.validators.locomotive.LocomotiveLoadValidator;
+import pl.edu.pja.s28687.train.Conductor;
+import pl.edu.pja.s28687.train.Locomotive;
+import pl.edu.pja.s28687.train.TrainSet;
 
 public class TrainSetBuilder {
     private Conductor conductor;

@@ -1,4 +1,4 @@
-package pl.edu.pja.s28687;
+package pl.edu.pja.s28687.train;
 
 import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.load.IDeliverable;

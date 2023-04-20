@@ -1,8 +1,8 @@
 package pl.edu.pja.s28687.locomotiveTests;
 
 import org.junit.jupiter.api.Test;
-import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.ValidationException;
+import pl.edu.pja.s28687.train.Locomotive;
+import pl.edu.pja.s28687.validators.ValidationException;
 import pl.edu.pja.s28687.cars.*;
 import pl.edu.pja.s28687.validators.CarPassengerValidator;
 import pl.edu.pja.s28687.validators.ICarPassengerValidator;

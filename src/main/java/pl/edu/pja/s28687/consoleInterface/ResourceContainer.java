@@ -1,4 +1,4 @@
-package pl.edu.pja.s28687;
+package pl.edu.pja.s28687.consoleInterface;
 
 import pl.edu.pja.s28687.factories.*;
 import pl.edu.pja.s28687.logistics.LocoBase;

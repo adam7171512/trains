@@ -2,7 +2,7 @@ package pl.edu.pja.s28687.factories;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.logistics.TrainStation;
 import pl.edu.pja.s28687.logistics.Coordinates;
 import pl.edu.pja.s28687.logistics.LocoBase;
 

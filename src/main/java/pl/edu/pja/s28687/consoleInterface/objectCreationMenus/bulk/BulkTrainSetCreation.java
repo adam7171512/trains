@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.consoleInterface.objectCreationMenus.bulk;
 
-import pl.edu.pja.s28687.LocomotivePurpose;
-import pl.edu.pja.s28687.TrainSet;
+import pl.edu.pja.s28687.train.LocomotivePurpose;
+import pl.edu.pja.s28687.train.TrainSet;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.factories.TrainSetFactory;
 

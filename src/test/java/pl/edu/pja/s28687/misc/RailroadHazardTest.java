@@ -1,8 +1,8 @@
 package pl.edu.pja.s28687.misc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.edu.pja.s28687.ILocomotive;
-import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.train.ILocomotive;
+import pl.edu.pja.s28687.train.Locomotive;
 import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.load.IDeliverable;

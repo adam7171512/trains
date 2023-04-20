@@ -1,6 +1,5 @@
 package pl.edu.pja.s28687.logistics;
-import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.train.Locomotive;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -1,7 +1,5 @@
 package pl.edu.pja.s28687.consoleInterface;
 
-import pl.edu.pja.s28687.ResourceContainer;
-
 import java.util.Scanner;
 
 public abstract class AbstractLeafMenu implements ILeafMenu {

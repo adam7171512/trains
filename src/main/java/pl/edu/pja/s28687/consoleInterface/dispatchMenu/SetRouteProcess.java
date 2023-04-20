@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.consoleInterface.dispatchMenu;
 
-import pl.edu.pja.s28687.TrainSet;
-import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.train.TrainSet;
+import pl.edu.pja.s28687.logistics.TrainStation;
 import pl.edu.pja.s28687.consoleInterface.IBrowsable;
 import pl.edu.pja.s28687.logistics.LocoBase;
 

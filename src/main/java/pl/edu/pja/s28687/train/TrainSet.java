@@ -1,10 +1,12 @@
-package pl.edu.pja.s28687;
+package pl.edu.pja.s28687.train;
 
 import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.cars.AbstractLoadCarrier;
 import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.logistics.IRouteFinder;
+import pl.edu.pja.s28687.logistics.TrainStation;
+import pl.edu.pja.s28687.validators.ValidationException;
 
 import java.math.BigDecimal;
 import java.util.List;

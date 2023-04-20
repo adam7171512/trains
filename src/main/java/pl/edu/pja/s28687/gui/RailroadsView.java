@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.gui;
 
-import pl.edu.pja.s28687.ResourceContainer;
-import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.consoleInterface.ResourceContainer;
+import pl.edu.pja.s28687.logistics.TrainStation;
 import pl.edu.pja.s28687.factories.*;
 import pl.edu.pja.s28687.logistics.Coordinates;
 import pl.edu.pja.s28687.logistics.LocoBase;

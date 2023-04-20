@@ -1,7 +1,8 @@
-package pl.edu.pja.s28687;
+package pl.edu.pja.s28687.train;
 
 import pl.edu.pja.s28687.logistics.IRouteFinder;
 import pl.edu.pja.s28687.logistics.RouteSegment;
+import pl.edu.pja.s28687.logistics.TrainStation;
 import pl.edu.pja.s28687.misc.TrainStatus;
 
 import java.math.BigDecimal;
@@ -18,16 +19,34 @@ public class Conductor extends Thread {
     }
 
     private final Locomotive locomotive;
-    private double distanceMultiplier = 1;
-    private int timeUpdateInterval = 1000;
-    private int stationStoppageTime = 2000;
-    private int destinationStoppageTime = 28000;
+    private double distanceMultiplier;
+    private int timeUpdateInterval;
+    private int stationStoppageTime;
+    private int destinationStoppageTime;
     private IRouteFinder routeFinder;
     private MachinistJob machinistJob;
 
     public Conductor(Locomotive locomotive, IRouteFinder routeFinder) {
+        this(locomotive,
+                routeFinder,
+                1,
+                1000,
+                2000,
+                28000);
+    }
+
+    public Conductor(Locomotive locomotive
+            , IRouteFinder routeFinder
+            , double distanceMultiplier
+            , int timeUpdateInterval
+            , int stationStoppageTime
+            , int destinationStoppageTime) {
         this.routeFinder = routeFinder;
         this.locomotive = locomotive;
+        this.distanceMultiplier = distanceMultiplier;
+        this.timeUpdateInterval = timeUpdateInterval;
+        this.stationStoppageTime = stationStoppageTime;
+        this.destinationStoppageTime = destinationStoppageTime;
     }
 
     public static void setLogLevel(Level level) {

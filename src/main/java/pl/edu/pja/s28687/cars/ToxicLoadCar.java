@@ -1,6 +1,6 @@
 package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.train.Locomotive;
 import pl.edu.pja.s28687.load.IToxic;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.misc.TrainStatus;

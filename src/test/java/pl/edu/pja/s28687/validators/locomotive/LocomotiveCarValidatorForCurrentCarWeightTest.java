@@ -2,8 +2,8 @@ package pl.edu.pja.s28687.validators.locomotive;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.edu.pja.s28687.ILocomotive;
-import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.train.ILocomotive;
+import pl.edu.pja.s28687.train.Locomotive;
 import pl.edu.pja.s28687.cars.CarType;
 import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.cars.AbstractRailroadCar;

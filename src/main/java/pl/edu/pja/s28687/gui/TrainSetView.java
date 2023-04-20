@@ -1,9 +1,8 @@
 package pl.edu.pja.s28687.gui;
 
-import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.train.Locomotive;
 import pl.edu.pja.s28687.logistics.Coordinates;
 
-import java.awt.Point;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;

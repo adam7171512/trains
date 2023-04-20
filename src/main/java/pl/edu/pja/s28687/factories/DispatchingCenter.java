@@ -1,6 +1,6 @@
 package pl.edu.pja.s28687.factories;
-import pl.edu.pja.s28687.TrainSet;
-import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.train.TrainSet;
+import pl.edu.pja.s28687.logistics.TrainStation;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import java.util.List;
 import java.util.Random;

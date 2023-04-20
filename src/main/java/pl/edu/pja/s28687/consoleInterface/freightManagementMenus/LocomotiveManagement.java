@@ -1,12 +1,11 @@
 package pl.edu.pja.s28687.consoleInterface.freightManagementMenus;
 
-import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.ValidationException;
+import pl.edu.pja.s28687.train.Locomotive;
+import pl.edu.pja.s28687.validators.ValidationException;
 import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.consoleInterface.IBrowsable;
 import pl.edu.pja.s28687.factories.CarAssignmentCenter;
-import pl.edu.pja.s28687.info.CarInfo;
 import pl.edu.pja.s28687.info.LocInfo;
 import pl.edu.pja.s28687.logistics.LocoBase;
 

@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.cars;
 
 import org.junit.jupiter.api.Test;
-import pl.edu.pja.s28687.ValidationException;
+import pl.edu.pja.s28687.validators.ValidationException;
 import pl.edu.pja.s28687.factories.CarsFactory;
 import pl.edu.pja.s28687.factories.LoadFactory;
 import pl.edu.pja.s28687.load.*;

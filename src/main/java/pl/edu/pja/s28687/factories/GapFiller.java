@@ -2,12 +2,11 @@ package pl.edu.pja.s28687.factories;
 
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.RailroadLink;
-import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.logistics.TrainStation;
 import pl.edu.pja.s28687.logistics.RouteFindingAlgos;
 import pl.edu.pja.s28687.logistics.RouteSegment;
 
 import java.util.List;
-import java.util.Optional;
 
 public class GapFiller {
 

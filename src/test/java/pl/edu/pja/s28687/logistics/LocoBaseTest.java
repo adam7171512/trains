@@ -2,10 +2,9 @@ package pl.edu.pja.s28687.logistics;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.LocomotivePurpose;
-import pl.edu.pja.s28687.TrainSet;
-import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.train.Locomotive;
+import pl.edu.pja.s28687.train.LocomotivePurpose;
+import pl.edu.pja.s28687.train.TrainSet;
 import pl.edu.pja.s28687.cars.CarType;
 import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.cars.AbstractRailroadCar;
@@ -14,7 +13,6 @@ import pl.edu.pja.s28687.factories.*;
 import pl.edu.pja.s28687.load.IDeliverable;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.Set;
 

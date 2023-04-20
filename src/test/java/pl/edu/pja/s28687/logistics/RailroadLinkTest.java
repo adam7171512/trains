@@ -1,20 +1,13 @@
 package pl.edu.pja.s28687.logistics;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.TrainSet;
-import pl.edu.pja.s28687.TrainStation;
-import pl.edu.pja.s28687.factories.CarsFactory;
+import pl.edu.pja.s28687.train.Locomotive;
 import pl.edu.pja.s28687.factories.LocomotiveFactory;
-import pl.edu.pja.s28687.factories.TrainSetFactory;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import static org.junit.jupiter.api.Assertions.*;
 

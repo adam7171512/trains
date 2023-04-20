@@ -1,4 +1,4 @@
-package pl.edu.pja.s28687;
+package pl.edu.pja.s28687.train;
 
 import pl.edu.pja.s28687.misc.RailroadHazard;
 import pl.edu.pja.s28687.misc.TrainStatus;

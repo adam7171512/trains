@@ -1,11 +1,10 @@
 package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.train.Locomotive;
 import pl.edu.pja.s28687.load.IBasicFreight;
 import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.validators.ICarLoadValidator;
 
-import java.math.BigDecimal;
 import java.util.Set;
 import java.util.logging.Level;
 

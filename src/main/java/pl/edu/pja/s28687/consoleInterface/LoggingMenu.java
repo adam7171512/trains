@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.consoleInterface;
 
-import pl.edu.pja.s28687.Conductor;
-import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.train.Conductor;
+import pl.edu.pja.s28687.train.Locomotive;
 import pl.edu.pja.s28687.cars.AbstractRailroadCar;
 import pl.edu.pja.s28687.info.AggregateLogger;
 import pl.edu.pja.s28687.info.TrainSetInfo;

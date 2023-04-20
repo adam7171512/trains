@@ -1,7 +1,5 @@
 package pl.edu.pja.s28687.logistics;
 
-import pl.edu.pja.s28687.TrainStation;
-
 import java.util.*;
 // https://en.wikipedia.org/wiki/A*_search_algorithm
 // https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm

@@ -1,12 +1,14 @@
-package pl.edu.pja.s28687;
+package pl.edu.pja.s28687.train;
 
 import pl.edu.pja.s28687.cars.*;
 import pl.edu.pja.s28687.gui.TrainSetView;
 import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.logistics.Coordinates;
 import pl.edu.pja.s28687.logistics.RouteSegment;
+import pl.edu.pja.s28687.logistics.TrainStation;
 import pl.edu.pja.s28687.misc.RailroadHazard;
 import pl.edu.pja.s28687.misc.TrainStatus;
+import pl.edu.pja.s28687.validators.ValidationException;
 import pl.edu.pja.s28687.validators.locomotive.ILocomotiveCarValidator;
 import pl.edu.pja.s28687.validators.locomotive.ILocomotiveLoadValidator;
 

@@ -1,5 +1,4 @@
 package pl.edu.pja.s28687.consoleInterface;
-import pl.edu.pja.s28687.ResourceContainer;
 import pl.edu.pja.s28687.consoleInterface.dispatchMenu.AutomaticDispatchMenu;
 import pl.edu.pja.s28687.consoleInterface.dispatchMenu.DispatchSelectionMenu;
 import pl.edu.pja.s28687.consoleInterface.dispatchMenu.ManualDispatchMenu;

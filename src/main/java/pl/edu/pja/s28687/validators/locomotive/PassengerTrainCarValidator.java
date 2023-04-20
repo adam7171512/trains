@@ -1,6 +1,6 @@
 package pl.edu.pja.s28687.validators.locomotive;
 
-import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.train.Locomotive;
 import pl.edu.pja.s28687.cars.CarType;
 import pl.edu.pja.s28687.cars.IRailroadCar;
 

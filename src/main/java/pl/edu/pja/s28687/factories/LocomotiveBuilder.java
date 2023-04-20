@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.factories;
 
 import pl.edu.pja.s28687.validators.locomotive.ILocomotiveCarValidator;
-import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.train.Locomotive;
 import pl.edu.pja.s28687.validators.locomotive.ILocomotiveLoadValidator;
 import pl.edu.pja.s28687.validators.locomotive.LocomotiveCarValidatorForCurrentCarWeight;
 import pl.edu.pja.s28687.logistics.LocoBase;

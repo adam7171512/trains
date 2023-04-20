@@ -1,8 +1,7 @@
 package pl.edu.pja.s28687.logistics;
 
-import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.TrainSet;
-import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.train.Locomotive;
+import pl.edu.pja.s28687.train.TrainSet;
 import pl.edu.pja.s28687.cars.ILoadCarrier;
 import pl.edu.pja.s28687.cars.IRailroadCar;
 import pl.edu.pja.s28687.gui.RailroadsView;

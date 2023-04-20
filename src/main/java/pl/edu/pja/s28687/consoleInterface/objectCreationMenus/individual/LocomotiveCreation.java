@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.consoleInterface.objectCreationMenus.individual;
 
-import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.TrainSet;
+import pl.edu.pja.s28687.train.Locomotive;
+import pl.edu.pja.s28687.train.TrainSet;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.factories.LocomotiveBuilder;
 import pl.edu.pja.s28687.validators.locomotive.ILocomotiveCarValidator;
@@ -10,7 +10,6 @@ import pl.edu.pja.s28687.validators.locomotive.LocomotiveCarValidatorForMaxCarWe
 import pl.edu.pja.s28687.validators.locomotive.PassengerTrainCarValidator;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class LocomotiveCreation extends AbstractLeafMenu {
     @Override

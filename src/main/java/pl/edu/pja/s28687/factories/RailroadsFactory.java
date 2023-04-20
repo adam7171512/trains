@@ -1,6 +1,6 @@
 package pl.edu.pja.s28687.factories;
 
-import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.logistics.TrainStation;
 import pl.edu.pja.s28687.logistics.Coordinates;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.logistics.RailroadLink;

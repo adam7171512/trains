@@ -1,6 +1,6 @@
 package pl.edu.pja.s28687.consoleInterface.objectCreationMenus.individual;
 
-import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.logistics.TrainStation;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.consoleInterface.IBrowsable;
 

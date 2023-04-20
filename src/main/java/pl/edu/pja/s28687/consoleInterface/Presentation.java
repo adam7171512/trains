@@ -1,14 +1,9 @@
 package pl.edu.pja.s28687.consoleInterface;
 
-import pl.edu.pja.s28687.LocomotivePurpose;
-import pl.edu.pja.s28687.TrainSet;
 import pl.edu.pja.s28687.factories.*;
 import pl.edu.pja.s28687.gui.LocoMap;
-import pl.edu.pja.s28687.load.LoadType;
 import pl.edu.pja.s28687.logistics.LocoBase;
-import pl.edu.pja.s28687.logistics.AStarRouteFinder;
 
-import java.util.List;
 import java.util.Random;
 
 public class Presentation extends AbstractLeafMenu{

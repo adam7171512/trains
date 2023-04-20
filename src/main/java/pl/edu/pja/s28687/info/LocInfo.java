@@ -1,6 +1,6 @@
 package pl.edu.pja.s28687.info;
 
-import pl.edu.pja.s28687.Locomotive;
+import pl.edu.pja.s28687.train.Locomotive;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.misc.TrainStatus;
 

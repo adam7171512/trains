@@ -1,6 +1,6 @@
 package pl.edu.pja.s28687.consoleInterface.dispatchMenu;
 
-import pl.edu.pja.s28687.TrainSet;
+import pl.edu.pja.s28687.train.TrainSet;
 import pl.edu.pja.s28687.consoleInterface.AbstractLeafMenu;
 import pl.edu.pja.s28687.consoleInterface.IBrowsable;
 import pl.edu.pja.s28687.info.TrainSetInfo;
@@ -41,19 +41,20 @@ public class ManualDispatchMenu extends AbstractLeafMenu implements IBrowsable<T
         switch (selection) {
             case 1 -> new SetRouteProcess(locoBase, ts).run();
             case 2 -> setRouteAlgorithmMenu(ts);
-            case 3 -> setTimeIntervalAndDistanceMultiplier(ts);
+            case 3 -> setDynamicParameters(ts);
         }
     }
 
-    private void setTimeIntervalAndDistanceMultiplier(TrainSet ts) {
+    private void setDynamicParameters(TrainSet ts) {
         int timeInterval;
         do {
-            System.out.println("Enter time interval in milliseconds (more than 1)");
+            System.out.println("Enter speed time update interval in milliseconds (more than 1)");
             timeInterval = resourceContainer.parseToInt(scan.nextLine());
         } while (timeInterval < 1);
         int distanceMultiplier;
         do {
-            System.out.println("Enter distance multiplier (more than 1)");
+            System.out.println("Enter distance multiplier (more than 1) " +
+                    "\nhigher value means trains cover higher distance in given time interval");
             distanceMultiplier = resourceContainer.parseToInt(scan.nextLine());
         } while (distanceMultiplier < 1);
         int stationStoppageTime;
@@ -76,7 +77,7 @@ public class ManualDispatchMenu extends AbstractLeafMenu implements IBrowsable<T
 
     @Override
     public String getTitle() {
-        return "Manual Dispatch";
+        return "Manual";
     }
 
     @Override

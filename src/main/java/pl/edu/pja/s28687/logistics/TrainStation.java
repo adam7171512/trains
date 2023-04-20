@@ -1,7 +1,4 @@
-package pl.edu.pja.s28687;
-
-import pl.edu.pja.s28687.logistics.Coordinates;
-import pl.edu.pja.s28687.logistics.RailroadLink;
+package pl.edu.pja.s28687.logistics;
 
 import java.util.*;
 

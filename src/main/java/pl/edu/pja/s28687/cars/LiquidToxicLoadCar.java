@@ -1,7 +1,7 @@
 package pl.edu.pja.s28687.cars;
 
-import pl.edu.pja.s28687.Locomotive;
-import pl.edu.pja.s28687.ValidationException;
+import pl.edu.pja.s28687.train.Locomotive;
+import pl.edu.pja.s28687.validators.ValidationException;
 import pl.edu.pja.s28687.load.IDeliverable;
 import pl.edu.pja.s28687.load.ILiquidToxic;
 import pl.edu.pja.s28687.load.LoadType;

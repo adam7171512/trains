@@ -6,7 +6,7 @@ import java.util.Random;
 import pl.edu.pja.s28687.logistics.Coordinates;
 import pl.edu.pja.s28687.logistics.LocoBase;
 import pl.edu.pja.s28687.misc.PLCoordReader;
-import pl.edu.pja.s28687.TrainStation;
+import pl.edu.pja.s28687.logistics.TrainStation;
 
 
 public class TrainStationFactory {
