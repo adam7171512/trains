@@ -4,14 +4,14 @@ import pl.edu.pja.s28687.logistics.LocoBase;
 import javax.swing.*;
 import java.awt.*;
 
-public class Canvas2 {
-    private static Canvas2 canvas;
+public class LocoMap {
+    private static LocoMap canvas;
     private JFrame frame;
     private final LocoBase locoBase;
     private RailroadsView railroadsView;
     private TrainSetView trainSetView;
 
-    private Canvas2(LocoBase locoBase) {
+    private LocoMap(LocoBase locoBase) {
         this.locoBase = locoBase;
         init();
         initBase();
@@ -38,9 +38,9 @@ public class Canvas2 {
         frame.addKeyListener(railroadsView);
     }
 
-    public static Canvas2 getInstance(LocoBase locoBase){
+    public static LocoMap getInstance(LocoBase locoBase){
         if (canvas == null){
-            canvas = new Canvas2(locoBase);
+            canvas = new LocoMap(locoBase);
         }
         return canvas;
     }
