@@ -46,19 +46,31 @@ public class ManualDispatchMenu extends AbstractLeafMenu implements IBrowsable<T
     }
 
     private void setTimeIntervalAndDistanceMultiplier(TrainSet ts) {
-        System.out.println("Enter time interval in milliseconds");
-        int timeInterval = resourceContainer.parseToInt(scan.nextLine());
-        System.out.println("Enter distance multiplier");
-        int distanceMultiplier = resourceContainer.parseToInt(scan.nextLine());
+        int timeInterval;
+        do {
+            System.out.println("Enter time interval in milliseconds (more than 1)");
+            timeInterval = resourceContainer.parseToInt(scan.nextLine());
+        } while (timeInterval < 1);
+        int distanceMultiplier;
+        do {
+            System.out.println("Enter distance multiplier (more than 1)");
+            distanceMultiplier = resourceContainer.parseToInt(scan.nextLine());
+        } while (distanceMultiplier < 1);
+        int stationStoppageTime;
+        do {
+            System.out.println("Enter station stoppage time in milliseconds (more than 1)");
+            stationStoppageTime = resourceContainer.parseToInt(scan.nextLine());
+        } while (stationStoppageTime < 1);
+        int destinationStoppageTime;
+        do {
+            System.out.println("Enter destination station stoppage time in milliseconds (more than 1)");
+            destinationStoppageTime = resourceContainer.parseToInt(scan.nextLine());
+        } while (destinationStoppageTime < 1);
+
+        ts.setStationStoppageTime(stationStoppageTime);
         ts.setTimeUpdateInterval(timeInterval);
         ts.setDistanceMultiplier(distanceMultiplier);
-
-        System.out.println("Enter station stoppage time in milliseconds");
-        int selection = resourceContainer.parseToInt(scan.nextLine());
-        ts.setStationStoppageTime(selection);
-        System.out.println("Enter destination station stoppage time in milliseconds");
-        selection = resourceContainer.parseToInt(scan.nextLine());
-        ts.setDestinationStoppageTime(selection);
+        ts.setDestinationStoppageTime(destinationStoppageTime);
 
     }
 
