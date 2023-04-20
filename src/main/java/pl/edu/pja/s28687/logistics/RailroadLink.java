@@ -59,7 +59,7 @@ public class RailroadLink {
         return "Railway " +
                 "between " + station1 +
                 " and " + station2 +
-                ", distance=" + distance +
+                ", segment length =" + getDistance() +
                 " km";
     }
 

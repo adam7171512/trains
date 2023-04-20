@@ -26,7 +26,7 @@ public class TrainSetInfo {
                 .append(" / ").append(locomotive.getMaxPayload())
                 .append(" tonnes")
                 .append("\nCars attached : ")
-                .append(" regular : ").append(locomotive.getCurrentCarNumber())
+                .append(" total : ").append(locomotive.getCurrentCarNumber())
                 .append(" powered : ").append(locomotive.getPoweredCarsNumber())
                 .append(" | Car limits : ")
                 .append(" regular : ").append(locomotive.getCarLimit())
@@ -70,7 +70,7 @@ public class TrainSetInfo {
         Locomotive locomotive = trainSet.getLocomotive();
         return new StringBuilder()
                 .append("\nTrainSet ID : ").append(trainSet.getId())
-                .append(" | Current status : ").append(locomotive.getStatus()).append("\n")
+                .append(" | Current status : ").append(locomotive.getStatus())
                 .append(" | Current payload : ").append(locomotive.getCurrentPayload())
                 .append(" / ").append(locomotive.getMaxPayload())
                 .append(" tonnes")

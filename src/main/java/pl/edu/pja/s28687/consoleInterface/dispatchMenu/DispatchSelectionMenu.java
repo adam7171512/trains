@@ -5,7 +5,7 @@ import pl.edu.pja.s28687.consoleInterface.AbstractSelectMenu;
 public class DispatchSelectionMenu extends AbstractSelectMenu {
     @Override
     public String getTitle() {
-        return "Dispatching";
+        return "Dispatching and route manipulations";
     }
 
     @Override

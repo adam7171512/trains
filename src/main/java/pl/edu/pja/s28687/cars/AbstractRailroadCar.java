@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 
 public abstract class AbstractRailroadCar implements IRailroadCar {
-    //todo: find info on weight etc of typical cars and locomotives
+
     protected static final Logger logger = Logger.getLogger(AbstractRailroadCar.class.getName());
 
     static {

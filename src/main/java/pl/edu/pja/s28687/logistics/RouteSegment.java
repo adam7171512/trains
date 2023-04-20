@@ -25,8 +25,6 @@ public record RouteSegment(RailroadLink link, TrainStation source, TrainStation 
 
     @Override
     public String toString() {
-        return "Source : " + source().getName()
-                + " Destination : " + destination().getName()
-                + " Distance : " + getDistance();
+        return link.toString();
     }
 }
